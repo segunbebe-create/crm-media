@@ -1,54 +1,86 @@
+import { put } from "@vercel/blob";
 import { neon } from "@neondatabase/serverless";
 import { NextResponse } from "next/server";
 
-export async function GET(request) {
+const sql = neon(process.env.DATABASE_URL);
+
+export async function POST(request) {
   try {
-    const url = new URL(request.url);
+    const formData = await request.formData();
 
-    // Prevent accidental setup calls without the secret
-    const setupKey = url.searchParams.get("key");
+    const file = formData.get("file");
+    const albumId = formData.get("albumId");
 
-    if (setupKey !== "CRM-SETUP-2026") {
+    if (!file) {
       return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
+        { error: "No file provided." },
+        { status: 400 }
       );
     }
 
-    const sql = neon(process.env.DATABASE_URL);
+    if (!albumId) {
+      return NextResponse.json(
+        { error: "Album ID is required." },
+        { status: 400 }
+      );
+    }
 
-    await sql`
-      CREATE TABLE IF NOT EXISTS albums (
-        id SERIAL PRIMARY KEY,
-        name TEXT NOT NULL,
-        description TEXT,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      )
+    if (!file.type.startsWith("image/")) {
+      return NextResponse.json(
+        { error: "Only image files are allowed." },
+        { status: 400 }
+      );
+    }
+
+    const album = await sql`
+      SELECT id
+      FROM albums
+      WHERE id = ${Number(albumId)}
     `;
 
-    await sql`
-      CREATE TABLE IF NOT EXISTS photos (
-        id SERIAL PRIMARY KEY,
-        album_id INTEGER NOT NULL
-          REFERENCES albums(id)
-          ON DELETE CASCADE,
-        name TEXT NOT NULL,
-        url TEXT NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    if (album.length === 0) {
+      return NextResponse.json(
+        { error: "Album does not exist." },
+        { status: 404 }
+      );
+    }
+
+    const blob = await put(
+      `crm-media/${Date.now()}-${file.name}`,
+      file,
+      {
+        access: "private",
+        addRandomSuffix: true,
+      }
+    );
+
+    const photo = await sql`
+      INSERT INTO photos (
+        album_id,
+        name,
+        url
       )
+      VALUES (
+        ${Number(albumId)},
+        ${file.name},
+        ${blob.url}
+      )
+      RETURNING id, album_id, name, url, created_at
     `;
 
     return NextResponse.json({
       success: true,
-      message: "CRM Media database tables created successfully.",
+      photo: photo[0],
     });
   } catch (error) {
-    console.error("DATABASE SETUP ERROR:", error);
+    console.error("UPLOAD ERROR:", error);
 
     return NextResponse.json(
       {
-        success: false,
-        error: error.message || "Database setup failed.",
+        error:
+          error instanceof Error
+            ? error.message
+            : "Upload failed.",
       },
       { status: 500 }
     );
