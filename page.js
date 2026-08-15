@@ -1,1 +1,0 @@
-"use client"; export default function Home(){return <main><h1>CRM Media</h1><p>Chapel of Rest Ministry</p><p>Gallery ready for deployment.</p></main>}
