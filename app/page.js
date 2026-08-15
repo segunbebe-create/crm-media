@@ -6,153 +6,244 @@ const photos = [
   {
     id: 1,
     title: "Sunday Service",
-    category: "Church Service",
+    category: "Services",
     image:
-      "https://images.unsplash.com/photo-1438032005730-c779502df39b?auto=format&fit=crop&w=1000&q=80",
+      "https://images.unsplash.com/photo-1438032005730-c779502df39b?auto=format&fit=crop&w=1400&q=85",
   },
   {
     id: 2,
     title: "Praise & Worship",
-    category: "Worship",
+    category: "Services",
     image:
-      "https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=1000&q=80",
+      "https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&w=1400&q=85",
   },
   {
     id: 3,
     title: "Church Gathering",
     category: "Events",
     image:
-      "https://images.unsplash.com/photo-1519491050282-cf00c82424b4?auto=format&fit=crop&w=1000&q=80",
+      "https://images.unsplash.com/photo-1519491050282-cf00c82424b4?auto=format&fit=crop&w=1400&q=85",
   },
   {
     id: 4,
     title: "Youth Service",
     category: "Youth",
     image:
-      "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1000&q=80",
+      "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1400&q=85",
   },
   {
     id: 5,
     title: "Church Community",
-    category: "Community",
+    category: "Programs",
     image:
-      "https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=1000&q=80",
+      "https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=1400&q=85",
   },
   {
     id: 6,
     title: "Special Service",
     category: "Events",
     image:
-      "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1000&q=80",
+      "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1400&q=85",
   },
 ];
 
+const categories = ["All", "Services", "Youth", "Events", "Programs"];
+
 export default function Home() {
+  const [category, setCategory] = useState("All");
   const [search, setSearch] = useState("");
   const [favorites, setFavorites] = useState([]);
 
-  const toggleFavorite = (id) => {
+  function toggleFavorite(id) {
     setFavorites((current) =>
       current.includes(id)
         ? current.filter((item) => item !== id)
         : [...current, id]
     );
-  };
+  }
 
-  const filteredPhotos = photos.filter(
-    (photo) =>
+  const filteredPhotos = photos.filter((photo) => {
+    const matchesCategory =
+      category === "All" || photo.category === category;
+
+    const matchesSearch =
       photo.title.toLowerCase().includes(search.toLowerCase()) ||
-      photo.category.toLowerCase().includes(search.toLowerCase())
-  );
+      photo.category.toLowerCase().includes(search.toLowerCase());
+
+    return matchesCategory && matchesSearch;
+  });
 
   return (
-    <main className="gallery-page">
-      <header className="header">
-        <div className="brand">
-          <img src="/logo.svg" alt="CRM Media logo" className="logo" />
+    <main className="site">
+      {/* NAVIGATION */}
+      <header className="navbar">
+        <a className="brand" href="#">
+          <img src="/logo.svg" alt="CRM Media" />
 
           <div>
-            <h1>CRM Media</h1>
-            <p>Chapel of Rest Ministry</p>
+            <strong>CRM MEDIA</strong>
+            <span>Chapel of Rest Ministry</span>
+          </div>
+        </a>
+
+        <nav>
+          <a href="#home">Home</a>
+          <a href="#gallery">Gallery</a>
+          <a href="#favorites">Favorites</a>
+        </nav>
+
+        <button className="admin-btn">Admin Login</button>
+      </header>
+
+      {/* HERO */}
+      <section className="hero" id="home">
+        <div className="hero-content">
+          <span className="hero-label">CHAPEL OF REST MINISTRY</span>
+
+          <h1>
+            Moments worth
+            <br />
+            <span>remembering.</span>
+          </h1>
+
+          <p>
+            Explore memorable moments, services, programs and events
+            captured by the CRM Media team.
+          </p>
+
+          <div className="hero-actions">
+            <a href="#gallery" className="primary-btn">
+              Browse Gallery →
+            </a>
+
+            <a href="#favorites" className="secondary-btn">
+              ♡ My Favorites
+            </a>
           </div>
         </div>
 
-        <div className="header-actions">
-          <span className="favorite-count">
-            ❤️ {favorites.length}
-          </span>
+        <div className="hero-gradient" />
+      </section>
 
-          <button className="admin-button">
-            Admin
-          </button>
-        </div>
-      </header>
+      {/* GALLERY HEADER */}
+      <section className="gallery-section" id="gallery">
+        <div className="section-heading">
+          <div>
+            <span className="small-label">CRM MEDIA</span>
+            <h2>Latest captures</h2>
+          </div>
 
-      <section className="hero">
-        <div>
-          <p className="eyebrow">CRM MEDIA GALLERY</p>
-          <h2>Capture. Remember. Share.</h2>
           <p>
-            Browse and download memorable moments from Chapel of Rest
-            Ministry.
+            Discover and download moments from our church community.
           </p>
         </div>
-      </section>
 
-      <section className="toolbar">
-        <input
-          type="search"
-          placeholder="Search photos..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-      </section>
+        {/* SEARCH + FILTER */}
+        <div className="gallery-controls">
+          <div className="search-box">
+            <span>⌕</span>
+            <input
+              type="search"
+              placeholder="Search photos..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
 
-      <section className="gallery">
-        {filteredPhotos.map((photo) => (
-          <article className="photo-card" key={photo.id}>
-            <div className="image-container">
-              <img src={photo.image} alt={photo.title} />
-
+          <div className="filters">
+            {categories.map((item) => (
               <button
-                className={`favorite ${
-                  favorites.includes(photo.id) ? "active" : ""
-                }`}
-                onClick={() => toggleFavorite(photo.id)}
-                aria-label="Add to favorites"
+                key={item}
+                className={category === item ? "filter active" : "filter"}
+                onClick={() => setCategory(item)}
               >
-                {favorites.includes(photo.id) ? "♥" : "♡"}
+                {item}
               </button>
-            </div>
+            ))}
+          </div>
+        </div>
 
-            <div className="photo-info">
-              <div>
-                <h3>{photo.title}</h3>
-                <p>{photo.category}</p>
+        {/* PHOTO GRID */}
+        <div className="photo-grid">
+          {filteredPhotos.map((photo) => (
+            <article className="photo-card" key={photo.id}>
+              <div className="photo-image">
+                <img src={photo.image} alt={photo.title} />
+
+                <div className="image-overlay">
+                  <button
+                    className={
+                      favorites.includes(photo.id)
+                        ? "heart active"
+                        : "heart"
+                    }
+                    onClick={() => toggleFavorite(photo.id)}
+                    aria-label="Favorite"
+                  >
+                    {favorites.includes(photo.id) ? "♥" : "♡"}
+                  </button>
+                </div>
               </div>
 
-              <a
-                href={photo.image}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="download"
-              >
-                ↓
-              </a>
-            </div>
-          </article>
-        ))}
+              <div className="photo-details">
+                <div>
+                  <span>{photo.category}</span>
+                  <h3>{photo.title}</h3>
+                </div>
+
+                <a
+                  className="download-btn"
+                  href={photo.image}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Download"
+                >
+                  ↓
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        {filteredPhotos.length === 0 && (
+          <div className="empty-state">
+            <h3>No photos found</h3>
+            <p>Try another search or category.</p>
+          </div>
+        )}
       </section>
 
-      {filteredPhotos.length === 0 && (
-        <div className="empty">
-          <h3>No photos found</h3>
-          <p>Try another search.</p>
+      {/* FAVORITES */}
+      <section className="favorites-section" id="favorites">
+        <div>
+          <span className="small-label">YOUR COLLECTION</span>
+          <h2>Your Favorites</h2>
+          <p>
+            {favorites.length === 0
+              ? "Photos you favorite will appear here."
+              : `You have ${favorites.length} favorite ${
+                  favorites.length === 1 ? "photo" : "photos"
+                }.`}
+          </p>
         </div>
-      )}
 
+        <div className="favorite-number">
+          <strong>{favorites.length}</strong>
+          <span>Saved</span>
+        </div>
+      </section>
+
+      {/* FOOTER */}
       <footer>
-        <p>© 2026 CRM Media • Chapel of Rest Ministry</p>
+        <div className="footer-brand">
+          <img src="/logo.svg" alt="CRM Media" />
+          <div>
+            <strong>CRM MEDIA</strong>
+            <span>Chapel of Rest Ministry</span>
+          </div>
+        </div>
+
+        <p>© 2026 CRM Media. All rights reserved.</p>
       </footer>
     </main>
   );
