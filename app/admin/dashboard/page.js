@@ -10,6 +10,9 @@ export default function AdminDashboard() {
   const [showCreate, setShowCreate] = useState(false);
   const [albumName, setAlbumName] = useState("");
   const [albumDescription, setAlbumDescription] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const admin = localStorage.getItem("crmAdmin");
@@ -19,55 +22,99 @@ export default function AdminDashboard() {
       return;
     }
 
-    const savedAlbums = localStorage.getItem("crmAlbums");
-
-    if (savedAlbums) {
-      setAlbums(JSON.parse(savedAlbums));
-    }
+    loadAlbums();
   }, [router]);
 
-  function createAlbum(e) {
-    e.preventDefault();
+  async function loadAlbums() {
+    try {
+      setLoading(true);
+
+      const response = await fetch("/api/albums");
+
+      if (!response.ok) {
+        throw new Error("Could not load albums.");
+      }
+
+      const data = await response.json();
+
+      setAlbums(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function createAlbum(event) {
+    event.preventDefault();
 
     if (!albumName.trim()) return;
 
-    const newAlbum = {
-      id: Date.now(),
-      name: albumName.trim(),
-      description: albumDescription.trim(),
-      photos: [],
-    };
+    setSaving(true);
+    setError("");
 
-    const updatedAlbums = [...albums, newAlbum];
+    try {
+      const response = await fetch("/api/albums", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: albumName,
+          description: albumDescription,
+        }),
+      });
 
-    setAlbums(updatedAlbums);
-    localStorage.setItem(
-      "crmAlbums",
-      JSON.stringify(updatedAlbums)
-    );
+      const data = await response.json();
 
-    setAlbumName("");
-    setAlbumDescription("");
-    setShowCreate(false);
+      if (!response.ok) {
+        throw new Error(
+          data.error || "Could not create album."
+        );
+      }
+
+      setAlbums((current) => [data, ...current]);
+
+      setAlbumName("");
+      setAlbumDescription("");
+      setShowCreate(false);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSaving(false);
+    }
   }
 
-  function deleteAlbum(id) {
+  async function deleteAlbum(id) {
     const confirmed = window.confirm(
       "Are you sure you want to delete this album?"
     );
 
     if (!confirmed) return;
 
-    const updatedAlbums = albums.filter(
-      (album) => album.id !== id
-    );
+    try {
+      const response = await fetch("/api/albums", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id }),
+      });
 
-    setAlbums(updatedAlbums);
+      const data = await response.json();
 
-    localStorage.setItem(
-      "crmAlbums",
-      JSON.stringify(updatedAlbums)
-    );
+      if (!response.ok) {
+        throw new Error(
+          data.error || "Could not delete album."
+        );
+      }
+
+      setAlbums((current) =>
+        current.filter((album) => album.id !== id)
+      );
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   function logout() {
@@ -108,6 +155,7 @@ export default function AdminDashboard() {
         <div className="dashboard-title">
 
           <div>
+
             <p className="dashboard-label">
               CONTENT MANAGEMENT
             </p>
@@ -115,8 +163,10 @@ export default function AdminDashboard() {
             <h2>Albums</h2>
 
             <p>
-              Organize your church photos into albums and events.
+              Organize your church photos into albums
+              and events.
             </p>
+
           </div>
 
           <button
@@ -127,6 +177,12 @@ export default function AdminDashboard() {
           </button>
 
         </div>
+
+        {error && (
+          <div className="error-message">
+            {error}
+          </div>
+        )}
 
         {showCreate && (
           <div className="album-form-card">
@@ -152,25 +208,31 @@ export default function AdminDashboard() {
 
             <form onSubmit={createAlbum}>
 
-              <label>Album name</label>
+              <label>
+                Album name
+              </label>
 
               <input
                 type="text"
                 placeholder="e.g. Youth Convention 2026"
                 value={albumName}
-                onChange={(e) =>
-                  setAlbumName(e.target.value)
+                onChange={(event) =>
+                  setAlbumName(event.target.value)
                 }
                 required
               />
 
-              <label>Description</label>
+              <label>
+                Description
+              </label>
 
               <textarea
                 placeholder="Tell members what this album contains..."
                 value={albumDescription}
-                onChange={(e) =>
-                  setAlbumDescription(e.target.value)
+                onChange={(event) =>
+                  setAlbumDescription(
+                    event.target.value
+                  )
                 }
                 rows="4"
               />
@@ -180,7 +242,9 @@ export default function AdminDashboard() {
                 <button
                   type="button"
                   className="cancel-btn"
-                  onClick={() => setShowCreate(false)}
+                  onClick={() =>
+                    setShowCreate(false)
+                  }
                 >
                   Cancel
                 </button>
@@ -188,8 +252,11 @@ export default function AdminDashboard() {
                 <button
                   type="submit"
                   className="save-album-btn"
+                  disabled={saving}
                 >
-                  Create Album
+                  {saving
+                    ? "Creating..."
+                    : "Create Album"}
                 </button>
 
               </div>
@@ -199,34 +266,40 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        <div className="album-grid">
+        {loading ? (
 
-          {albums.length === 0 ? (
+          <div className="empty-albums">
+            <h3>Loading albums...</h3>
+          </div>
 
-            <div className="empty-albums">
+        ) : albums.length === 0 ? (
 
-              <div className="empty-icon">
-                📁
-              </div>
+          <div className="empty-albums">
 
-              <h3>No albums yet</h3>
-
-              <p>
-                Create your first album to start organizing
-                CRM Media photos.
-              </p>
-
-              <button
-                onClick={() => setShowCreate(true)}
-              >
-                + Create Your First Album
-              </button>
-
+            <div className="empty-icon">
+              📁
             </div>
 
-          ) : (
+            <h3>No albums yet</h3>
 
-            albums.map((album) => (
+            <p>
+              Create your first album to start
+              organizing CRM Media photos.
+            </p>
+
+            <button
+              onClick={() => setShowCreate(true)}
+            >
+              + Create Your First Album
+            </button>
+
+          </div>
+
+        ) : (
+
+          <div className="album-grid">
+
+            {albums.map((album) => (
 
               <article
                 className="album-card"
@@ -245,10 +318,6 @@ export default function AdminDashboard() {
                     {album.description ||
                       "No description added."}
                   </p>
-
-                  <span className="photo-count">
-                    {album.photos?.length || 0} photos
-                  </span>
 
                   <div className="album-actions">
 
@@ -277,11 +346,11 @@ export default function AdminDashboard() {
 
               </article>
 
-            ))
+            ))}
 
-          )}
+          </div>
 
-        </div>
+        )}
 
       </section>
 
