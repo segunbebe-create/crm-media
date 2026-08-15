@@ -24,7 +24,7 @@ export async function POST(request) {
       `crm-media/${Date.now()}-${file.name}`,
       file,
       {
-        access: "public",
+        access: "private",
         addRandomSuffix: true,
       }
     );
@@ -34,10 +34,15 @@ export async function POST(request) {
       pathname: blob.pathname,
     });
   } catch (error) {
-    console.error(error);
+    console.error("UPLOAD ERROR:", error);
 
     return NextResponse.json(
-      { error: "Upload failed." },
+      {
+        error:
+          error instanceof Error
+            ? error.message
+            : "Upload failed.",
+      },
       { status: 500 }
     );
   }
