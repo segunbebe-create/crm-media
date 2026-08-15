@@ -200,18 +200,23 @@ export default function AdminDashboard() {
                   </span>
 
                   <div className="album-actions">
-                    <button>
-                      Manage
-                    </button>
+  <button
+    onClick={() =>
+      router.push(`/admin/dashboard/upload?album=${album.id}`)
+    }
+  >
+    Upload Photos
+  </button>
 
-                    <button
-                      className="delete-album"
-                      onClick={() =>
-                        deleteAlbum(album.id)
-                      }
-                    >
-                      Delete
-                    </button>
+  <button
+    className="delete-album"
+    onClick={() =>
+      deleteAlbum(album.id)
+    }
+  >
+    Delete
+  </button>
+</div>
                   </div>
                 </div>
 
