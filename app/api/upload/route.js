@@ -1,47 +1,54 @@
-import { put } from "@vercel/blob";
+import { neon } from "@neondatabase/serverless";
 import { NextResponse } from "next/server";
 
-export async function POST(request) {
+export async function GET(request) {
   try {
-    const formData = await request.formData();
-    const file = formData.get("file");
+    const url = new URL(request.url);
 
-    if (!file) {
+    // Prevent accidental setup calls without the secret
+    const setupKey = url.searchParams.get("key");
+
+    if (setupKey !== "CRM-SETUP-2026") {
       return NextResponse.json(
-        { error: "No file provided." },
-        { status: 400 }
+        { error: "Unauthorized" },
+        { status: 401 }
       );
     }
 
-    if (!file.type.startsWith("image/")) {
-      return NextResponse.json(
-        { error: "Only image files are allowed." },
-        { status: 400 }
-      );
-    }
+    const sql = neon(process.env.DATABASE_URL);
 
-    const blob = await put(
-      `crm-media/${Date.now()}-${file.name}`,
-      file,
-      {
-        access: "private",
-        addRandomSuffix: true,
-      }
-    );
+    await sql`
+      CREATE TABLE IF NOT EXISTS albums (
+        id SERIAL PRIMARY KEY,
+        name TEXT NOT NULL,
+        description TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `;
+
+    await sql`
+      CREATE TABLE IF NOT EXISTS photos (
+        id SERIAL PRIMARY KEY,
+        album_id INTEGER NOT NULL
+          REFERENCES albums(id)
+          ON DELETE CASCADE,
+        name TEXT NOT NULL,
+        url TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `;
 
     return NextResponse.json({
-      url: blob.url,
-      pathname: blob.pathname,
+      success: true,
+      message: "CRM Media database tables created successfully.",
     });
   } catch (error) {
-    console.error("UPLOAD ERROR:", error);
+    console.error("DATABASE SETUP ERROR:", error);
 
     return NextResponse.json(
       {
-        error:
-          error instanceof Error
-            ? error.message
-            : "Upload failed.",
+        success: false,
+        error: error.message || "Database setup failed.",
       },
       { status: 500 }
     );
