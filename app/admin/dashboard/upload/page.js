@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
-export default function UploadPhotos() {
+function UploadContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -31,7 +31,7 @@ export default function UploadPhotos() {
         (item) => String(item.id) === String(albumId)
       );
 
-      setAlbum(selectedAlbum);
+      setAlbum(selectedAlbum || null);
     }
   }, [albumId, router]);
 
@@ -97,6 +97,7 @@ export default function UploadPhotos() {
       );
 
       setFiles([]);
+
       setMessage(
         `${uploadedPhotos.length} photo${
           uploadedPhotos.length === 1 ? "" : "s"
@@ -114,7 +115,10 @@ export default function UploadPhotos() {
       <main className="admin-dashboard">
         <div className="dashboard-content">
           <h1>Album not found</h1>
-          <button onClick={() => router.push("/admin/dashboard")}>
+
+          <button
+            onClick={() => router.push("/admin/dashboard")}
+          >
             Back to Dashboard
           </button>
         </div>
@@ -143,7 +147,6 @@ export default function UploadPhotos() {
       </header>
 
       <section className="dashboard-content">
-
         <div className="dashboard-title">
           <div>
             <p className="dashboard-label">ALBUM</p>
@@ -158,10 +161,7 @@ export default function UploadPhotos() {
         </div>
 
         <div className="upload-card">
-
-          <div className="upload-icon">
-            📸
-          </div>
+          <div className="upload-icon">📸</div>
 
           <h3>Upload your photos</h3>
 
@@ -182,7 +182,6 @@ export default function UploadPhotos() {
 
           {files.length > 0 && (
             <div className="selected-files">
-
               <h4>
                 Selected Photos ({files.length})
               </h4>
@@ -196,7 +195,6 @@ export default function UploadPhotos() {
                   <p>{file.name}</p>
                 </div>
               ))}
-
             </div>
           )}
 
@@ -215,10 +213,24 @@ export default function UploadPhotos() {
               ? "Uploading..."
               : "Upload Photos"}
           </button>
-
         </div>
-
       </section>
     </main>
+  );
+}
+
+export default function UploadPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="admin-dashboard">
+          <div className="dashboard-content">
+            <h1>Loading...</h1>
+          </div>
+        </main>
+      }
+    >
+      <UploadContent />
+    </Suspense>
   );
 }
