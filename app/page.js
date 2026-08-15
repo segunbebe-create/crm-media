@@ -75,9 +75,10 @@ export default function Home() {
 
   return (
     <main className="site">
+
       {/* NAVIGATION */}
       <header className="navbar">
-        <a className="brand" href="#">
+        <a className="brand" href="/">
           <img src="/logo.svg" alt="CRM Media" />
 
           <div>
@@ -92,13 +93,17 @@ export default function Home() {
           <a href="#favorites">Favorites</a>
         </nav>
 
-        <button className="admin-btn">Admin Login</button>
+        <a href="/admin" className="admin-btn">
+          Admin Login
+        </a>
       </header>
 
       {/* HERO */}
       <section className="hero" id="home">
         <div className="hero-content">
-          <span className="hero-label">CHAPEL OF REST MINISTRY</span>
+          <span className="hero-label">
+            CHAPEL OF REST MINISTRY
+          </span>
 
           <h1>
             Moments worth
@@ -125,11 +130,15 @@ export default function Home() {
         <div className="hero-gradient" />
       </section>
 
-      {/* GALLERY HEADER */}
+      {/* GALLERY */}
       <section className="gallery-section" id="gallery">
+
         <div className="section-heading">
           <div>
-            <span className="small-label">CRM MEDIA</span>
+            <span className="small-label">
+              CRM MEDIA
+            </span>
+
             <h2>Latest captures</h2>
           </div>
 
@@ -138,10 +147,12 @@ export default function Home() {
           </p>
         </div>
 
-        {/* SEARCH + FILTER */}
+        {/* SEARCH + FILTERS */}
         <div className="gallery-controls">
+
           <div className="search-box">
             <span>⌕</span>
+
             <input
               type="search"
               placeholder="Search photos..."
@@ -154,40 +165,64 @@ export default function Home() {
             {categories.map((item) => (
               <button
                 key={item}
-                className={category === item ? "filter active" : "filter"}
+                className={
+                  category === item
+                    ? "filter active"
+                    : "filter"
+                }
                 onClick={() => setCategory(item)}
               >
                 {item}
               </button>
             ))}
           </div>
+
         </div>
 
         {/* PHOTO GRID */}
         <div className="photo-grid">
+
           {filteredPhotos.map((photo) => (
-            <article className="photo-card" key={photo.id}>
+
+            <article
+              className="photo-card"
+              key={photo.id}
+            >
+
               <div className="photo-image">
-                <img src={photo.image} alt={photo.title} />
+
+                <img
+                  src={photo.image}
+                  alt={photo.title}
+                />
 
                 <div className="image-overlay">
+
                   <button
                     className={
                       favorites.includes(photo.id)
                         ? "heart active"
                         : "heart"
                     }
-                    onClick={() => toggleFavorite(photo.id)}
+                    onClick={() =>
+                      toggleFavorite(photo.id)
+                    }
                     aria-label="Favorite"
                   >
-                    {favorites.includes(photo.id) ? "♥" : "♡"}
+                    {favorites.includes(photo.id)
+                      ? "♥"
+                      : "♡"}
                   </button>
+
                 </div>
+
               </div>
 
               <div className="photo-details">
+
                 <div>
                   <span>{photo.category}</span>
+
                   <h3>{photo.title}</h3>
                 </div>
 
@@ -200,51 +235,89 @@ export default function Home() {
                 >
                   ↓
                 </a>
+
               </div>
+
             </article>
+
           ))}
+
         </div>
 
         {filteredPhotos.length === 0 && (
           <div className="empty-state">
             <h3>No photos found</h3>
-            <p>Try another search or category.</p>
+            <p>
+              Try another search or category.
+            </p>
           </div>
         )}
+
       </section>
 
       {/* FAVORITES */}
-      <section className="favorites-section" id="favorites">
+      <section
+        className="favorites-section"
+        id="favorites"
+      >
+
         <div>
-          <span className="small-label">YOUR COLLECTION</span>
+
+          <span className="small-label">
+            YOUR COLLECTION
+          </span>
+
           <h2>Your Favorites</h2>
+
           <p>
             {favorites.length === 0
               ? "Photos you favorite will appear here."
               : `You have ${favorites.length} favorite ${
-                  favorites.length === 1 ? "photo" : "photos"
+                  favorites.length === 1
+                    ? "photo"
+                    : "photos"
                 }.`}
           </p>
+
         </div>
 
         <div className="favorite-number">
-          <strong>{favorites.length}</strong>
+
+          <strong>
+            {favorites.length}
+          </strong>
+
           <span>Saved</span>
+
         </div>
+
       </section>
 
       {/* FOOTER */}
       <footer>
+
         <div className="footer-brand">
-          <img src="/logo.svg" alt="CRM Media" />
+
+          <img
+            src="/logo.svg"
+            alt="CRM Media"
+          />
+
           <div>
             <strong>CRM MEDIA</strong>
-            <span>Chapel of Rest Ministry</span>
+            <span>
+              Chapel of Rest Ministry
+            </span>
           </div>
+
         </div>
 
-        <p>© 2026 CRM Media. All rights reserved.</p>
+        <p>
+          © 2026 CRM Media. All rights reserved.
+        </p>
+
       </footer>
+
     </main>
   );
 }
