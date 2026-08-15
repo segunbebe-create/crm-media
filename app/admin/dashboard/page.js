@@ -41,7 +41,10 @@ export default function AdminDashboard() {
     const updatedAlbums = [...albums, newAlbum];
 
     setAlbums(updatedAlbums);
-    localStorage.setItem("crmAlbums", JSON.stringify(updatedAlbums));
+    localStorage.setItem(
+      "crmAlbums",
+      JSON.stringify(updatedAlbums)
+    );
 
     setAlbumName("");
     setAlbumDescription("");
@@ -55,10 +58,16 @@ export default function AdminDashboard() {
 
     if (!confirmed) return;
 
-    const updatedAlbums = albums.filter((album) => album.id !== id);
+    const updatedAlbums = albums.filter(
+      (album) => album.id !== id
+    );
 
     setAlbums(updatedAlbums);
-    localStorage.setItem("crmAlbums", JSON.stringify(updatedAlbums));
+
+    localStorage.setItem(
+      "crmAlbums",
+      JSON.stringify(updatedAlbums)
+    );
   }
 
   function logout() {
@@ -68,27 +77,43 @@ export default function AdminDashboard() {
 
   return (
     <main className="admin-dashboard">
+
       <header className="dashboard-header">
+
         <div className="dashboard-brand">
-          <img src="/logo.svg" alt="CRM Media" />
+
+          <img
+            src="/logo.svg"
+            alt="CRM Media"
+          />
 
           <div>
             <span>CRM MEDIA</span>
             <h1>Admin Dashboard</h1>
           </div>
+
         </div>
 
-        <button className="logout-btn" onClick={logout}>
+        <button
+          className="logout-btn"
+          onClick={logout}
+        >
           Logout
         </button>
+
       </header>
 
       <section className="dashboard-content">
 
         <div className="dashboard-title">
+
           <div>
-            <p className="dashboard-label">CONTENT MANAGEMENT</p>
+            <p className="dashboard-label">
+              CONTENT MANAGEMENT
+            </p>
+
             <h2>Albums</h2>
+
             <p>
               Organize your church photos into albums and events.
             </p>
@@ -100,13 +125,19 @@ export default function AdminDashboard() {
           >
             + Create Album
           </button>
+
         </div>
 
         {showCreate && (
           <div className="album-form-card">
+
             <div className="form-heading">
+
               <div>
-                <p className="dashboard-label">NEW ALBUM</p>
+                <p className="dashboard-label">
+                  NEW ALBUM
+                </p>
+
                 <h3>Create an album</h3>
               </div>
 
@@ -116,16 +147,20 @@ export default function AdminDashboard() {
               >
                 ×
               </button>
+
             </div>
 
             <form onSubmit={createAlbum}>
+
               <label>Album name</label>
 
               <input
                 type="text"
                 placeholder="e.g. Youth Convention 2026"
                 value={albumName}
-                onChange={(e) => setAlbumName(e.target.value)}
+                onChange={(e) =>
+                  setAlbumName(e.target.value)
+                }
                 required
               />
 
@@ -141,6 +176,7 @@ export default function AdminDashboard() {
               />
 
               <div className="form-actions">
+
                 <button
                   type="button"
                   className="cancel-btn"
@@ -155,16 +191,23 @@ export default function AdminDashboard() {
                 >
                   Create Album
                 </button>
+
               </div>
+
             </form>
+
           </div>
         )}
 
         <div className="album-grid">
 
           {albums.length === 0 ? (
+
             <div className="empty-albums">
-              <div className="empty-icon">📁</div>
+
+              <div className="empty-icon">
+                📁
+              </div>
 
               <h3>No albums yet</h3>
 
@@ -178,16 +221,24 @@ export default function AdminDashboard() {
               >
                 + Create Your First Album
               </button>
+
             </div>
+
           ) : (
+
             albums.map((album) => (
-              <article className="album-card" key={album.id}>
+
+              <article
+                className="album-card"
+                key={album.id}
+              >
 
                 <div className="album-cover">
                   <span>📁</span>
                 </div>
 
                 <div className="album-info">
+
                   <h3>{album.name}</h3>
 
                   <p>
@@ -196,37 +247,44 @@ export default function AdminDashboard() {
                   </p>
 
                   <span className="photo-count">
-                    {album.photos.length} photos
+                    {album.photos?.length || 0} photos
                   </span>
 
                   <div className="album-actions">
-  <button
-    onClick={() =>
-      router.push(`/admin/dashboard/upload?album=${album.id}`)
-    }
-  >
-    Upload Photos
-  </button>
 
-  <button
-    className="delete-album"
-    onClick={() =>
-      deleteAlbum(album.id)
-    }
-  >
-    Delete
-  </button>
-</div>
+                    <button
+                      onClick={() =>
+                        router.push(
+                          `/admin/dashboard/upload?album=${album.id}`
+                        )
+                      }
+                    >
+                      Upload Photos
+                    </button>
+
+                    <button
+                      className="delete-album"
+                      onClick={() =>
+                        deleteAlbum(album.id)
+                      }
+                    >
+                      Delete
+                    </button>
+
                   </div>
+
                 </div>
 
               </article>
+
             ))
+
           )}
 
         </div>
 
       </section>
+
     </main>
   );
 }
