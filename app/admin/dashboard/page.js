@@ -18,7 +18,7 @@ export default function AdminDashboard() {
     const admin = localStorage.getItem("crmAdmin");
 
     if (admin !== "true") {
-      router.push("/admin");
+      router.replace("/admin");
       return;
     }
 
@@ -28,18 +28,21 @@ export default function AdminDashboard() {
   async function loadAlbums() {
     try {
       setLoading(true);
+      setError("");
 
-      const response = await fetch("/api/albums");
-
-      if (!response.ok) {
-        throw new Error("Could not load albums.");
-      }
+      const response = await fetch("/api/albums", {
+        cache: "no-store",
+      });
 
       const data = await response.json();
 
-      setAlbums(data);
+      if (!response.ok) {
+        throw new Error(data.error || "Could not load albums.");
+      }
+
+      setAlbums(Array.isArray(data) ? data : []);
     } catch (err) {
-      setError(err.message);
+      setError(err.message || "Could not load albums.");
     } finally {
       setLoading(false);
     }
@@ -48,7 +51,10 @@ export default function AdminDashboard() {
   async function createAlbum(event) {
     event.preventDefault();
 
-    if (!albumName.trim()) return;
+    if (!albumName.trim()) {
+      setError("Please enter an album name.");
+      return;
+    }
 
     setSaving(true);
     setError("");
@@ -60,8 +66,8 @@ export default function AdminDashboard() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: albumName,
-          description: albumDescription,
+          name: albumName.trim(),
+          description: albumDescription.trim(),
         }),
       });
 
@@ -74,12 +80,11 @@ export default function AdminDashboard() {
       }
 
       setAlbums((current) => [data, ...current]);
-
       setAlbumName("");
       setAlbumDescription("");
       setShowCreate(false);
     } catch (err) {
-      setError(err.message);
+      setError(err.message || "Could not create album.");
     } finally {
       setSaving(false);
     }
@@ -93,6 +98,8 @@ export default function AdminDashboard() {
     if (!confirmed) return;
 
     try {
+      setError("");
+
       const response = await fetch("/api/albums", {
         method: "DELETE",
         headers: {
@@ -110,16 +117,26 @@ export default function AdminDashboard() {
       }
 
       setAlbums((current) =>
-        current.filter((album) => album.id !== id)
+        current.filter(
+          (album) => String(album.id) !== String(id)
+        )
       );
     } catch (err) {
-      setError(err.message);
+      setError(err.message || "Could not delete album.");
     }
+  }
+
+  function openUploadPage(id) {
+    router.push(
+      `/admin/dashboard/upload?album=${encodeURIComponent(id)}`
+    );
   }
 
   function logout() {
     localStorage.removeItem("crmAdmin");
-    router.push("/admin");
+    sessionStorage.clear();
+
+    router.replace("/admin");
   }
 
   return (
@@ -142,6 +159,7 @@ export default function AdminDashboard() {
         </div>
 
         <button
+          type="button"
           className="logout-btn"
           onClick={logout}
         >
@@ -155,7 +173,6 @@ export default function AdminDashboard() {
         <div className="dashboard-title">
 
           <div>
-
             <p className="dashboard-label">
               CONTENT MANAGEMENT
             </p>
@@ -166,12 +183,15 @@ export default function AdminDashboard() {
               Organize your church photos into albums
               and events.
             </p>
-
           </div>
 
           <button
+            type="button"
             className="create-album-btn"
-            onClick={() => setShowCreate(true)}
+            onClick={() => {
+              setError("");
+              setShowCreate(true);
+            }}
           >
             + Create Album
           </button>
@@ -198,6 +218,7 @@ export default function AdminDashboard() {
               </div>
 
               <button
+                type="button"
                 className="close-btn"
                 onClick={() => setShowCreate(false)}
               >
@@ -208,9 +229,7 @@ export default function AdminDashboard() {
 
             <form onSubmit={createAlbum}>
 
-              <label>
-                Album name
-              </label>
+              <label>Album name</label>
 
               <input
                 type="text"
@@ -222,19 +241,15 @@ export default function AdminDashboard() {
                 required
               />
 
-              <label>
-                Description
-              </label>
+              <label>Description</label>
 
               <textarea
                 placeholder="Tell members what this album contains..."
                 value={albumDescription}
                 onChange={(event) =>
-                  setAlbumDescription(
-                    event.target.value
-                  )
+                  setAlbumDescription(event.target.value)
                 }
-                rows="4"
+                rows={4}
               />
 
               <div className="form-actions">
@@ -242,9 +257,7 @@ export default function AdminDashboard() {
                 <button
                   type="button"
                   className="cancel-btn"
-                  onClick={() =>
-                    setShowCreate(false)
-                  }
+                  onClick={() => setShowCreate(false)}
                 >
                   Cancel
                 </button>
@@ -254,9 +267,7 @@ export default function AdminDashboard() {
                   className="save-album-btn"
                   disabled={saving}
                 >
-                  {saving
-                    ? "Creating..."
-                    : "Create Album"}
+                  {saving ? "Creating..." : "Create Album"}
                 </button>
 
               </div>
@@ -288,6 +299,7 @@ export default function AdminDashboard() {
             </p>
 
             <button
+              type="button"
               onClick={() => setShowCreate(true)}
             >
               + Create Your First Album
@@ -322,16 +334,16 @@ export default function AdminDashboard() {
                   <div className="album-actions">
 
                     <button
+                      type="button"
                       onClick={() =>
-                        router.push(
-                          `/admin/dashboard/upload?album=${album.id}`
-                        )
+                        openUploadPage(album.id)
                       }
                     >
-                      Upload Photos
+                      📸 Upload Photos
                     </button>
 
                     <button
+                      type="button"
                       className="delete-album"
                       onClick={() =>
                         deleteAlbum(album.id)
