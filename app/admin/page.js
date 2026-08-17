@@ -14,7 +14,7 @@ export default function AdminLogin() {
     e.preventDefault();
 
     if (
-      username === "admin" &&
+      username.trim() === "admin" &&
       password === "CRMadmin2026"
     ) {
       localStorage.setItem("crmAdmin", "true");
@@ -27,9 +27,12 @@ export default function AdminLogin() {
   return (
     <main className="admin-page">
       <div className="admin-card">
+
         <img src="/logo.svg" alt="CRM Media" />
 
-        <p className="admin-label">CRM MEDIA</p>
+        <p className="admin-label">
+          CRM MEDIA
+        </p>
 
         <h1>Admin Login</h1>
 
@@ -38,13 +41,16 @@ export default function AdminLogin() {
         </p>
 
         <form onSubmit={handleLogin}>
+
           <label>Username</label>
 
           <input
             type="text"
             placeholder="Enter username"
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) =>
+              setUsername(e.target.value)
+            }
             required
           />
 
@@ -54,18 +60,28 @@ export default function AdminLogin() {
             type="password"
             placeholder="Enter password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) =>
+              setPassword(e.target.value)
+            }
             required
           />
 
-          {error && <p className="login-error">{error}</p>}
+          {error && (
+            <p className="login-error">
+              {error}
+            </p>
+          )}
 
           <button type="submit">
             Sign in
           </button>
+
         </form>
 
-        <a href="/">← Back to CRM Media</a>
+        <a href="/">
+          ← Back to CRM Media
+        </a>
+
       </div>
     </main>
   );
