@@ -136,7 +136,7 @@ export default function AlbumPage() {
         <div className="public-brand">
 
           <img
-            src="/logo.svg"
+            src="/logo.png"
             alt="CRM Media"
           />
 
