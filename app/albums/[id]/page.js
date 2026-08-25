@@ -28,7 +28,10 @@ export default function AlbumPage() {
       setError("");
 
       const response = await fetch(
-        `/api/albums/${albumId}`
+        `/api/albums/${albumId}`,
+        {
+          cache: "no-store",
+        }
       );
 
       const data = await response.json();
@@ -42,7 +45,9 @@ export default function AlbumPage() {
       setAlbum(data.album);
       setPhotos(data.photos || []);
     } catch (err) {
-      setError(err.message);
+      setError(
+        err.message || "Could not load album."
+      );
     } finally {
       setLoading(false);
     }
@@ -61,16 +66,27 @@ export default function AlbumPage() {
     }
   }
 
-  function toggleFavorite(photoId) {
-    let updated;
+  function getMediaUrl(photo) {
+    if (!photo?.url) return "";
 
-    if (favorites.includes(photoId)) {
-      updated = favorites.filter(
-        (id) => id !== photoId
-      );
-    } else {
-      updated = [...favorites, photoId];
+    try {
+      const url = new URL(photo.url);
+
+      return `/api/media/${url.pathname.replace(
+        /^\/+/,
+        ""
+      )}`;
+    } catch {
+      return photo.url;
     }
+  }
+
+  function toggleFavorite(photoId) {
+    const updated = favorites.includes(photoId)
+      ? favorites.filter(
+          (id) => id !== photoId
+        )
+      : [...favorites, photoId];
 
     setFavorites(updated);
 
@@ -81,11 +97,15 @@ export default function AlbumPage() {
   }
 
   function downloadPhoto(photo) {
+    const mediaUrl = getMediaUrl(photo);
+
+    if (!mediaUrl) return;
+
     const link = document.createElement("a");
 
-    link.href = photo.url;
-    link.download = photo.name || "CRM-Media-photo";
-    link.target = "_blank";
+    link.href = mediaUrl;
+    link.download =
+      photo.name || "CRM-Media-photo";
 
     document.body.appendChild(link);
     link.click();
@@ -97,7 +117,10 @@ export default function AlbumPage() {
       <main className="album-page">
         <div className="album-loading">
           <div className="loading-spinner" />
-          <h2>Loading album...</h2>
+
+          <h2>
+            Loading album...
+          </h2>
         </div>
       </main>
     );
@@ -106,10 +129,16 @@ export default function AlbumPage() {
   if (error || !album) {
     return (
       <main className="album-page">
-        <div className="album-error">
-          <div className="error-icon">📷</div>
 
-          <h1>Album not found</h1>
+        <div className="album-error">
+
+          <div className="error-icon">
+            📷
+          </div>
+
+          <h1>
+            Album not found
+          </h1>
 
           <p>
             {error ||
@@ -117,11 +146,16 @@ export default function AlbumPage() {
           </p>
 
           <button
-            onClick={() => router.push("/albums")}
+            type="button"
+            onClick={() =>
+              router.push("/albums")
+            }
           >
             ← Back to Albums
           </button>
+
         </div>
+
       </main>
     );
   }
@@ -137,19 +171,25 @@ export default function AlbumPage() {
 
           <img
             src="/logo.png"
-            alt="CRM Media"
+            alt="Chapel of Rest Ministry"
           />
 
           <div>
-            <strong>CRM MEDIA</strong>
+
+            <strong>
+              CRM MEDIA
+            </strong>
+
             <span>
               Chapel of Rest Ministry
             </span>
+
           </div>
 
         </div>
 
         <button
+          type="button"
           className="home-button"
           onClick={() =>
             router.push("/albums")
@@ -170,7 +210,9 @@ export default function AlbumPage() {
             CRM MEDIA GALLERY
           </p>
 
-          <h1>{album.name}</h1>
+          <h1>
+            {album.name}
+          </h1>
 
           <p className="album-description">
             {album.description ||
@@ -178,6 +220,7 @@ export default function AlbumPage() {
           </p>
 
           <div className="album-meta">
+
             <span>
               📸 {photos.length}{" "}
               {photos.length === 1
@@ -200,6 +243,7 @@ export default function AlbumPage() {
                 )}
               </span>
             )}
+
           </div>
 
         </div>
@@ -218,7 +262,9 @@ export default function AlbumPage() {
               📷
             </div>
 
-            <h2>No photos yet</h2>
+            <h2>
+              No photos yet
+            </h2>
 
             <p>
               Photos uploaded to this album
@@ -234,7 +280,12 @@ export default function AlbumPage() {
             {photos.map((photo) => {
 
               const isFavorite =
-                favorites.includes(photo.id);
+                favorites.includes(
+                  photo.id
+                );
+
+              const mediaUrl =
+                getMediaUrl(photo);
 
               return (
                 <article
@@ -242,10 +293,12 @@ export default function AlbumPage() {
                   key={photo.id}
                 >
 
+                  {/* IMAGE */}
+
                   <div className="photo-image-wrapper">
 
                     <img
-                      src={photo.url}
+                      src={mediaUrl}
                       alt={
                         photo.name ||
                         "CRM Media photo"
@@ -256,7 +309,10 @@ export default function AlbumPage() {
 
                     <div className="photo-overlay">
 
+                      {/* FAVORITE */}
+
                       <button
+                        type="button"
                         className={`favorite-button ${
                           isFavorite
                             ? "favorited"
@@ -278,7 +334,10 @@ export default function AlbumPage() {
                           : "♡"}
                       </button>
 
+                      {/* DOWNLOAD */}
+
                       <button
+                        type="button"
                         className="download-button"
                         onClick={() =>
                           downloadPhoto(
@@ -294,6 +353,8 @@ export default function AlbumPage() {
 
                   </div>
 
+                  {/* PHOTO INFORMATION */}
+
                   <div className="photo-info">
 
                     <p>
@@ -304,6 +365,7 @@ export default function AlbumPage() {
                     <div className="photo-actions">
 
                       <button
+                        type="button"
                         onClick={() =>
                           toggleFavorite(
                             photo.id
@@ -316,6 +378,7 @@ export default function AlbumPage() {
                       </button>
 
                       <button
+                        type="button"
                         onClick={() =>
                           downloadPhoto(
                             photo
@@ -343,7 +406,9 @@ export default function AlbumPage() {
 
       <footer className="public-footer">
 
-        <strong>CRM MEDIA</strong>
+        <strong>
+          CRM MEDIA
+        </strong>
 
         <p>
           © 2026 Chapel of Rest Ministry
