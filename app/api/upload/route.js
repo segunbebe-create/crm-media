@@ -49,7 +49,7 @@ export async function POST(request) {
       `crm-media/${Date.now()}-${file.name}`,
       file,
       {
-        access: "private",
+        access: "public",
         addRandomSuffix: true,
       }
     );
