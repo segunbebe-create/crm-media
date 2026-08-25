@@ -35,7 +35,7 @@ export default function AlbumsPage() {
     <main className="albums-page">
       <header className="public-header">
         <div className="public-brand">
-          <img src="/logo.svg" alt="CRM Media" />
+          <img src="/logo.png" alt="CRM Media" />
 
           <div>
             <strong>CRM MEDIA</strong>
