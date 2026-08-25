@@ -7,12 +7,19 @@ export async function GET() {
   try {
     const albums = await sql`
       SELECT
-        id,
-        name,
-        description,
-        created_at
-      FROM albums
-      ORDER BY created_at DESC
+        a.id,
+        a.name,
+        a.description,
+        a.created_at,
+        (
+          SELECT p.url
+          FROM photos p
+          WHERE p.album_id = a.id
+          ORDER BY p.created_at ASC
+          LIMIT 1
+        ) AS cover_url
+      FROM albums a
+      ORDER BY a.created_at DESC
     `;
 
     return NextResponse.json(albums);
@@ -20,8 +27,12 @@ export async function GET() {
     console.error("GET ALBUMS ERROR:", error);
 
     return NextResponse.json(
-      { error: "Could not load albums." },
-      { status: 500 }
+      {
+        error: "Could not load albums.",
+      },
+      {
+        status: 500,
+      }
     );
   }
 }
@@ -31,30 +42,55 @@ export async function POST(request) {
     const body = await request.json();
 
     const name = body.name?.trim();
-    const description = body.description?.trim() || "";
+    const description =
+      body.description?.trim() || "";
 
     if (!name) {
       return NextResponse.json(
-        { error: "Album name is required." },
-        { status: 400 }
+        {
+          error: "Album name is required.",
+        },
+        {
+          status: 400,
+        }
       );
     }
 
     const result = await sql`
-      INSERT INTO albums (name, description)
-      VALUES (${name}, ${description})
-      RETURNING id, name, description, created_at
+      INSERT INTO albums (
+        name,
+        description
+      )
+      VALUES (
+        ${name},
+        ${description}
+      )
+      RETURNING
+        id,
+        name,
+        description,
+        created_at
     `;
 
-    return NextResponse.json(result[0], {
-      status: 201,
-    });
+    return NextResponse.json(
+      result[0],
+      {
+        status: 201,
+      }
+    );
   } catch (error) {
-    console.error("CREATE ALBUM ERROR:", error);
+    console.error(
+      "CREATE ALBUM ERROR:",
+      error
+    );
 
     return NextResponse.json(
-      { error: "Could not create album." },
-      { status: 500 }
+      {
+        error: "Could not create album.",
+      },
+      {
+        status: 500,
+      }
     );
   }
 }
@@ -62,12 +98,17 @@ export async function POST(request) {
 export async function DELETE(request) {
   try {
     const body = await request.json();
+
     const id = Number(body.id);
 
-    if (!id) {
+    if (!Number.isInteger(id) || id <= 0) {
       return NextResponse.json(
-        { error: "Album ID is required." },
-        { status: 400 }
+        {
+          error: "Album ID is required.",
+        },
+        {
+          status: 400,
+        }
       );
     }
 
@@ -80,11 +121,18 @@ export async function DELETE(request) {
       success: true,
     });
   } catch (error) {
-    console.error("DELETE ALBUM ERROR:", error);
+    console.error(
+      "DELETE ALBUM ERROR:",
+      error
+    );
 
     return NextResponse.json(
-      { error: "Could not delete album." },
-      { status: 500 }
+      {
+        error: "Could not delete album.",
+      },
+      {
+        status: 500,
+      }
     );
   }
 }
