@@ -1,217 +1,122 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
   const router = useRouter();
 
   const [albums, setAlbums] = useState([]);
-  const [photos, setPhotos] = useState([]);
-  const [category, setCategory] = useState("All");
-  const [search, setSearch] = useState("");
-  const [favorites, setFavorites] = useState([]);
+  const [heroImage, setHeroImage] = useState("");
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
 
   useEffect(() => {
-    loadGallery();
-    loadFavorites();
+    loadAlbums();
   }, []);
 
-  async function loadGallery() {
+  async function loadAlbums() {
     try {
-      setLoading(true);
-      setError("");
-
       const response = await fetch("/api/albums", {
         cache: "no-store",
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        throw new Error(
-          data.error || "Could not load albums."
-        );
+        throw new Error("Could not load albums.");
       }
 
-      const albumList = Array.isArray(data) ? data : [];
+      const data = await response.json();
 
-      setAlbums(albumList);
+      setAlbums(data);
 
-      const results = await Promise.all(
-        albumList.map(async (album) => {
-          try {
-            const response = await fetch(
-              `/api/albums/${album.id}`,
-              {
-                cache: "no-store",
-              }
-            );
-
-            if (!response.ok) return [];
-
-            const data = await response.json();
-
-            return (data.photos || []).map((photo) => ({
-              ...photo,
-              albumId: album.id,
-              albumName: album.name,
-              category: album.name,
-            }));
-          } catch {
-            return [];
-          }
-        })
+      // Collect albums that actually have a photo
+      const albumsWithPhotos = data.filter(
+        (album) => album.cover_url
       );
 
-      setPhotos(results.flat());
-    } catch (err) {
-      setError(
-        err.message || "Could not load the gallery."
-      );
+      // Pick a random uploaded photo for the hero
+      if (albumsWithPhotos.length > 0) {
+        const randomAlbum =
+          albumsWithPhotos[
+            Math.floor(
+              Math.random() * albumsWithPhotos.length
+            )
+          ];
+
+        setHeroImage(randomAlbum.cover_url);
+      }
+    } catch (error) {
+      console.error("HOME ERROR:", error);
     } finally {
       setLoading(false);
     }
   }
 
-  function loadFavorites() {
-    try {
-      const saved =
-        JSON.parse(
-          localStorage.getItem("crmFavorites")
-        ) || [];
-
-      setFavorites(saved);
-    } catch {
-      setFavorites([]);
-    }
-  }
-
-  function getMediaUrl(photo) {
-    if (!photo?.url) return "";
-
-    try {
-      const url = new URL(photo.url);
-
-      return `/api/media/${url.pathname.replace(
-        /^\/+/,
-        ""
-      )}`;
-    } catch {
-      return photo.url;
-    }
-  }
-
-  function toggleFavorite(id) {
-    const updated = favorites.includes(id)
-      ? favorites.filter((item) => item !== id)
-      : [...favorites, id];
-
-    setFavorites(updated);
-
-    localStorage.setItem(
-      "crmFavorites",
-      JSON.stringify(updated)
-    );
-  }
-
-  function downloadPhoto(photo) {
-    const mediaUrl = getMediaUrl(photo);
-
-    if (!mediaUrl) return;
-
-    const link = document.createElement("a");
-
-    link.href = mediaUrl;
-    link.download =
-      photo.name || "CRM-Media-photo";
-
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
-
-  const categories = useMemo(() => {
-    return [
-      "All",
-      ...albums.map((album) => album.name),
-    ];
-  }, [albums]);
-
-  const filteredPhotos = useMemo(() => {
-    return photos.filter((photo) => {
-      const matchesCategory =
-        category === "All" ||
-        photo.category === category;
-
-      const searchText =
-        search.trim().toLowerCase();
-
-      const matchesSearch =
-        !searchText ||
-        (photo.name || "")
-          .toLowerCase()
-          .includes(searchText) ||
-        (photo.albumName || "")
-          .toLowerCase()
-          .includes(searchText);
-
-      return matchesCategory && matchesSearch;
-    });
-  }, [photos, category, search]);
-
   return (
     <main className="site">
 
-      {/* NAVIGATION */}
+      {/* =====================================================
+          NAVIGATION
+      ===================================================== */}
 
       <header className="navbar">
 
-        <button
-          type="button"
-          className="brand"
-          onClick={() => router.push("/")}
-        >
+        <a className="brand" href="/">
           <img
             src="/logo.png"
-            alt="Chapel of Rest Ministry"
+            alt="CRM Media"
           />
 
           <div>
             <strong>CRM MEDIA</strong>
-
             <span>
               Chapel of Rest Ministry
             </span>
           </div>
-        </button>
+        </a>
 
         <nav>
           <a href="#home">Home</a>
-          <a href="#gallery">Gallery</a>
-          <a href="#albums">Albums</a>
-          <a href="#favorites">
-            Favorites
+
+          <a href="#gallery">
+            Gallery
+          </a>
+
+          <a href="/albums">
+            Albums
           </a>
         </nav>
 
-        <button
-          type="button"
+        <a
+          href="/admin"
           className="admin-btn"
-          onClick={() => router.push("/admin")}
         >
           Admin Login
-        </button>
+        </a>
 
       </header>
 
-      {/* HERO */}
+      {/* =====================================================
+          HERO
+      ===================================================== */}
 
       <section
         className="hero"
         id="home"
+        style={
+          heroImage
+            ? {
+                backgroundImage: `
+                  linear-gradient(
+                    90deg,
+                    rgba(0,0,0,0.88) 0%,
+                    rgba(0,0,0,0.68) 45%,
+                    rgba(0,0,0,0.25) 100%
+                  ),
+                  url("${heroImage}")
+                `,
+              }
+            : undefined
+        }
       >
 
         <div className="hero-content">
@@ -235,17 +140,17 @@ export default function Home() {
           <div className="hero-actions">
 
             <a
-              href="#gallery"
+              href="/albums"
               className="primary-btn"
             >
               Browse Gallery →
             </a>
 
             <a
-              href="#favorites"
+              href="#gallery"
               className="secondary-btn"
             >
-              ♡ My Favorites
+              View Latest Photos
             </a>
 
           </div>
@@ -256,40 +161,66 @@ export default function Home() {
 
       </section>
 
-      {/* ALBUMS */}
+      {/* =====================================================
+          LATEST ALBUMS
+      ===================================================== */}
 
       <section
         className="gallery-section"
-        id="albums"
+        id="gallery"
       >
 
         <div className="section-heading">
 
           <div>
-
             <span className="small-label">
               CRM MEDIA
             </span>
 
-            <h2>Our Albums</h2>
-
+            <h2>
+              Latest captures
+            </h2>
           </div>
 
           <p>
-            Browse photos from our church
-            services, programs and events.
+            Discover memorable moments from
+            Chapel of Rest Ministry.
           </p>
 
         </div>
 
-        {albums.length > 0 && (
+        {loading ? (
 
-          <div className="public-album-grid">
+          <div className="empty-state">
+            <div className="loading-spinner" />
 
-            {albums.map((album) => (
+            <h3>
+              Loading latest photos...
+            </h3>
+          </div>
+
+        ) : albums.length === 0 ? (
+
+          <div className="empty-state">
+
+            <h3>
+              No albums yet
+            </h3>
+
+            <p>
+              New church memories will appear here soon.
+            </p>
+
+          </div>
+
+        ) : (
+
+          <div className="home-album-grid">
+
+            {albums.slice(0, 6).map((album) => (
 
               <article
-                className="public-album-card"
+                className="home-album-card"
                 key={album.id}
                 onClick={() =>
                   router.push(
@@ -298,56 +229,48 @@ export default function Home() {
                 }
               >
 
-                <div className="public-album-cover">
+                <div className="home-album-image">
 
-                  <div className="album-camera">
-                    📸
-                  </div>
+                  {album.cover_url ? (
 
-                  <div className="album-overlay">
+                    <img
+                      src={album.cover_url}
+                      alt={album.name}
+                      loading="lazy"
+                    />
+
+                  ) : (
+
+                    <div className="no-cover">
+                      📷
+                    </div>
+
+                  )}
+
+                  <div className="home-album-overlay">
+
                     <span>
                       View Album →
                     </span>
+
                   </div>
 
                 </div>
 
-                <div className="public-album-info">
+                <div className="home-album-info">
 
-                  <p className="album-date">
-                    {album.created_at
-                      ? new Date(
-                          album.created_at
-                        ).toLocaleDateString(
-                          "en-NG",
-                          {
-                            day: "numeric",
-                            month: "short",
-                            year: "numeric",
-                          }
-                        )
-                      : "CRM Media"}
-                  </p>
+                  <span className="album-tag">
+                    CRM MEDIA
+                  </span>
 
-                  <h2>{album.name}</h2>
+                  <h3>
+                    {album.name}
+                  </h3>
 
                   <p>
                     {album.description ||
                       "View photos from this album."}
                   </p>
-
-                  <button
-                    type="button"
-                    onClick={(event) => {
-                      event.stopPropagation();
-
-                      router.push(
-                        `/albums/${album.id}`
-                      );
-                    }}
-                  >
-                    View Photos →
-                  </button>
 
                 </div>
 
@@ -359,286 +282,45 @@ export default function Home() {
 
         )}
 
-        {!loading &&
-          albums.length === 0 && (
+        {!loading && albums.length > 0 && (
 
-            <div className="empty-state">
-
-              <h3>
-                No albums available yet
-              </h3>
-
-              <p>
-                New CRM Media albums will appear
-                here when they are published.
-              </p>
-
-            </div>
-
-          )}
-
-      </section>
-
-      {/* GALLERY */}
-
-      <section
-        className="gallery-section"
-        id="gallery"
-      >
-
-        <div className="section-heading">
-
-          <div>
-
-            <span className="small-label">
-              CRM MEDIA
-            </span>
-
-            <h2>Latest captures</h2>
-
-          </div>
-
-          <p>
-            Discover and download moments from
-            our church community.
-          </p>
-
-        </div>
-
-        {/* SEARCH */}
-
-        <div className="gallery-controls">
-
-          <div className="search-box">
-
-            <span>⌕</span>
-
-            <input
-              type="search"
-              placeholder="Search photos..."
-              value={search}
-              onChange={(e) =>
-                setSearch(e.target.value)
-              }
-            />
-
-          </div>
-
-          {/* FILTERS */}
-
-          <div className="filters">
-
-            {categories.map((item) => (
-
-              <button
-                type="button"
-                key={item}
-                className={
-                  category === item
-                    ? "filter active"
-                    : "filter"
-                }
-                onClick={() =>
-                  setCategory(item)
-                }
-              >
-                {item}
-              </button>
-
-            ))}
-
-          </div>
-
-        </div>
-
-        {/* LOADING */}
-
-        {loading && (
-
-          <div className="empty-state">
-
-            <h3>
-              Loading CRM Media...
-            </h3>
-
-            <p>
-              Getting the latest photos.
-            </p>
-
-          </div>
-
-        )}
-
-        {/* ERROR */}
-
-        {!loading && error && (
-
-          <div className="empty-state">
-
-            <h3>
-              Could not load photos
-            </h3>
-
-            <p>{error}</p>
+          <div className="view-all-wrapper">
 
             <button
-              type="button"
-              onClick={loadGallery}
+              className="view-all-btn"
+              onClick={() =>
+                router.push("/albums")
+              }
             >
-              Try Again
+              View All Albums →
             </button>
 
           </div>
 
         )}
 
-        {/* PHOTOS */}
-
-        {!loading &&
-          !error &&
-          filteredPhotos.length > 0 && (
-
-            <div className="photo-grid">
-
-              {filteredPhotos.map((photo) => {
-
-                const isFavorite =
-                  favorites.includes(
-                    photo.id
-                  );
-
-                const mediaUrl =
-                  getMediaUrl(photo);
-
-                return (
-                  <article
-                    className="photo-card"
-                    key={photo.id}
-                  >
-
-                    <div className="photo-image">
-
-                      <img
-                        src={mediaUrl}
-                        alt={
-                          photo.name ||
-                          "CRM Media photo"
-                        }
-                        loading="lazy"
-                      />
-
-                      <div className="image-overlay">
-
-                        <button
-                          type="button"
-                          className={
-                            isFavorite
-                              ? "heart active"
-                              : "heart"
-                          }
-                          onClick={() =>
-                            toggleFavorite(
-                              photo.id
-                            )
-                          }
-                          aria-label={
-                            isFavorite
-                              ? "Remove from favorites"
-                              : "Add to favorites"
-                          }
-                        >
-                          {isFavorite
-                            ? "♥"
-                            : "♡"}
-                        </button>
-
-                      </div>
-
-                    </div>
-
-                    <div className="photo-details">
-
-                      <div>
-
-                        <span>
-                          {photo.albumName}
-                        </span>
-
-                        <h3>
-                          {photo.name ||
-                            "CRM Media Photo"}
-                        </h3>
-
-                      </div>
-
-                      <button
-                        type="button"
-                        className="download-btn"
-                        onClick={() =>
-                          downloadPhoto(photo)
-                        }
-                        aria-label="Download photo"
-                      >
-                        ↓
-                      </button>
-
-                    </div>
-
-                  </article>
-                );
-              })}
-
-            </div>
-
-          )}
-
-        {/* NO PHOTOS */}
-
-        {!loading &&
-          !error &&
-          filteredPhotos.length === 0 && (
-
-            <div className="empty-state">
-
-              <h3>
-                No photos found
-              </h3>
-
-              <p>
-                Try another search or category.
-              </p>
-
-            </div>
-
-          )}
-
       </section>
 
-      {/* FAVORITES */}
+      {/* =====================================================
+          ABOUT / BRAND SECTION
+      ===================================================== */}
 
-      <section
-        className="favorites-section"
-        id="favorites"
-      >
+      <section className="favorites-section">
 
         <div>
 
           <span className="small-label">
-            YOUR COLLECTION
+            CHAPEL OF REST MINISTRY
           </span>
 
-          <h2>Your Favorites</h2>
+          <h2>
+            Every moment tells a story.
+          </h2>
 
           <p>
-            {favorites.length === 0
-              ? "Photos you favorite will appear here."
-              : `You have ${
-                  favorites.length
-                } favorite ${
-                  favorites.length === 1
-                    ? "photo"
-                    : "photos"
-                }.`}
+            CRM Media preserves the moments,
+            celebrations and memories that make
+            our church family special.
           </p>
 
         </div>
@@ -646,16 +328,20 @@ export default function Home() {
         <div className="favorite-number">
 
           <strong>
-            {favorites.length}
+            {albums.length}
           </strong>
 
-          <span>Saved</span>
+          <span>
+            Albums
+          </span>
 
         </div>
 
       </section>
 
-      {/* FOOTER */}
+      {/* =====================================================
+          FOOTER
+      ===================================================== */}
 
       <footer>
 
@@ -663,12 +349,14 @@ export default function Home() {
 
           <img
             src="/logo.png"
-            alt="Chapel of Rest Ministry"
+            alt="CRM Media"
           />
 
           <div>
 
-            <strong>CRM MEDIA</strong>
+            <strong>
+              CRM MEDIA
+            </strong>
 
             <span>
               Chapel of Rest Ministry
@@ -679,7 +367,8 @@ export default function Home() {
         </div>
 
         <p>
-          © 2026 CRM Media. All rights reserved.
+          © 2026 Chapel of Rest Ministry.
+          All rights reserved.
         </p>
 
       </footer>
