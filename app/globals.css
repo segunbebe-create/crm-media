@@ -1,6 +1,6 @@
 /* =========================================================
-   CRM MEDIA — COMPLETE GLOBAL CSS
-   Home • Admin • Dashboard • Upload • Albums • Gallery
+   CRM MEDIA — NEW PREMIUM DESIGN
+   Chapel of Rest Ministry
    ========================================================= */
 
 * {
@@ -14,13 +14,9 @@ html {
 body {
   margin: 0;
   padding: 0;
-  font-family:
-    Inter,
-    Arial,
-    Helvetica,
-    sans-serif;
-  background: #f5f6f8;
-  color: #151515;
+  font-family: Inter, Arial, Helvetica, sans-serif;
+  background: #f6f3ed;
+  color: #171717;
 }
 
 a {
@@ -43,29 +39,46 @@ img {
 }
 
 /* =========================================================
-   HOME PAGE
+   BRAND COLORS
+   ========================================================= */
+
+:root {
+  --crm-gold: #c59a3d;
+  --crm-gold-light: #e4c77c;
+  --crm-dark: #151515;
+  --crm-dark-2: #24201a;
+  --crm-cream: #f6f3ed;
+  --crm-white: #ffffff;
+  --crm-muted: #77736b;
+  --crm-border: #e5dfd2;
+}
+
+/* =========================================================
+   HOME
    ========================================================= */
 
 .site {
   min-height: 100vh;
-  background: #f7f7f5;
+  background: var(--crm-cream);
 }
 
-/* NAVBAR */
+/* =========================================================
+   NAVBAR
+   ========================================================= */
 
 .navbar {
-  height: 78px;
+  height: 82px;
   padding: 0 5%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 30px;
-  background: rgba(255, 255, 255, 0.96);
-  border-bottom: 1px solid #e8e8e8;
+  gap: 25px;
+  background: rgba(255,255,255,.94);
+  border-bottom: 1px solid var(--crm-border);
   position: sticky;
   top: 0;
   z-index: 100;
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(16px);
 }
 
 .brand {
@@ -75,104 +88,110 @@ img {
 }
 
 .brand img {
-  width: 46px;
-  height: 46px;
+  width: 52px;
+  height: 52px;
   object-fit: contain;
 }
 
 .brand strong {
   display: block;
   font-size: 15px;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
 }
 
 .brand span {
   display: block;
-  margin-top: 3px;
-  color: #777;
+  margin-top: 4px;
+  color: var(--crm-muted);
   font-size: 10px;
 }
 
 .navbar nav {
   display: flex;
-  align-items: center;
-  gap: 30px;
+  gap: 32px;
 }
 
 .navbar nav a {
   color: #555;
   font-size: 13px;
   font-weight: 600;
-  transition: color 0.2s;
+  transition: .2s;
 }
 
 .navbar nav a:hover {
-  color: #000;
+  color: var(--crm-gold);
 }
 
 .admin-btn {
-  padding: 10px 17px;
-  background: #111;
-  color: #fff;
-  border-radius: 8px;
+  padding: 11px 18px;
+  border-radius: 9px;
+  background: var(--crm-dark);
+  color: white;
   font-size: 12px;
   font-weight: 700;
+  transition: .2s;
 }
 
 .admin-btn:hover {
-  background: #292929;
+  background: var(--crm-gold);
+  color: #111;
 }
 
-/* HERO */
+/* =========================================================
+   HERO
+   ========================================================= */
 
 .hero {
-  min-height: 670px;
-  padding: 100px 7%;
+  min-height: 720px;
+  padding: 110px 7%;
   position: relative;
   display: flex;
   align-items: center;
   overflow: hidden;
+
   background:
     linear-gradient(
-      120deg,
-      #111 0%,
-      #242424 55%,
-      #3b3b3b 100%
-    );
-  color: #fff;
+      90deg,
+      rgba(10,10,10,.88),
+      rgba(15,15,15,.62),
+      rgba(15,15,15,.28)
+    ),
+    url("/hero-photo.jpg") center/cover no-repeat;
+
+  color: white;
 }
 
 .hero-content {
   position: relative;
   z-index: 2;
-  max-width: 760px;
+  max-width: 780px;
 }
 
 .hero-label {
   display: inline-block;
   margin-bottom: 22px;
-  color: #bdbdbd;
+  color: var(--crm-gold-light);
   font-size: 11px;
   font-weight: 800;
-  letter-spacing: 3px;
+  letter-spacing: 4px;
 }
 
 .hero h1 {
   margin: 0;
-  font-size: clamp(50px, 8vw, 90px);
-  line-height: 0.98;
-  letter-spacing: -4px;
-  font-weight: 800;
+  font-size: clamp(52px, 8vw, 94px);
+  line-height: .96;
+  letter-spacing: -5px;
+  font-weight: 850;
 }
 
 .hero h1 span {
-  color: #cfcfcf;
+  color: var(--crm-gold-light);
 }
 
 .hero p {
   max-width: 650px;
   margin: 30px 0;
-  color: #d0d0d0;
+  color: #e5e2dc;
   font-size: 17px;
   line-height: 1.8;
 }
@@ -188,47 +207,42 @@ img {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 13px 21px;
+  padding: 14px 22px;
   border-radius: 9px;
   font-weight: 700;
   font-size: 13px;
+  transition: .25s;
 }
 
 .primary-btn {
-  background: #fff;
+  background: var(--crm-gold);
   color: #111;
 }
 
-.secondary-btn {
-  border: 1px solid #666;
-  color: #fff;
+.primary-btn:hover {
+  background: var(--crm-gold-light);
+  transform: translateY(-2px);
 }
 
-.primary-btn:hover {
-  background: #e9e9e9;
+.secondary-btn {
+  border: 1px solid rgba(255,255,255,.5);
+  color: white;
+  background: rgba(255,255,255,.06);
 }
 
 .secondary-btn:hover {
-  background: rgba(255,255,255,0.08);
+  background: white;
+  color: #111;
 }
 
-.hero-gradient {
-  position: absolute;
-  width: 600px;
-  height: 600px;
-  right: -180px;
-  bottom: -250px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.06);
-  filter: blur(10px);
-}
-
-/* GALLERY SECTION */
+/* =========================================================
+   GALLERY
+   ========================================================= */
 
 .gallery-section {
   width: min(1250px, 90%);
   margin: auto;
-  padding: 90px 0;
+  padding: 100px 0;
 }
 
 .section-heading {
@@ -242,27 +256,29 @@ img {
 .small-label {
   display: block;
   margin-bottom: 9px;
-  color: #888;
+  color: var(--crm-gold);
   font-size: 11px;
   font-weight: 800;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
 }
 
 .section-heading h2,
 .favorites-section h2 {
   margin: 0;
-  font-size: 42px;
-  letter-spacing: -1.5px;
+  font-size: 44px;
+  letter-spacing: -2px;
 }
 
 .section-heading > p {
   max-width: 430px;
   margin: 0;
-  color: #777;
-  line-height: 1.6;
+  color: var(--crm-muted);
+  line-height: 1.7;
 }
 
-/* CONTROLS */
+/* =========================================================
+   SEARCH
+   ========================================================= */
 
 .gallery-controls {
   display: flex;
@@ -273,20 +289,20 @@ img {
 }
 
 .search-box {
-  width: 300px;
-  height: 46px;
+  width: 310px;
+  height: 48px;
   display: flex;
   align-items: center;
   gap: 9px;
-  padding: 0 13px;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 9px;
+  padding: 0 14px;
+  background: white;
+  border: 1px solid var(--crm-border);
+  border-radius: 10px;
 }
 
 .search-box span {
-  color: #777;
-  font-size: 20px;
+  color: var(--crm-gold);
+  font-size: 21px;
 }
 
 .search-box input {
@@ -297,6 +313,8 @@ img {
   font-size: 13px;
 }
 
+/* FILTERS */
+
 .filters {
   display: flex;
   gap: 7px;
@@ -304,9 +322,9 @@ img {
 }
 
 .filter {
-  border: 1px solid #ddd;
-  background: #fff;
-  padding: 9px 14px;
+  border: 1px solid var(--crm-border);
+  background: white;
+  padding: 9px 15px;
   border-radius: 20px;
   color: #555;
   font-size: 12px;
@@ -315,12 +333,14 @@ img {
 
 .filter:hover,
 .filter.active {
-  background: #111;
-  color: #fff;
-  border-color: #111;
+  background: var(--crm-dark);
+  color: var(--crm-gold-light);
+  border-color: var(--crm-dark);
 }
 
-/* HOME PHOTO GRID */
+/* =========================================================
+   PHOTO GRID
+   ========================================================= */
 
 .site .photo-grid {
   columns: 3 280px;
@@ -333,17 +353,15 @@ img {
   margin-bottom: 20px;
   overflow: hidden;
   break-inside: avoid;
-  background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 7px 28px rgba(0,0,0,0.07);
-  transition:
-    transform 0.25s,
-    box-shadow 0.25s;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0,0,0,.07);
+  transition: .3s;
 }
 
 .site .photo-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 16px 40px rgba(0,0,0,0.11);
+  transform: translateY(-7px);
+  box-shadow: 0 18px 45px rgba(0,0,0,.13);
 }
 
 .site .photo-image {
@@ -356,11 +374,11 @@ img {
   width: 100%;
   height: auto;
   display: block;
-  transition: transform 0.4s;
+  transition: transform .5s;
 }
 
 .site .photo-card:hover .photo-image img {
-  transform: scale(1.035);
+  transform: scale(1.05);
 }
 
 .image-overlay {
@@ -372,11 +390,11 @@ img {
   padding: 14px;
   background: linear-gradient(
     to bottom,
-    rgba(0,0,0,0.4),
-    transparent 40%
+    rgba(0,0,0,.5),
+    transparent 45%
   );
   opacity: 0;
-  transition: opacity 0.25s;
+  transition: .25s;
 }
 
 .site .photo-card:hover .image-overlay {
@@ -384,17 +402,17 @@ img {
 }
 
 .heart {
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   border: 0;
   border-radius: 50%;
-  background: rgba(255,255,255,0.95);
+  background: rgba(255,255,255,.96);
   color: #222;
   font-size: 20px;
 }
 
 .heart.active {
-  color: #d02020;
+  color: #b51616;
 }
 
 .photo-details {
@@ -402,11 +420,11 @@ img {
   justify-content: space-between;
   align-items: center;
   gap: 15px;
-  padding: 15px;
+  padding: 16px;
 }
 
 .photo-details span {
-  color: #888;
+  color: var(--crm-gold);
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 1px;
@@ -419,64 +437,59 @@ img {
 }
 
 .download-btn {
-  flex: 0 0 auto;
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: #111;
-  color: #fff;
+  background: var(--crm-dark);
+  color: white;
   font-size: 18px;
+  transition: .2s;
 }
 
-.empty-state {
-  padding: 70px 20px;
-  text-align: center;
+.download-btn:hover {
+  background: var(--crm-gold);
+  color: #111;
 }
 
-.empty-state h3 {
-  margin-bottom: 8px;
-}
-
-.empty-state p {
-  color: #777;
-}
-
-/* FAVORITES */
+/* =========================================================
+   FAVORITES
+   ========================================================= */
 
 .favorites-section {
   width: min(1250px, 90%);
   margin: 0 auto 80px;
-  padding: 50px;
+  padding: 55px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 30px;
-  background: #111;
-  color: #fff;
-  border-radius: 20px;
+  background:
+    linear-gradient(
+      135deg,
+      #171717,
+      #29231a
+    );
+  color: white;
+  border-radius: 22px;
+  box-shadow: 0 20px 50px rgba(0,0,0,.15);
 }
 
 .favorites-section h2 {
-  font-size: 34px;
+  font-size: 36px;
 }
 
 .favorites-section p {
-  margin-bottom: 0;
   color: #aaa;
-}
-
-.favorite-number {
-  min-width: 120px;
-  text-align: center;
 }
 
 .favorite-number strong {
   display: block;
-  font-size: 55px;
+  font-size: 58px;
   line-height: 1;
+  color: var(--crm-gold-light);
 }
 
 .favorite-number span {
@@ -484,21 +497,22 @@ img {
   font-size: 12px;
 }
 
-/* HOME FOOTER */
+/* =========================================================
+   FOOTERS
+   ========================================================= */
 
 .site footer,
 .public-footer {
-  background: #111;
-  color: #fff;
+  background: #141414;
+  color: white;
 }
 
 .site footer {
-  min-height: 110px;
+  min-height: 120px;
   padding: 30px 5%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 20px;
 }
 
 .footer-brand {
@@ -508,8 +522,9 @@ img {
 }
 
 .footer-brand img {
-  width: 42px;
-  height: 42px;
+  width: 45px;
+  height: 45px;
+  object-fit: contain;
 }
 
 .footer-brand strong {
@@ -525,13 +540,12 @@ img {
 }
 
 .site footer p {
-  margin: 0;
   color: #888;
   font-size: 12px;
 }
 
 /* =========================================================
-   ADMIN LOGIN
+   ADMIN
    ========================================================= */
 
 .admin-page {
@@ -540,13 +554,18 @@ img {
   align-items: center;
   justify-content: center;
   padding: 30px 20px;
+
   background:
     radial-gradient(
       circle at top left,
-      rgba(0,0,0,0.08),
+      rgba(197,154,61,.18),
       transparent 35%
     ),
-    linear-gradient(135deg, #f4f5f7, #e9ebef);
+    linear-gradient(
+      135deg,
+      #f4f0e7,
+      #e8e3d8
+    );
 }
 
 .admin-card {
@@ -554,22 +573,20 @@ img {
   max-width: 430px;
   padding: 42px;
   text-align: center;
-  background: #fff;
+  background: white;
   border-radius: 24px;
-  box-shadow:
-    0 25px 70px rgba(0,0,0,0.12),
-    0 4px 15px rgba(0,0,0,0.05);
+  box-shadow: 0 25px 70px rgba(0,0,0,.12);
 }
 
 .admin-card img {
-  width: 78px;
-  height: 78px;
+  width: 82px;
+  height: 82px;
   object-fit: contain;
 }
 
 .admin-label {
   margin: 10px 0 0;
-  color: #777;
+  color: var(--crm-gold);
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 3px;
@@ -581,21 +598,9 @@ img {
 }
 
 .admin-description {
-  margin: 0 0 30px;
   color: #777;
   font-size: 14px;
   line-height: 1.6;
-}
-
-.admin-card form {
-  text-align: left;
-}
-
-.admin-card label {
-  display: block;
-  margin-bottom: 8px;
-  font-size: 13px;
-  font-weight: 700;
 }
 
 .admin-card input {
@@ -610,9 +615,8 @@ img {
 }
 
 .admin-card input:focus {
-  border-color: #111;
-  background: #fff;
-  box-shadow: 0 0 0 3px rgba(0,0,0,0.06);
+  border-color: var(--crm-gold);
+  box-shadow: 0 0 0 3px rgba(197,154,61,.12);
 }
 
 .admin-card form button {
@@ -620,99 +624,106 @@ img {
   height: 50px;
   border: 0;
   border-radius: 10px;
-  background: #111;
-  color: #fff;
+  background: var(--crm-dark);
+  color: white;
   font-weight: 700;
+}
+
+.admin-card form button:hover {
+  background: var(--crm-gold);
+  color: #111;
 }
 
 .login-error {
   padding: 11px;
-  margin: 0 0 15px;
+  margin-bottom: 15px;
   border-radius: 8px;
   background: #fff0f0;
   color: #c62828;
   font-size: 13px;
 }
 
-.admin-card > a {
-  display: inline-block;
-  margin-top: 24px;
-  color: #555;
-  font-size: 13px;
-}
-
 /* =========================================================
-   ADMIN DASHBOARD
+   DASHBOARD
    ========================================================= */
 
 .admin-dashboard {
   min-height: 100vh;
-  background: #f5f6f8;
+  background: var(--crm-cream);
 }
 
-.dashboard-header {
-  min-height: 76px;
+.dashboard-header,
+.public-header {
+  min-height: 78px;
   padding: 13px 5%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #fff;
-  border-bottom: 1px solid #e7e7e7;
+  background: rgba(255,255,255,.96);
+  border-bottom: 1px solid var(--crm-border);
   position: sticky;
   top: 0;
   z-index: 100;
+  backdrop-filter: blur(12px);
 }
 
-.dashboard-brand {
+.dashboard-brand,
+.public-brand {
   display: flex;
   align-items: center;
   gap: 13px;
 }
 
-.dashboard-brand img {
-  width: 48px;
-  height: 48px;
+.dashboard-brand img,
+.public-brand img {
+  width: 50px;
+  height: 50px;
   object-fit: contain;
 }
 
-.dashboard-brand span {
+.dashboard-brand span,
+.public-brand span {
   display: block;
   color: #888;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 2px;
+  font-size: 10px;
+  letter-spacing: 1px;
 }
 
 .dashboard-brand h1 {
-  margin: 3px 0 0;
+  margin: 3px 0;
   font-size: 18px;
 }
 
-.logout-btn {
+.logout-btn,
+.home-button {
   padding: 10px 17px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--crm-border);
   border-radius: 9px;
-  background: #fff;
+  background: white;
   font-weight: 600;
+}
+
+.logout-btn:hover,
+.home-button:hover {
+  border-color: var(--crm-gold);
+  color: var(--crm-gold);
 }
 
 .dashboard-content {
   width: min(1180px, 90%);
   margin: auto;
-  padding: 55px 0 80px;
+  padding: 60px 0 80px;
 }
 
 .dashboard-title {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  gap: 30px;
   margin-bottom: 35px;
 }
 
 .dashboard-label {
-  margin: 0 0 8px;
-  color: #888;
+  color: var(--crm-gold);
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 2px;
@@ -720,12 +731,7 @@ img {
 
 .dashboard-title h2 {
   margin: 0;
-  font-size: 40px;
-}
-
-.dashboard-title > div > p:last-child {
-  margin-top: 8px;
-  color: #777;
+  font-size: 42px;
 }
 
 .create-album-btn,
@@ -733,139 +739,120 @@ img {
   padding: 13px 20px;
   border: 0;
   border-radius: 10px;
-  background: #111;
-  color: #fff;
+  background: var(--crm-dark);
+  color: white;
   font-weight: 700;
 }
 
-.error-message {
-  margin-bottom: 25px;
-  padding: 14px;
-  border-radius: 9px;
-  background: #fff0f0;
-  color: #b42323;
+.create-album-btn:hover,
+.empty-albums button:hover {
+  background: var(--crm-gold);
+  color: #111;
 }
 
-.album-form-card {
-  margin-bottom: 30px;
-  padding: 28px;
-  background: #fff;
-  border: 1px solid #e5e5e5;
-  border-radius: 18px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.05);
-}
+/* =========================================================
+   ALBUM CARDS
+   ========================================================= */
 
-.form-heading {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 25px;
-}
-
-.form-heading h3 {
-  margin: 0;
-  font-size: 22px;
-}
-
-.close-btn {
-  width: 36px;
-  height: 36px;
-  border: 0;
-  border-radius: 50%;
-  background: #f1f1f1;
-  font-size: 23px;
-}
-
-.album-form-card label {
-  display: block;
-  margin-bottom: 8px;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.album-form-card input,
-.album-form-card textarea {
-  width: 100%;
-  padding: 13px;
-  margin-bottom: 20px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  background: #fafafa;
-  outline: none;
-}
-
-.album-form-card input {
-  height: 48px;
-}
-
-.form-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-}
-
-.cancel-btn {
-  padding: 11px 18px;
-  border: 1px solid #ddd;
-  border-radius: 9px;
-  background: #fff;
-}
-
-.save-album-btn {
-  padding: 11px 20px;
-  border: 0;
-  border-radius: 9px;
-  background: #111;
-  color: #fff;
-  font-weight: 700;
-}
-
-.album-grid {
+.album-grid,
+.public-album-grid {
   display: grid;
-  grid-template-columns:
-    repeat(auto-fill, minmax(280px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill,minmax(280px,1fr));
+  gap: 25px;
 }
 
-.album-card {
+.album-card,
+.public-album-card {
   overflow: hidden;
-  background: #fff;
-  border: 1px solid #e5e5e5;
-  border-radius: 17px;
-  box-shadow: 0 6px 25px rgba(0,0,0,0.05);
-  transition: transform 0.2s;
+  background: white;
+  border-radius: 18px;
+  border: 1px solid var(--crm-border);
+  box-shadow: 0 8px 30px rgba(0,0,0,.06);
+  transition: .3s;
 }
 
-.album-card:hover {
-  transform: translateY(-4px);
+.album-card:hover,
+.public-album-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 45px rgba(0,0,0,.12);
 }
 
-.album-cover {
-  height: 190px;
+.album-cover,
+.public-album-cover {
+  height: 230px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg,#242424,#51462f);
+}
+
+.album-cover img,
+.public-album-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.album-cover::after,
+.public-album-cover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      to top,
+      rgba(0,0,0,.65),
+      transparent 55%
+    );
+}
+
+.album-camera {
+  position: absolute;
+  z-index: 2;
+  font-size: 60px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  filter: drop-shadow(0 8px 15px rgba(0,0,0,.35));
+}
+
+.album-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #161616, #454545);
+  background: rgba(0,0,0,.55);
+  color: white;
+  opacity: 0;
+  transition: .25s;
 }
 
-.album-cover span {
-  font-size: 60px;
+.public-album-card:hover .album-overlay {
+  opacity: 1;
 }
 
-.album-info {
-  padding: 20px;
+.album-overlay span {
+  padding: 12px 20px;
+  border: 1px solid white;
+  border-radius: 30px;
 }
 
-.album-info h3 {
+.album-info,
+.public-album-info {
+  padding: 21px;
+}
+
+.album-info h3,
+.public-album-info h2 {
   margin: 0 0 8px;
-  font-size: 21px;
 }
 
-.album-info > p {
-  min-height: 42px;
-  margin-bottom: 20px;
+.album-info p,
+.public-album-info p {
   color: #777;
-  font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 .album-actions {
@@ -878,8 +865,8 @@ img {
   padding: 10px;
   border: 0;
   border-radius: 8px;
-  background: #111;
-  color: #fff;
+  background: var(--crm-dark);
+  color: white;
   font-size: 12px;
   font-weight: 700;
 }
@@ -890,311 +877,52 @@ img {
   color: #c62828;
 }
 
-.empty-albums {
-  padding: 80px 20px;
-  text-align: center;
-  background: #fff;
-  border: 1px dashed #d5d5d5;
-  border-radius: 18px;
-}
-
-.empty-icon {
-  font-size: 55px;
-}
-
 /* =========================================================
-   UPLOAD PAGE
-   ========================================================= */
-
-.upload-card {
-  max-width: 720px;
-  margin: 10px auto;
-  padding: 45px;
-  text-align: center;
-  background: #fff;
-  border: 1px solid #e5e5e5;
-  border-radius: 22px;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.06);
-}
-
-.upload-icon {
-  width: 80px;
-  height: 80px;
-  margin: 0 auto 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 22px;
-  background: #f0f0f0;
-  font-size: 38px;
-}
-
-.upload-card h3 {
-  margin: 0 0 8px;
-  font-size: 27px;
-}
-
-.upload-card > p {
-  color: #777;
-}
-
-.file-picker {
-  display: inline-flex;
-  padding: 13px 22px;
-  border-radius: 10px;
-  background: #111;
-  color: #fff;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.file-picker input {
-  display: none;
-}
-
-.selected-files {
-  margin-top: 30px;
-  padding-top: 22px;
-  text-align: left;
-  border-top: 1px solid #eee;
-}
-
-.selected-file {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 7px;
-  padding: 10px 12px;
-  border-radius: 8px;
-  background: #f7f7f7;
-}
-
-.selected-file p {
-  margin: 0;
-  font-size: 13px;
-}
-
-.upload-message {
-  margin: 20px 0;
-  padding: 12px;
-  border-radius: 8px;
-  background: #f2f6ff;
-  font-size: 14px;
-}
-
-.upload-submit {
-  width: 100%;
-  height: 50px;
-  margin-top: 20px;
-  border: 0;
-  border-radius: 10px;
-  background: #111;
-  color: #fff;
-  font-weight: 700;
-}
-
-.upload-submit:disabled {
-  opacity: 0.45;
-}
-
-/* =========================================================
-   PUBLIC ALBUMS
+   PUBLIC ALBUM HERO
    ========================================================= */
 
 .albums-page,
 .album-page {
   min-height: 100vh;
-  background: #f7f8fa;
+  background: var(--crm-cream);
 }
 
-.public-header {
-  min-height: 76px;
-  padding: 13px 5%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #fff;
-  border-bottom: 1px solid #e6e6e6;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-.public-brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.public-brand img {
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
-}
-
-.public-brand strong {
-  display: block;
-  font-size: 15px;
-}
-
-.public-brand span {
-  display: block;
-  margin-top: 3px;
-  color: #888;
-  font-size: 11px;
-}
-
-.home-button {
-  padding: 10px 17px;
-  border: 0;
-  border-radius: 9px;
-  background: #111;
-  color: #fff;
-  font-weight: 700;
-}
-
-.albums-hero {
-  padding: 80px 20px;
+.albums-hero,
+.album-hero {
+  padding: 90px 20px;
   text-align: center;
-  background: linear-gradient(135deg, #111, #333);
-  color: #fff;
+  background:
+    linear-gradient(
+      135deg,
+      #151515,
+      #302719
+    );
+  color: white;
 }
 
-.albums-hero h1 {
+.albums-hero h1,
+.album-hero h1 {
   margin: 0;
-  font-size: clamp(40px, 7vw, 68px);
+  font-size: clamp(42px,7vw,70px);
+  letter-spacing: -3px;
 }
 
-.albums-hero p:last-child {
-  max-width: 600px;
+.albums-hero p:last-child,
+.album-description {
+  max-width: 650px;
   margin: 18px auto;
-  color: #d2d2d2;
+  color: #d5d0c7;
   line-height: 1.7;
-}
-
-.albums-content {
-  width: min(1200px, 90%);
-  margin: auto;
-  padding: 60px 0 90px;
-}
-
-.public-album-grid {
-  display: grid;
-  grid-template-columns:
-    repeat(auto-fit, minmax(280px, 1fr));
-  gap: 28px;
-}
-
-.public-album-card {
-  overflow: hidden;
-  background: #fff;
-  border-radius: 18px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-  cursor: pointer;
-  transition: 0.25s;
-}
-
-.public-album-card:hover {
-  transform: translateY(-6px);
-}
-
-.public-album-cover {
-  height: 230px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  background: linear-gradient(135deg, #222, #555);
-}
-
-.album-camera {
-  font-size: 65px;
-}
-
-.album-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0,0,0,0.55);
-  color: #fff;
-  opacity: 0;
-  transition: 0.25s;
-}
-
-.public-album-card:hover .album-overlay {
-  opacity: 1;
-}
-
-.album-overlay span {
-  padding: 12px 20px;
-  border: 1px solid #fff;
-  border-radius: 30px;
-}
-
-.public-album-info {
-  padding: 24px;
-}
-
-.public-album-info h2 {
-  margin: 0 0 10px;
-  font-size: 23px;
-}
-
-.public-album-info p {
-  color: #777;
-  line-height: 1.6;
-}
-
-.public-album-info button {
-  padding: 11px 18px;
-  border: 0;
-  border-radius: 8px;
-  background: #111;
-  color: #fff;
-  font-weight: 700;
 }
 
 /* =========================================================
-   INDIVIDUAL ALBUM
+   ALBUM PHOTOS
    ========================================================= */
 
-.album-hero {
-  padding: 70px 5%;
-  background: linear-gradient(135deg, #111, #333);
-  color: #fff;
-}
-
-.album-hero-content {
-  width: min(1100px, 100%);
-  margin: auto;
-}
-
-.album-hero h1 {
-  margin: 5px 0 15px;
-  font-size: clamp(38px, 6vw, 60px);
-}
-
-.album-description {
-  max-width: 700px;
-  color: #d3d3d3;
-  line-height: 1.7;
-}
-
-.album-meta {
-  display: flex;
-  gap: 25px;
-  flex-wrap: wrap;
-  margin-top: 25px;
-  color: #ddd;
-  font-size: 14px;
-}
-
 .album-photos {
-  width: min(1400px, 94%);
+  width: min(1400px,94%);
   margin: auto;
-  padding: 55px 0 90px;
+  padding: 60px 0 90px;
 }
 
 .album-page .photo-grid {
@@ -1206,26 +934,19 @@ img {
   margin-bottom: 18px;
   overflow: hidden;
   break-inside: avoid;
-  background: #fff;
+  background: white;
   border-radius: 14px;
-  box-shadow: 0 5px 22px rgba(0,0,0,0.08);
+  box-shadow: 0 6px 25px rgba(0,0,0,.08);
+}
+
+.album-page .photo-image {
+  width: 100%;
+  display: block;
 }
 
 .photo-image-wrapper {
   position: relative;
   overflow: hidden;
-  background: #eee;
-}
-
-.album-page .photo-image {
-  display: block;
-  width: 100%;
-  height: auto;
-  transition: transform 0.35s;
-}
-
-.album-page .photo-card:hover .photo-image {
-  transform: scale(1.03);
 }
 
 .photo-overlay {
@@ -1238,11 +959,11 @@ img {
   padding: 14px;
   background: linear-gradient(
     to bottom,
-    rgba(0,0,0,0.45),
+    rgba(0,0,0,.45),
     transparent 40%
   );
   opacity: 0;
-  transition: 0.25s;
+  transition: .25s;
 }
 
 .album-page .photo-card:hover .photo-overlay {
@@ -1255,23 +976,17 @@ img {
   height: 40px;
   border: 0;
   border-radius: 50%;
-  background: rgba(255,255,255,0.95);
+  background: rgba(255,255,255,.95);
   color: #111;
   font-size: 20px;
 }
 
 .favorite-button.favorited {
-  color: #d02020;
+  color: #c02020;
 }
 
 .photo-info {
   padding: 15px;
-}
-
-.photo-info > p {
-  margin: 0 0 12px;
-  color: #555;
-  font-size: 13px;
 }
 
 .photo-actions {
@@ -1282,15 +997,15 @@ img {
 .photo-actions button {
   flex: 1;
   padding: 9px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--crm-border);
   border-radius: 7px;
-  background: #fff;
+  background: white;
   font-size: 12px;
   font-weight: 700;
 }
 
 /* =========================================================
-   LOADING / EMPTY
+   LOADING
    ========================================================= */
 
 .album-loading,
@@ -1306,9 +1021,9 @@ img {
   height: 40px;
   margin: 0 auto 20px;
   border: 4px solid #ddd;
-  border-top-color: #111;
+  border-top-color: var(--crm-gold);
   border-radius: 50%;
-  animation: crm-spin 0.8s linear infinite;
+  animation: crm-spin .8s linear infinite;
 }
 
 @keyframes crm-spin {
@@ -1317,90 +1032,38 @@ img {
   }
 }
 
-.error-icon,
-.empty-photo-icon,
-.empty-album-icon {
-  font-size: 55px;
-}
-
-.album-error button,
-.albums-status button {
-  margin-top: 15px;
-  padding: 11px 20px;
-  border: 0;
-  border-radius: 9px;
-  background: #111;
-  color: #fff;
-  font-weight: 700;
-}
-
-/* =========================================================
-   PUBLIC FOOTER
-   ========================================================= */
-
-.public-footer {
-  padding: 40px 20px;
-  text-align: center;
-}
-
-.public-footer p {
-  margin-top: 8px;
-  color: #999;
-  font-size: 13px;
-}
-
 /* =========================================================
    MOBILE
    ========================================================= */
 
-@media (max-width: 750px) {
+@media (max-width:750px) {
 
   .navbar {
     height: auto;
     min-height: 70px;
     padding: 12px 4%;
-    flex-wrap: wrap;
   }
 
   .navbar nav {
     display: none;
   }
 
-  .brand img {
-    width: 40px;
-    height: 40px;
-  }
-
-  .admin-btn {
-    padding: 9px 12px;
-    font-size: 11px;
-  }
-
   .hero {
-    min-height: 600px;
-    padding: 75px 6%;
+    min-height: 650px;
+    padding: 80px 6%;
   }
 
   .hero h1 {
-    font-size: clamp(48px, 15vw, 72px);
-    letter-spacing: -3px;
-  }
-
-  .hero p {
-    font-size: 15px;
+    font-size: clamp(48px,15vw,72px);
   }
 
   .gallery-section {
     width: 92%;
-    padding: 60px 0;
+    padding: 65px 0;
   }
 
   .section-heading {
     display: block;
-  }
-
-  .section-heading h2 {
-    font-size: 34px;
   }
 
   .section-heading > p {
@@ -1419,7 +1082,6 @@ img {
   .filters {
     overflow-x: auto;
     flex-wrap: nowrap;
-    padding-bottom: 5px;
   }
 
   .filter {
@@ -1431,19 +1093,11 @@ img {
     column-gap: 10px;
   }
 
-  .site .photo-card {
-    margin-bottom: 10px;
-  }
-
   .favorites-section {
     width: 92%;
-    padding: 30px;
+    padding: 32px;
     flex-direction: column;
     align-items: flex-start;
-  }
-
-  .favorite-number {
-    text-align: left;
   }
 
   .site footer {
@@ -1451,36 +1105,12 @@ img {
     align-items: flex-start;
   }
 
-  .admin-card {
-    padding: 30px 22px;
-  }
-
-  .dashboard-header,
-  .public-header {
-    padding: 12px 4%;
-  }
-
-  .dashboard-brand img,
-  .public-brand img {
-    width: 40px;
-    height: 40px;
-  }
-
-  .dashboard-brand h1 {
-    font-size: 15px;
-  }
-
   .dashboard-content {
     width: 92%;
-    padding-top: 35px;
   }
 
   .dashboard-title {
     display: block;
-  }
-
-  .dashboard-title h2 {
-    font-size: 32px;
   }
 
   .create-album-btn {
@@ -1493,41 +1123,9 @@ img {
     grid-template-columns: 1fr;
   }
 
-  .album-form-card {
-    padding: 20px;
-  }
-
-  .form-actions {
-    flex-direction: column;
-  }
-
-  .form-actions button {
-    width: 100%;
-  }
-
-  .upload-card {
-    padding: 30px 20px;
-  }
-
-  .albums-hero {
-    padding: 60px 20px;
-  }
-
-  .album-hero {
-    padding: 55px 5%;
-  }
-
-  .album-meta {
-    gap: 12px;
-  }
-
   .album-page .photo-grid {
     columns: 2 140px;
     column-gap: 10px;
-  }
-
-  .album-page .photo-card {
-    margin-bottom: 10px;
   }
 
   .album-page .photo-overlay {
@@ -1538,9 +1136,8 @@ img {
     flex-direction: column;
   }
 
-  .logout-btn,
-  .home-button {
-    padding: 9px 12px;
-    font-size: 12px;
+  .public-header,
+  .dashboard-header {
+    padding: 12px 4%;
   }
 }
