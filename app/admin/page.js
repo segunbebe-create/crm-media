@@ -28,7 +28,7 @@ export default function AdminLogin() {
     <main className="admin-page">
       <div className="admin-card">
 
-        <img src="/logo.svg" alt="CRM Media" />
+        <img src="/logo.png" alt="CRM Media" />
 
         <p className="admin-label">
           CRM MEDIA
