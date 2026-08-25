@@ -7,16 +7,22 @@ export async function GET(request, { params }) {
   try {
     const { id } = await params;
 
-    const albumId = Number(id);
+    // Make sure the ID is valid
+    const albumId = Number.parseInt(id, 10);
 
-    if (!albumId) {
+    if (!Number.isInteger(albumId) || albumId <= 0) {
       return NextResponse.json(
-        { error: "Invalid album ID." },
-        { status: 400 }
+        {
+          error: "Invalid album ID.",
+        },
+        {
+          status: 400,
+        }
       );
     }
 
-    const albums = await sql`
+    // Get the album
+    const albumResult = await sql`
       SELECT
         id,
         name,
@@ -24,16 +30,22 @@ export async function GET(request, { params }) {
         created_at
       FROM albums
       WHERE id = ${albumId}
+      LIMIT 1
     `;
 
-    if (albums.length === 0) {
+    if (albumResult.length === 0) {
       return NextResponse.json(
-        { error: "Album not found." },
-        { status: 404 }
+        {
+          error: "Album not found.",
+        },
+        {
+          status: 404,
+        }
       );
     }
 
-    const photos = await sql`
+    // Get all photos belonging to this album
+    const photoResult = await sql`
       SELECT
         id,
         album_id,
@@ -46,11 +58,15 @@ export async function GET(request, { params }) {
     `;
 
     return NextResponse.json({
-      album: albums[0],
-      photos,
+      success: true,
+      album: albumResult[0],
+      photos: photoResult,
     });
   } catch (error) {
-    console.error("GET ALBUM ERROR:", error);
+    console.error(
+      "GET /api/albums/[id] ERROR:",
+      error
+    );
 
     return NextResponse.json(
       {
@@ -59,7 +75,9 @@ export async function GET(request, { params }) {
             ? error.message
             : "Could not load album.",
       },
-      { status: 500 }
+      {
+        status: 500,
+      }
     );
   }
 }
