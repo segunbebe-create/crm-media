@@ -15,7 +15,7 @@ export async function GET() {
           SELECT p.url
           FROM photos p
           WHERE p.album_id = a.id
-          ORDER BY p.created_at ASC
+          ORDER BY p.created_at DESC
           LIMIT 1
         ) AS cover_url
       FROM albums a
