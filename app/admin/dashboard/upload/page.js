@@ -140,7 +140,7 @@ function UploadContent() {
         <div className="dashboard-brand">
 
           <img
-            src="/logo.svg"
+            src="/logo.png"
             alt="CRM Media"
           />
 
