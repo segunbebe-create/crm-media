@@ -105,7 +105,7 @@ export default function Home() {
     );
   }
 
-  function downloadPhoto(photo) {
+  function getMediaUrl(photo) {   if (!photo?.url) return "";    try {     const url = new URL(photo.url);      return `/api/media/${url.pathname       .replace(/^\/+/, "")}`;   } catch {     return photo.url;   } }  function downloadPhoto(photo) {   const mediaUrl = getMediaUrl(photo);    if (!mediaUrl) return;    const link = document.createElement("a");    link.href = mediaUrl;   link.download =     photo.name || "CRM-Media-photo";    document.body.appendChild(link);   link.click();   document.body.removeChild(link); }
     if (!photo?.url) return;
 
     const link = document.createElement("a");
