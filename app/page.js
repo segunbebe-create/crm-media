@@ -24,26 +24,23 @@ export default function Home() {
       setLoading(true);
       setError("");
 
-      const albumsResponse = await fetch("/api/albums", {
+      const response = await fetch("/api/albums", {
         cache: "no-store",
       });
 
-      const albumsData = await albumsResponse.json();
+      const data = await response.json();
 
-      if (!albumsResponse.ok) {
+      if (!response.ok) {
         throw new Error(
-          albumsData.error || "Could not load albums."
+          data.error || "Could not load albums."
         );
       }
 
-      const albumList = Array.isArray(albumsData)
-        ? albumsData
-        : [];
+      const albumList = Array.isArray(data) ? data : [];
 
       setAlbums(albumList);
 
-      // Get the photos from each album
-      const albumResults = await Promise.all(
+      const results = await Promise.all(
         albumList.map(async (album) => {
           try {
             const response = await fetch(
@@ -69,7 +66,7 @@ export default function Home() {
         })
       );
 
-      setPhotos(albumResults.flat());
+      setPhotos(results.flat());
     } catch (err) {
       setError(
         err.message || "Could not load the gallery."
@@ -92,6 +89,21 @@ export default function Home() {
     }
   }
 
+  function getMediaUrl(photo) {
+    if (!photo?.url) return "";
+
+    try {
+      const url = new URL(photo.url);
+
+      return `/api/media/${url.pathname.replace(
+        /^\/+/,
+        ""
+      )}`;
+    } catch {
+      return photo.url;
+    }
+  }
+
   function toggleFavorite(id) {
     const updated = favorites.includes(id)
       ? favorites.filter((item) => item !== id)
@@ -105,17 +117,16 @@ export default function Home() {
     );
   }
 
-  function getMediaUrl(photo) {   if (!photo?.url) return "";    try {     const url = new URL(photo.url);      return `/api/media/${url.pathname       .replace(/^\/+/, "")}`;   } catch {     return photo.url;   } }  function downloadPhoto(photo) {   const mediaUrl = getMediaUrl(photo);    if (!mediaUrl) return;    const link = document.createElement("a");    link.href = mediaUrl;   link.download =     photo.name || "CRM-Media-photo";    document.body.appendChild(link);   link.click();   document.body.removeChild(link); }
-    if (!photo?.url) return;
+  function downloadPhoto(photo) {
+    const mediaUrl = getMediaUrl(photo);
+
+    if (!mediaUrl) return;
 
     const link = document.createElement("a");
 
-    link.href = photo.url;
+    link.href = mediaUrl;
     link.download =
       photo.name || "CRM-Media-photo";
-
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
 
     document.body.appendChild(link);
     link.click();
@@ -155,6 +166,7 @@ export default function Home() {
     <main className="site">
 
       {/* NAVIGATION */}
+
       <header className="navbar">
 
         <button
@@ -169,6 +181,7 @@ export default function Home() {
 
           <div>
             <strong>CRM MEDIA</strong>
+
             <span>
               Chapel of Rest Ministry
             </span>
@@ -179,7 +192,9 @@ export default function Home() {
           <a href="#home">Home</a>
           <a href="#gallery">Gallery</a>
           <a href="#albums">Albums</a>
-          <a href="#favorites">Favorites</a>
+          <a href="#favorites">
+            Favorites
+          </a>
         </nav>
 
         <button
@@ -193,7 +208,11 @@ export default function Home() {
       </header>
 
       {/* HERO */}
-      <section className="hero" id="home">
+
+      <section
+        className="hero"
+        id="home"
+      >
 
         <div className="hero-content">
 
@@ -238,6 +257,7 @@ export default function Home() {
       </section>
 
       {/* ALBUMS */}
+
       <section
         className="gallery-section"
         id="albums"
@@ -339,24 +359,28 @@ export default function Home() {
 
         )}
 
-        {!loading && albums.length === 0 && (
-          <div className="empty-state">
+        {!loading &&
+          albums.length === 0 && (
 
-            <h3>
-              No albums available yet
-            </h3>
+            <div className="empty-state">
 
-            <p>
-              New CRM Media albums will appear here
-              when they are published.
-            </p>
+              <h3>
+                No albums available yet
+              </h3>
 
-          </div>
-        )}
+              <p>
+                New CRM Media albums will appear
+                here when they are published.
+              </p>
+
+            </div>
+
+          )}
 
       </section>
 
       {/* GALLERY */}
+
       <section
         className="gallery-section"
         id="gallery"
@@ -382,6 +406,7 @@ export default function Home() {
         </div>
 
         {/* SEARCH */}
+
         <div className="gallery-controls">
 
           <div className="search-box">
@@ -400,6 +425,7 @@ export default function Home() {
           </div>
 
           {/* FILTERS */}
+
           <div className="filters">
 
             {categories.map((item) => (
@@ -426,6 +452,7 @@ export default function Home() {
         </div>
 
         {/* LOADING */}
+
         {loading && (
 
           <div className="empty-state">
@@ -443,6 +470,7 @@ export default function Home() {
         )}
 
         {/* ERROR */}
+
         {!loading && error && (
 
           <div className="empty-state">
@@ -464,7 +492,8 @@ export default function Home() {
 
         )}
 
-        {/* PHOTO GRID */}
+        {/* PHOTOS */}
+
         {!loading &&
           !error &&
           filteredPhotos.length > 0 && (
@@ -478,6 +507,9 @@ export default function Home() {
                     photo.id
                   );
 
+                const mediaUrl =
+                  getMediaUrl(photo);
+
                 return (
                   <article
                     className="photo-card"
@@ -487,7 +519,7 @@ export default function Home() {
                     <div className="photo-image">
 
                       <img
-                        src={photo.url}
+                        src={mediaUrl}
                         alt={
                           photo.name ||
                           "CRM Media photo"
@@ -557,9 +589,11 @@ export default function Home() {
               })}
 
             </div>
+
           )}
 
         {/* NO PHOTOS */}
+
         {!loading &&
           !error &&
           filteredPhotos.length === 0 && (
@@ -575,11 +609,13 @@ export default function Home() {
               </p>
 
             </div>
+
           )}
 
       </section>
 
       {/* FAVORITES */}
+
       <section
         className="favorites-section"
         id="favorites"
@@ -620,6 +656,7 @@ export default function Home() {
       </section>
 
       {/* FOOTER */}
+
       <footer>
 
         <div className="footer-brand">
