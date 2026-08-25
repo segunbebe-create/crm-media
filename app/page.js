@@ -79,7 +79,7 @@ export default function Home() {
       {/* NAVIGATION */}
       <header className="navbar">
         <a className="brand" href="/">
-          <img src="/logo.svg" alt="CRM Media" />
+          <img src="/logo.png" alt="CRM Media" />
 
           <div>
             <strong>CRM MEDIA</strong>
@@ -299,7 +299,7 @@ export default function Home() {
         <div className="footer-brand">
 
           <img
-            src="/logo.svg"
+            src="/logo.png"
             alt="CRM Media"
           />
 
