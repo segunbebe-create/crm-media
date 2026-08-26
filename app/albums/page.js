@@ -29,7 +29,11 @@ export default function AlbumsPage() {
 
       setAlbums(data);
     } catch (err) {
-      setError(err.message);
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Could not load albums."
+      );
     } finally {
       setLoading(false);
     }
@@ -39,6 +43,7 @@ export default function AlbumsPage() {
     <main className="albums-page">
 
       {/* HEADER */}
+
       <header className="public-header">
 
         <div className="public-brand">
@@ -50,7 +55,10 @@ export default function AlbumsPage() {
 
           <div>
             <strong>CRM MEDIA</strong>
-            <span>Chapel of Rest Ministry</span>
+
+            <span>
+              Chapel of Rest Ministry
+            </span>
           </div>
 
         </div>
@@ -65,37 +73,49 @@ export default function AlbumsPage() {
       </header>
 
       {/* HERO */}
+
       <section className="albums-hero">
 
         <p className="hero-label">
           CRM MEDIA GALLERY
         </p>
 
-        <h1>Our Albums</h1>
+        <h1>
+          Our Albums
+        </h1>
 
         <p>
-          Browse memorable moments from Chapel of Rest
-          Ministry.
+          Browse memorable moments from Chapel of Rest Ministry.
         </p>
 
       </section>
 
       {/* ALBUMS */}
+
       <section className="albums-content">
 
         {loading && (
           <div className="albums-status">
+
             <div className="loading-spinner" />
-            <p>Loading albums...</p>
+
+            <p>
+              Loading albums...
+            </p>
+
           </div>
         )}
 
         {error && (
           <div className="albums-status error">
 
-            <h2>Something went wrong</h2>
+            <h2>
+              Something went wrong
+            </h2>
 
-            <p>{error}</p>
+            <p>
+              {error}
+            </p>
 
             <button onClick={loadAlbums}>
               Try Again
@@ -113,11 +133,12 @@ export default function AlbumsPage() {
                 📷
               </div>
 
-              <h2>No albums yet</h2>
+              <h2>
+                No albums yet
+              </h2>
 
               <p>
-                New church memories will appear
-                here soon.
+                New church memories will appear here soon.
               </p>
 
             </div>
@@ -142,57 +163,34 @@ export default function AlbumsPage() {
                 >
 
                   {/* COVER */}
- <div className="public-album-cover">
 
-  {album.cover_url ? (
-    <img
-      src={album.cover_url}
-      alt={album.name}
-      loading="lazy"
-    />
-  ) : (
-    <div className="album-camera">
-      📸
-    </div>
-  )}
-
-  <div className="album-overlay">
-    <span>View Album →</span>
-  </div>
-
-</div>
+                  <div className="public-album-cover">
 
                     {album.cover_url ? (
-
                       <img
                         src={album.cover_url}
                         alt={album.name}
-                        className="album-cover-image"
+                        loading="lazy"
                       />
-
                     ) : (
-
                       <div className="album-camera">
                         📸
                       </div>
-
                     )}
 
                     <div className="album-overlay">
-
                       <span>
                         View Album →
                       </span>
-
                     </div>
 
                   </div>
 
-                  {/* INFO */}
+                  {/* INFORMATION */}
+
                   <div className="public-album-info">
 
                     <p className="album-date">
-
                       {album.created_at
                         ? new Date(
                             album.created_at
@@ -205,7 +203,6 @@ export default function AlbumsPage() {
                             }
                           )
                         : "CRM Media"}
-
                     </p>
 
                     <h2>
@@ -219,17 +216,18 @@ export default function AlbumsPage() {
 
                     <button
                       onClick={(event) => {
-
                         event.stopPropagation();
 
                         router.push(
                           `/albums/${album.id}`
                         );
-
                       }}
                     >
                       View Photos
-                      <span> →</span>
+                      <span>
+                        {" "}
+                        →
+                      </span>
                     </button>
 
                   </div>
@@ -245,9 +243,12 @@ export default function AlbumsPage() {
       </section>
 
       {/* FOOTER */}
+
       <footer className="public-footer">
 
-        <strong>CRM MEDIA</strong>
+        <strong>
+          CRM MEDIA
+        </strong>
 
         <p>
           © 2026 Chapel of Rest Ministry
