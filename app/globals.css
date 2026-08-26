@@ -1,6 +1,6 @@
 /* =========================================================
-   CRM MEDIA — COMPLETE GLOBAL CSS
-   Professional • Logo-inspired • Responsive
+   CRM MEDIA — CLEAN GLOBAL CSS
+   Home • Admin • Dashboard • Upload • Albums • Gallery
    ========================================================= */
 
 * {
@@ -14,13 +14,9 @@ html {
 body {
   margin: 0;
   padding: 0;
-  font-family:
-    Inter,
-    Arial,
-    Helvetica,
-    sans-serif;
+  font-family: Inter, Arial, Helvetica, sans-serif;
   background: #f5f6f8;
-  color: #171717;
+  color: #151515;
 }
 
 a {
@@ -51,27 +47,21 @@ img {
   background: #f7f7f5;
 }
 
-/* =========================================================
-   NAVBAR
-   ========================================================= */
+/* NAVBAR */
 
 .navbar {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-
-  min-height: 78px;
+  min-height: 76px;
   padding: 12px 5%;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 25px;
-
+  position: sticky;
+  top: 0;
+  z-index: 100;
   background: rgba(255, 255, 255, 0.96);
-  border-bottom: 1px solid #e6e6e6;
-
-  backdrop-filter: blur(15px);
+  border-bottom: 1px solid #e8e8e8;
+  backdrop-filter: blur(12px);
 }
 
 .brand {
@@ -81,8 +71,8 @@ img {
 }
 
 .brand img {
-  width: 48px;
-  height: 48px;
+  width: 46px;
+  height: 46px;
   object-fit: contain;
 }
 
@@ -99,8 +89,6 @@ img {
   font-size: 10px;
 }
 
-/* NAV LINKS */
-
 .navbar nav {
   display: flex;
   align-items: center;
@@ -111,94 +99,54 @@ img {
   color: #555;
   font-size: 13px;
   font-weight: 600;
-  transition: 0.2s ease;
 }
 
 .navbar nav a:hover {
   color: #000;
 }
 
-/* ADMIN BUTTON */
-
 .admin-btn {
-  padding: 11px 18px;
-  border-radius: 9px;
-
+  padding: 10px 17px;
+  border-radius: 8px;
   background: #111;
-  color: white;
-
+  color: #fff;
   font-size: 12px;
   font-weight: 700;
-
-  transition: 0.2s ease;
 }
 
 .admin-btn:hover {
   background: #333;
-  transform: translateY(-1px);
 }
 
-/* =========================================================
-   HERO
-   ========================================================= */
+/* HERO */
 
 .hero {
+  min-height: 650px;
+  padding: 100px 7%;
   position: relative;
-  min-height: 680px;
-
   display: flex;
   align-items: center;
-
-  padding: 100px 7%;
-
   overflow: hidden;
-
   background:
-    linear-gradient(
-      120deg,
-      rgba(8, 8, 8, 0.96),
-      rgba(35, 35, 35, 0.90)
-    );
-
-  color: white;
-}
-
-/*
-  If your Home page later uses a random uploaded image,
-  this dark overlay keeps the text readable.
-*/
-
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-
-  background:
-    linear-gradient(
-      90deg,
-      rgba(0, 0, 0, 0.85),
-      rgba(0, 0, 0, 0.45),
-      rgba(0, 0, 0, 0.65)
-    );
-
-  z-index: 1;
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(255, 255, 255, 0.14),
+      transparent 30%
+    ),
+    linear-gradient(135deg, #101010, #292929 55%, #444);
+  color: #fff;
 }
 
 .hero-content {
   position: relative;
-  z-index: 3;
-
-  width: 100%;
-  max-width: 780px;
+  z-index: 2;
+  max-width: 760px;
 }
 
 .hero-label {
   display: inline-block;
-
-  margin-bottom: 22px;
-
-  color: #c5c5c5;
-
+  margin-bottom: 20px;
+  color: #c8c8c8;
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 3px;
@@ -206,34 +154,28 @@ img {
 
 .hero h1 {
   margin: 0;
-
-  font-size: clamp(50px, 8vw, 92px);
+  font-size: clamp(50px, 8vw, 90px);
   line-height: 0.98;
-
   letter-spacing: -4px;
-
   font-weight: 800;
 }
 
 .hero h1 span {
-  color: #d1d1d1;
+  color: #d2d2d2;
 }
 
 .hero p {
   max-width: 650px;
-
   margin: 30px 0;
-
-  color: #d1d1d1;
-
+  color: #d0d0d0;
   font-size: 17px;
   line-height: 1.8;
 }
 
 .hero-actions {
   display: flex;
-  flex-wrap: wrap;
   gap: 12px;
+  flex-wrap: wrap;
 }
 
 .primary-btn,
@@ -241,133 +183,100 @@ img {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
-  padding: 14px 22px;
-
-  border-radius: 10px;
-
+  padding: 13px 21px;
+  border-radius: 9px;
   font-size: 13px;
   font-weight: 700;
-
-  transition: 0.2s ease;
 }
 
 .primary-btn {
-  background: white;
+  background: #fff;
   color: #111;
+}
+
+.secondary-btn {
+  border: 1px solid #666;
+  color: #fff;
 }
 
 .primary-btn:hover {
   background: #e8e8e8;
-  transform: translateY(-2px);
-}
-
-.secondary-btn {
-  border: 1px solid #777;
-  color: white;
 }
 
 .secondary-btn:hover {
   background: rgba(255, 255, 255, 0.08);
 }
 
-/* HERO DECORATION */
-
 .hero-gradient {
   position: absolute;
-
   width: 600px;
   height: 600px;
-
   right: -200px;
-  bottom: -300px;
-
+  bottom: -280px;
   border-radius: 50%;
-
   background: rgba(255, 255, 255, 0.06);
-
   filter: blur(10px);
 }
 
-/* =========================================================
-   GALLERY SECTION
-   ========================================================= */
+/* GALLERY */
 
 .gallery-section {
-  width: min(1250px, 90%);
+  width: min(1200px, 92%);
   margin: auto;
-
-  padding: 90px 0;
+  padding: 80px 0;
 }
 
 .section-heading {
   display: flex;
-  align-items: flex-end;
   justify-content: space-between;
-
+  align-items: flex-end;
   gap: 30px;
-
-  margin-bottom: 40px;
+  margin-bottom: 35px;
 }
 
 .small-label {
   display: block;
-
-  margin-bottom: 9px;
-
+  margin-bottom: 8px;
   color: #888;
-
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 2px;
 }
 
-.section-heading h2 {
+.section-heading h2,
+.favorites-section h2 {
   margin: 0;
-
-  font-size: 42px;
+  font-size: 40px;
   letter-spacing: -1.5px;
 }
 
 .section-heading > p {
   max-width: 430px;
-
   margin: 0;
-
   color: #777;
-
   line-height: 1.6;
 }
 
-/* =========================================================
-   SEARCH + FILTERS
-   ========================================================= */
+/* SEARCH */
 
 .gallery-controls {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-
+  align-items: center;
   gap: 20px;
-
-  margin-bottom: 35px;
+  margin-bottom: 30px;
 }
 
 .search-box {
   width: 300px;
   height: 46px;
-
   display: flex;
   align-items: center;
-
   gap: 9px;
-
   padding: 0 13px;
-
-  background: white;
-
+  background: #fff;
   border: 1px solid #ddd;
-  border-radius: 10px;
+  border-radius: 9px;
 }
 
 .search-box span {
@@ -377,145 +286,103 @@ img {
 
 .search-box input {
   width: 100%;
-
   border: 0;
   outline: 0;
-
   background: transparent;
-
   font-size: 13px;
 }
 
 .filters {
   display: flex;
-  flex-wrap: wrap;
   gap: 7px;
+  flex-wrap: wrap;
 }
 
 .filter {
   padding: 9px 14px;
-
   border: 1px solid #ddd;
   border-radius: 20px;
-
-  background: white;
-
+  background: #fff;
   color: #555;
-
   font-size: 12px;
   font-weight: 600;
-
-  transition: 0.2s ease;
 }
 
 .filter:hover,
 .filter.active {
-  background: #111;
-  color: white;
   border-color: #111;
+  background: #111;
+  color: #fff;
 }
 
-/* =========================================================
-   HOME PHOTO GRID
-   ========================================================= */
+/* HOME PHOTOS */
 
 .site .photo-grid {
-  columns: 3 280px;
-  column-gap: 20px;
+  columns: 3 260px;
+  column-gap: 18px;
 }
 
 .site .photo-card {
-  display: inline-block;
-
   width: 100%;
-
-  margin-bottom: 20px;
-
+  display: inline-block;
+  margin-bottom: 18px;
   overflow: hidden;
-
   break-inside: avoid;
-
-  background: white;
-
-  border-radius: 15px;
-
-  box-shadow:
-    0 7px 28px rgba(0, 0, 0, 0.07);
-
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 7px 28px rgba(0, 0, 0, 0.07);
+  transition: transform 0.25s, box-shadow 0.25s;
 }
 
 .site .photo-card:hover {
   transform: translateY(-5px);
-
-  box-shadow:
-    0 18px 45px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.11);
 }
 
 .site .photo-image {
   position: relative;
-
   overflow: hidden;
-
   background: #ddd;
 }
 
 .site .photo-image img {
-  display: block;
-
   width: 100%;
   height: auto;
-
-  transition: transform 0.4s ease;
+  display: block;
+  transition: transform 0.4s;
 }
 
 .site .photo-card:hover .photo-image img {
-  transform: scale(1.04);
+  transform: scale(1.035);
 }
-
-/* IMAGE OVERLAY */
 
 .image-overlay {
   position: absolute;
   inset: 0;
-
   display: flex;
   justify-content: flex-end;
   align-items: flex-start;
-
   padding: 14px;
-
-  background:
-    linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.45),
-      transparent 45%
-    );
-
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.4),
+    transparent 40%
+  );
   opacity: 0;
-
-  transition: 0.25s ease;
+  transition: opacity 0.25s;
 }
 
 .site .photo-card:hover .image-overlay {
   opacity: 1;
 }
 
-/* FAVORITE */
-
 .heart {
   width: 40px;
   height: 40px;
-
   border: 0;
   border-radius: 50%;
-
   background: rgba(255, 255, 255, 0.95);
-
   color: #222;
-
   font-size: 20px;
 }
 
@@ -523,66 +390,42 @@ img {
   color: #d02020;
 }
 
-/* PHOTO DETAILS */
-
 .photo-details {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-
+  align-items: center;
   gap: 15px;
-
-  padding: 16px;
+  padding: 15px;
 }
 
 .photo-details span {
   color: #888;
-
   font-size: 10px;
   font-weight: 800;
-
   letter-spacing: 1px;
   text-transform: uppercase;
 }
 
 .photo-details h3 {
   margin: 5px 0 0;
-
   font-size: 16px;
 }
 
-/* DOWNLOAD */
-
 .download-btn {
+  width: 38px;
+  height: 38px;
   flex: 0 0 auto;
-
-  width: 40px;
-  height: 40px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   border-radius: 50%;
-
   background: #111;
-  color: white;
-
+  color: #fff;
   font-size: 18px;
-
-  transition: 0.2s ease;
 }
-
-.download-btn:hover {
-  transform: scale(1.06);
-  background: #333;
-}
-
-/* EMPTY */
 
 .empty-state {
   padding: 70px 20px;
-
   text-align: center;
 }
 
@@ -594,119 +437,86 @@ img {
   color: #777;
 }
 
-/* =========================================================
-   FAVORITES
-   ========================================================= */
+/* FAVORITES */
 
 .favorites-section {
-  width: min(1250px, 90%);
-
+  width: min(1200px, 92%);
   margin: 0 auto 80px;
-
-  padding: 50px;
-
+  padding: 45px;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-
+  align-items: center;
   gap: 30px;
-
   background: #111;
-
-  color: white;
-
+  color: #fff;
   border-radius: 20px;
 }
 
 .favorites-section h2 {
-  margin: 0;
-
   font-size: 34px;
 }
 
 .favorites-section p {
   margin-bottom: 0;
-
   color: #aaa;
 }
 
 .favorite-number {
   min-width: 120px;
-
   text-align: center;
 }
 
 .favorite-number strong {
   display: block;
-
   font-size: 55px;
-
   line-height: 1;
 }
 
 .favorite-number span {
   color: #aaa;
-
   font-size: 12px;
 }
 
-/* =========================================================
-   FOOTER
-   ========================================================= */
-
-.site footer,
-.public-footer {
-  background: #111;
-  color: white;
-}
+/* FOOTER */
 
 .site footer {
   min-height: 110px;
-
   padding: 30px 5%;
-
   display: flex;
-  align-items: center;
   justify-content: space-between;
-
+  align-items: center;
   gap: 20px;
+  background: #111;
+  color: #fff;
 }
 
 .footer-brand {
   display: flex;
   align-items: center;
-
   gap: 12px;
 }
 
 .footer-brand img {
   width: 42px;
   height: 42px;
-
   object-fit: contain;
 }
 
 .footer-brand strong {
   display: block;
-
   font-size: 14px;
 }
 
 .footer-brand span {
   display: block;
-
   margin-top: 3px;
-
   color: #999;
-
   font-size: 10px;
 }
 
 .site footer p {
   margin: 0;
-
   color: #888;
-
   font-size: 12px;
 }
 
@@ -716,71 +526,53 @@ img {
 
 .admin-page {
   min-height: 100vh;
-
+  padding: 30px 20px;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  padding: 30px 20px;
-
   background:
     radial-gradient(
       circle at top left,
       rgba(0, 0, 0, 0.08),
       transparent 35%
     ),
-    linear-gradient(
-      135deg,
-      #f4f5f7,
-      #e9ebef
-    );
+    linear-gradient(135deg, #f4f5f7, #e9ebef);
 }
 
 .admin-card {
   width: 100%;
   max-width: 430px;
-
   padding: 42px;
-
   text-align: center;
-
-  background: white;
-
+  background: #fff;
   border-radius: 24px;
-
   box-shadow:
-    0 25px 70px rgba(0, 0, 0, 0.12);
+    0 25px 70px rgba(0, 0, 0, 0.12),
+    0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
 .admin-card img {
   width: 78px;
   height: 78px;
-
   object-fit: contain;
 }
 
 .admin-label {
   margin: 10px 0 0;
-
   color: #777;
-
   font-size: 11px;
   font-weight: 800;
-
   letter-spacing: 3px;
 }
 
 .admin-card h1 {
   margin: 9px 0;
-
   font-size: 32px;
 }
 
 .admin-description {
   margin: 0 0 30px;
-
   color: #777;
-
   font-size: 14px;
   line-height: 1.6;
 }
@@ -791,9 +583,7 @@ img {
 
 .admin-card label {
   display: block;
-
   margin-bottom: 8px;
-
   font-size: 13px;
   font-weight: 700;
 }
@@ -801,62 +591,43 @@ img {
 .admin-card input {
   width: 100%;
   height: 50px;
-
   padding: 0 14px;
-
   margin-bottom: 18px;
-
   border: 1px solid #ddd;
   border-radius: 10px;
-
   outline: none;
-
   background: #fafafa;
 }
 
 .admin-card input:focus {
   border-color: #111;
-
-  background: white;
-
-  box-shadow:
-    0 0 0 3px rgba(0, 0, 0, 0.06);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.06);
 }
 
 .admin-card form button {
   width: 100%;
   height: 50px;
-
   border: 0;
   border-radius: 10px;
-
   background: #111;
-  color: white;
-
+  color: #fff;
   font-weight: 700;
 }
 
 .login-error {
   padding: 11px;
-
-  margin: 0 0 15px;
-
+  margin-bottom: 15px;
   border-radius: 8px;
-
   background: #fff0f0;
-
   color: #c62828;
-
   font-size: 13px;
 }
 
 .admin-card > a {
   display: inline-block;
-
   margin-top: 24px;
-
   color: #555;
-
   font-size: 13px;
 }
 
@@ -866,182 +637,137 @@ img {
 
 .admin-dashboard {
   min-height: 100vh;
-
   background: #f5f6f8;
 }
 
 .dashboard-header {
   min-height: 76px;
-
   padding: 13px 5%;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  background: white;
-
-  border-bottom: 1px solid #e7e7e7;
-
   position: sticky;
   top: 0;
   z-index: 100;
+  background: #fff;
+  border-bottom: 1px solid #e7e7e7;
 }
 
 .dashboard-brand {
   display: flex;
   align-items: center;
-
   gap: 13px;
 }
 
 .dashboard-brand img {
   width: 48px;
   height: 48px;
-
   object-fit: contain;
 }
 
 .dashboard-brand span {
   display: block;
-
   color: #888;
-
   font-size: 11px;
   font-weight: 800;
-
   letter-spacing: 2px;
 }
 
 .dashboard-brand h1 {
   margin: 3px 0 0;
-
   font-size: 18px;
 }
 
 .logout-btn {
   padding: 10px 17px;
-
   border: 1px solid #ddd;
   border-radius: 9px;
-
-  background: white;
-
+  background: #fff;
   font-weight: 600;
 }
 
 .dashboard-content {
-  width: min(1180px, 90%);
-
+  width: min(1180px, 92%);
   margin: auto;
-
   padding: 55px 0 80px;
 }
 
 .dashboard-title {
   display: flex;
-  align-items: flex-end;
   justify-content: space-between;
-
+  align-items: flex-end;
   gap: 30px;
-
   margin-bottom: 35px;
 }
 
 .dashboard-label {
   margin: 0 0 8px;
-
   color: #888;
-
   font-size: 11px;
   font-weight: 800;
-
   letter-spacing: 2px;
 }
 
 .dashboard-title h2 {
   margin: 0;
-
   font-size: 40px;
 }
 
 .dashboard-title > div > p:last-child {
   margin-top: 8px;
-
   color: #777;
 }
 
 .create-album-btn,
 .empty-albums button {
   padding: 13px 20px;
-
   border: 0;
   border-radius: 10px;
-
   background: #111;
-  color: white;
-
+  color: #fff;
   font-weight: 700;
 }
 
 .error-message {
   margin-bottom: 25px;
-
   padding: 14px;
-
   border-radius: 9px;
-
   background: #fff0f0;
-
   color: #b42323;
 }
 
-/* ALBUM FORM */
-
 .album-form-card {
   margin-bottom: 30px;
-
   padding: 28px;
-
-  background: white;
-
+  background: #fff;
   border: 1px solid #e5e5e5;
   border-radius: 18px;
-
-  box-shadow:
-    0 8px 30px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
 }
 
 .form-heading {
   display: flex;
   justify-content: space-between;
-
   margin-bottom: 25px;
 }
 
 .form-heading h3 {
   margin: 0;
-
   font-size: 22px;
 }
 
 .close-btn {
   width: 36px;
   height: 36px;
-
   border: 0;
   border-radius: 50%;
-
   background: #f1f1f1;
-
   font-size: 23px;
 }
 
 .album-form-card label {
   display: block;
-
   margin-bottom: 8px;
-
   font-size: 13px;
   font-weight: 700;
 }
@@ -1049,17 +775,12 @@ img {
 .album-form-card input,
 .album-form-card textarea {
   width: 100%;
-
   padding: 13px;
-
   margin-bottom: 20px;
-
   border: 1px solid #ddd;
   border-radius: 10px;
-
-  background: #fafafa;
-
   outline: none;
+  background: #fafafa;
 }
 
 .album-form-card input {
@@ -1068,56 +789,39 @@ img {
 
 .form-actions {
   display: flex;
-
   justify-content: flex-end;
-
   gap: 10px;
 }
 
 .cancel-btn {
   padding: 11px 18px;
-
   border: 1px solid #ddd;
   border-radius: 9px;
-
-  background: white;
+  background: #fff;
 }
 
 .save-album-btn {
   padding: 11px 20px;
-
   border: 0;
   border-radius: 9px;
-
   background: #111;
-  color: white;
-
+  color: #fff;
   font-weight: 700;
 }
 
-/* ADMIN ALBUM GRID */
-
 .album-grid {
   display: grid;
-
-  grid-template-columns:
-    repeat(auto-fill, minmax(280px, 1fr));
-
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 22px;
 }
 
 .album-card {
   overflow: hidden;
-
-  background: white;
-
+  background: #fff;
   border: 1px solid #e5e5e5;
   border-radius: 17px;
-
-  box-shadow:
-    0 6px 25px rgba(0, 0, 0, 0.05);
-
-  transition: 0.2s ease;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s;
 }
 
 .album-card:hover {
@@ -1125,18 +829,18 @@ img {
 }
 
 .album-cover {
-  height: 190px;
-
+  height: 180px;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, #161616, #454545);
+}
 
-  background:
-    linear-gradient(
-      135deg,
-      #161616,
-      #454545
-    );
+.album-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .album-cover span {
@@ -1149,60 +853,44 @@ img {
 
 .album-info h3 {
   margin: 0 0 8px;
-
   font-size: 21px;
 }
 
 .album-info > p {
   min-height: 42px;
-
   margin-bottom: 20px;
-
   color: #777;
-
   font-size: 14px;
-
   line-height: 1.5;
 }
 
 .album-actions {
   display: flex;
-
   gap: 8px;
 }
 
 .album-actions button {
   flex: 1;
-
   padding: 10px;
-
   border: 0;
   border-radius: 8px;
-
   background: #111;
-  color: white;
-
+  color: #fff;
   font-size: 12px;
   font-weight: 700;
 }
 
 .album-actions .delete-album {
   flex: 0 0 auto;
-
   background: #fff0f0;
-
   color: #c62828;
 }
 
 .empty-albums {
   padding: 80px 20px;
-
   text-align: center;
-
-  background: white;
-
+  background: #fff;
   border: 1px dashed #d5d5d5;
-
   border-radius: 18px;
 }
 
@@ -1216,43 +904,29 @@ img {
 
 .upload-card {
   max-width: 720px;
-
   margin: 10px auto;
-
   padding: 45px;
-
   text-align: center;
-
-  background: white;
-
+  background: #fff;
   border: 1px solid #e5e5e5;
-
   border-radius: 22px;
-
-  box-shadow:
-    0 12px 40px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
 }
 
 .upload-icon {
   width: 80px;
   height: 80px;
-
   margin: 0 auto 18px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   border-radius: 22px;
-
   background: #f0f0f0;
-
   font-size: 38px;
 }
 
 .upload-card h3 {
   margin: 0 0 8px;
-
   font-size: 27px;
 }
 
@@ -1262,16 +936,11 @@ img {
 
 .file-picker {
   display: inline-flex;
-
   padding: 13px 22px;
-
   border-radius: 10px;
-
   background: #111;
-  color: white;
-
+  color: #fff;
   font-weight: 700;
-
   cursor: pointer;
 }
 
@@ -1281,66 +950,47 @@ img {
 
 .selected-files {
   margin-top: 30px;
-
   padding-top: 22px;
-
   text-align: left;
-
   border-top: 1px solid #eee;
 }
 
 .selected-file {
   display: flex;
   align-items: center;
-
   gap: 10px;
-
   margin-bottom: 7px;
-
   padding: 10px 12px;
-
   border-radius: 8px;
-
   background: #f7f7f7;
 }
 
 .selected-file p {
   margin: 0;
-
   font-size: 13px;
 }
 
 .upload-message {
   margin: 20px 0;
-
   padding: 12px;
-
   border-radius: 8px;
-
   background: #f2f6ff;
-
   font-size: 14px;
 }
 
 .upload-submit {
   width: 100%;
   height: 50px;
-
   margin-top: 20px;
-
   border: 0;
   border-radius: 10px;
-
   background: #111;
-  color: white;
-
+  color: #fff;
   font-weight: 700;
 }
 
 .upload-submit:disabled {
   opacity: 0.45;
-
-  cursor: not-allowed;
 }
 
 /* =========================================================
@@ -1350,186 +1000,135 @@ img {
 .albums-page,
 .album-page {
   min-height: 100vh;
-
   background: #f7f8fa;
 }
 
 .public-header {
   min-height: 76px;
-
   padding: 13px 5%;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  background: white;
-
-  border-bottom: 1px solid #e6e6e6;
-
   position: sticky;
   top: 0;
   z-index: 100;
+  background: #fff;
+  border-bottom: 1px solid #e6e6e6;
 }
 
 .public-brand {
   display: flex;
   align-items: center;
-
   gap: 12px;
 }
 
 .public-brand img {
   width: 48px;
   height: 48px;
-
   object-fit: contain;
 }
 
 .public-brand strong {
   display: block;
-
   font-size: 15px;
 }
 
 .public-brand span {
   display: block;
-
   margin-top: 3px;
-
   color: #888;
-
   font-size: 11px;
 }
 
 .home-button {
   padding: 10px 17px;
-
   border: 0;
   border-radius: 9px;
-
   background: #111;
-  color: white;
-
+  color: #fff;
   font-weight: 700;
 }
 
-/* =========================================================
-   ALBUMS HERO
-   ========================================================= */
-
 .albums-hero {
-  padding: 85px 20px;
-
+  padding: 70px 20px;
   text-align: center;
-
   background:
-    linear-gradient(
-      135deg,
-      #0c0c0c,
-      #303030
-    );
-
-  color: white;
-}
-
-.albums-hero .hero-label {
-  color: #aaa;
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(255, 255, 255, 0.1),
+      transparent 40%
+    ),
+    linear-gradient(135deg, #111, #333);
+  color: #fff;
 }
 
 .albums-hero h1 {
-  margin: 0;
-
-  font-size: clamp(42px, 7vw, 70px);
-
+  margin: 5px 0 12px;
+  font-size: clamp(40px, 7vw, 65px);
   letter-spacing: -2px;
 }
 
 .albums-hero p:last-child {
   max-width: 600px;
-
-  margin: 18px auto;
-
+  margin: 15px auto 0;
   color: #d2d2d2;
-
   line-height: 1.7;
 }
 
-/* =========================================================
-   PUBLIC ALBUM CONTENT
-   ========================================================= */
-
 .albums-content {
-  width: min(1200px, 90%);
-
+  width: min(1100px, 92%);
   margin: auto;
-
-  padding: 60px 0 90px;
+  padding: 55px 0 80px;
 }
 
-/* =========================================================
-   PUBLIC ALBUMS — CLEAN MODERN DESIGN
-   ========================================================= */
+/* ALBUM GRID */
 
 .public-album-grid {
   display: grid;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(260px, 1fr)
-  );
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 22px;
 }
 
 .public-album-card {
   overflow: hidden;
-  background: #ffffff;
-  border: 1px solid #e8e8e8;
+  background: #fff;
+  border: 1px solid #e9e9e9;
   border-radius: 16px;
-  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.07);
   cursor: pointer;
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
+  transition: transform 0.25s, box-shadow 0.25s;
 }
 
 .public-album-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.11);
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
 }
 
-/* ALBUM COVER */
-
 .public-album-cover {
-  height: 180px;
+  height: 190px;
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #e9e9e9;
+  background: linear-gradient(135deg, #222, #555);
 }
 
 .public-album-cover img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
   display: block;
-  transition: transform 0.4s ease;
+  object-fit: cover;
+  transition: transform 0.4s;
 }
 
-.public-album-card:hover
-.public-album-cover img {
-  transform: scale(1.04);
+.public-album-card:hover .public-album-cover img {
+  transform: scale(1.05);
 }
-
-/* CAMERA WHEN THERE IS NO IMAGE */
 
 .album-camera {
-  font-size: 48px;
-  opacity: 0.65;
+  font-size: 55px;
 }
-
-/* DARK HOVER OVERLAY */
 
 .album-overlay {
   position: absolute;
@@ -1537,10 +1136,10 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.48);
+  background: rgba(0, 0, 0, 0.5);
   color: #fff;
   opacity: 0;
-  transition: opacity 0.25s ease;
+  transition: opacity 0.25s;
 }
 
 .public-album-card:hover .album-overlay {
@@ -1548,17 +1147,15 @@ img {
 }
 
 .album-overlay span {
-  padding: 10px 17px;
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  padding: 10px 18px;
+  border: 1px solid #fff;
   border-radius: 30px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
 }
 
-/* ALBUM INFORMATION */
-
 .public-album-info {
-  padding: 19px 20px 21px;
+  padding: 20px;
 }
 
 .public-album-info .album-date {
@@ -1571,189 +1168,26 @@ img {
 }
 
 .public-album-info h2 {
-  margin: 0 0 7px;
-  color: #151515;
-  font-size: 20px;
-  line-height: 1.25;
+  margin: 0 0 8px;
+  font-size: 21px;
 }
 
-.public-album-info p {
-  margin: 0 0 17px;
+.public-album-info p:not(.album-date) {
+  min-height: 42px;
+  margin: 0 0 18px;
   color: #777;
   font-size: 13px;
   line-height: 1.55;
 }
 
 .public-album-info button {
-  padding: 10px 15px;
+  padding: 10px 16px;
   border: 0;
   border-radius: 8px;
   background: #111;
   color: #fff;
   font-size: 12px;
   font-weight: 700;
-  transition: background 0.2s ease;
-}
-
-.public-album-info button:hover {
-  background: #333;
-}
-  display: grid;
-
-  grid-template-columns:
-    repeat(auto-fit, minmax(280px, 1fr));
-
-  gap: 28px;
-}
-
-.public-album-card {
-  overflow: hidden;
-
-  background: white;
-
-  border-radius: 18px;
-
-  box-shadow:
-    0 8px 30px rgba(0, 0, 0, 0.08);
-
-  cursor: pointer;
-
-  transition: 0.25s ease;
-}
-
-.public-album-card:hover {
-  transform: translateY(-6px);
-
-  box-shadow:
-    0 18px 45px rgba(0, 0, 0, 0.13);
-}
-
-/* IMPORTANT:
-   This allows your album cover image to display properly.
-*/
-
-.public-album-cover {
-  position: relative;
-
-  height: 250px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  overflow: hidden;
-
-  background:
-    linear-gradient(
-      135deg,
-      #222,
-      #555
-    );
-}
-
-.public-album-cover img {
-  width: 100%;
-  height: 100%;
-
-  display: block;
-
-  object-fit: cover;
-
-  transition: transform 0.4s ease;
-}
-
-.public-album-card:hover
-.public-album-cover img {
-  transform: scale(1.05);
-}
-
-.album-camera {
-  position: absolute;
-
-  font-size: 65px;
-
-  z-index: 1;
-}
-
-/* FLASH / VIEW OVERLAY */
-
-.album-overlay {
-  position: absolute;
-
-  inset: 0;
-
-  z-index: 3;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background:
-    rgba(0, 0, 0, 0.55);
-
-  color: white;
-
-  opacity: 0;
-
-  transition: 0.25s ease;
-}
-
-.public-album-card:hover .album-overlay {
-  opacity: 1;
-}
-
-.album-overlay span {
-  padding: 12px 20px;
-
-  border: 1px solid white;
-
-  border-radius: 30px;
-
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.public-album-info {
-  padding: 24px;
-}
-
-.public-album-info .album-date {
-  margin: 0 0 8px;
-
-  color: #999;
-
-  font-size: 10px;
-  font-weight: 800;
-
-  letter-spacing: 1px;
-
-  text-transform: uppercase;
-}
-
-.public-album-info h2 {
-  margin: 0 0 10px;
-
-  font-size: 23px;
-}
-
-.public-album-info p {
-  color: #777;
-
-  line-height: 1.6;
-}
-
-.public-album-info button {
-  padding: 11px 18px;
-
-  border: 0;
-  border-radius: 8px;
-
-  background: #111;
-  color: white;
-
-  font-weight: 700;
-
-  transition: 0.2s ease;
 }
 
 .public-album-info button:hover {
@@ -1765,136 +1199,91 @@ img {
    ========================================================= */
 
 .album-hero {
-  padding: 70px 5%;
-
-  background:
-    linear-gradient(
-      135deg,
-      #111,
-      #333
-    );
-
-  color: white;
+  padding: 65px 5%;
+  background: linear-gradient(135deg, #111, #333);
+  color: #fff;
 }
 
 .album-hero-content {
-  width: min(1100px, 100%);
-
+  width: min(1050px, 100%);
   margin: auto;
 }
 
 .album-hero h1 {
   margin: 5px 0 15px;
-
   font-size: clamp(38px, 6vw, 60px);
-
-  letter-spacing: -2px;
 }
 
 .album-description {
   max-width: 700px;
-
   color: #d3d3d3;
-
   line-height: 1.7;
 }
 
 .album-meta {
   display: flex;
-
-  flex-wrap: wrap;
-
   gap: 25px;
-
+  flex-wrap: wrap;
   margin-top: 25px;
-
   color: #ddd;
-
   font-size: 14px;
 }
 
-/* =========================================================
-   ALBUM PHOTOS
-   ========================================================= */
-
 .album-photos {
-  width: min(1400px, 94%);
-
+  width: min(1300px, 94%);
   margin: auto;
-
-  padding: 55px 0 90px;
+  padding: 50px 0 80px;
 }
 
 .album-page .photo-grid {
-  columns: 4 250px;
-
-  column-gap: 18px;
+  columns: 4 230px;
+  column-gap: 16px;
 }
 
 .album-page .photo-card {
-  margin-bottom: 18px;
-
+  margin-bottom: 16px;
   overflow: hidden;
-
   break-inside: avoid;
-
-  background: white;
-
-  border-radius: 14px;
-
-  box-shadow:
-    0 5px 22px rgba(0, 0, 0, 0.08);
+  background: #fff;
+  border-radius: 13px;
+  box-shadow: 0 5px 22px rgba(0, 0, 0, 0.08);
 }
 
 .photo-image-wrapper {
   position: relative;
-
   overflow: hidden;
-
   background: #eee;
 }
 
 .album-page .photo-image {
   display: block;
-
   width: 100%;
   height: auto;
-
-  transition: transform 0.35s ease;
+  transition: transform 0.35s;
 }
 
-.album-page .photo-card:hover
-.photo-image {
+.album-page .photo-card:hover .photo-image {
   transform: scale(1.03);
 }
 
 .photo-overlay {
   position: absolute;
-
   inset: 0;
-
   display: flex;
   justify-content: flex-end;
   align-items: flex-start;
-
   gap: 8px;
-
   padding: 14px;
-
-  background:
-    linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.45),
-      transparent 40%
-    );
-
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.45),
+    transparent 40%
+  );
   opacity: 0;
-
-  transition: 0.25s ease;
+  transition: opacity 0.25s;
 }
 
-.album-page .photo-card:hover
-.photo-overlay {
+.album-page .photo-card:hover .photo-overlay {
   opacity: 1;
 }
 
@@ -1902,14 +1291,10 @@ img {
 .download-button {
   width: 40px;
   height: 40px;
-
   border: 0;
   border-radius: 50%;
-
   background: rgba(255, 255, 255, 0.95);
-
   color: #111;
-
   font-size: 20px;
 }
 
@@ -1923,29 +1308,21 @@ img {
 
 .photo-info > p {
   margin: 0 0 12px;
-
   color: #555;
-
   font-size: 13px;
 }
 
 .photo-actions {
   display: flex;
-
   gap: 8px;
 }
 
 .photo-actions button {
   flex: 1;
-
   padding: 9px;
-
   border: 1px solid #ddd;
-
   border-radius: 7px;
-
-  background: white;
-
+  background: #fff;
   font-size: 12px;
   font-weight: 700;
 }
@@ -1958,25 +1335,18 @@ img {
 .album-error,
 .empty-photos,
 .albums-status {
-  padding: 100px 20px;
-
+  padding: 90px 20px;
   text-align: center;
 }
 
 .loading-spinner {
   width: 40px;
   height: 40px;
-
   margin: 0 auto 20px;
-
   border: 4px solid #ddd;
-
   border-top-color: #111;
-
   border-radius: 50%;
-
-  animation:
-    crm-spin 0.8s linear infinite;
+  animation: crm-spin 0.8s linear infinite;
 }
 
 @keyframes crm-spin {
@@ -1994,15 +1364,11 @@ img {
 .album-error button,
 .albums-status button {
   margin-top: 15px;
-
   padding: 11px 20px;
-
   border: 0;
   border-radius: 9px;
-
   background: #111;
-  color: white;
-
+  color: #fff;
   font-weight: 700;
 }
 
@@ -2011,16 +1377,15 @@ img {
    ========================================================= */
 
 .public-footer {
-  padding: 45px 20px;
-
+  padding: 40px 20px;
   text-align: center;
+  background: #111;
+  color: #fff;
 }
 
 .public-footer p {
   margin-top: 8px;
-
   color: #999;
-
   font-size: 13px;
 }
 
@@ -2029,12 +1394,9 @@ img {
    ========================================================= */
 
 @media (max-width: 750px) {
-
   .navbar {
     min-height: 70px;
-
     padding: 12px 4%;
-
     flex-wrap: wrap;
   }
 
@@ -2049,24 +1411,16 @@ img {
 
   .admin-btn {
     padding: 9px 12px;
-
     font-size: 11px;
   }
 
   .hero {
-    min-height: 600px;
-
-    padding: 75px 6%;
+    min-height: 580px;
+    padding: 70px 6%;
   }
 
   .hero h1 {
-    font-size:
-      clamp(
-        48px,
-        15vw,
-        72px
-      );
-
+    font-size: clamp(48px, 15vw, 72px);
     letter-spacing: -3px;
   }
 
@@ -2076,7 +1430,6 @@ img {
 
   .gallery-section {
     width: 92%;
-
     padding: 60px 0;
   }
 
@@ -2098,15 +1451,12 @@ img {
 
   .search-box {
     width: 100%;
-
     margin-bottom: 14px;
   }
 
   .filters {
     overflow-x: auto;
-
     flex-wrap: nowrap;
-
     padding-bottom: 5px;
   }
 
@@ -2116,7 +1466,6 @@ img {
 
   .site .photo-grid {
     columns: 2 140px;
-
     column-gap: 10px;
   }
 
@@ -2126,11 +1475,8 @@ img {
 
   .favorites-section {
     width: 92%;
-
     padding: 30px;
-
     flex-direction: column;
-
     align-items: flex-start;
   }
 
@@ -2140,7 +1486,6 @@ img {
 
   .site footer {
     flex-direction: column;
-
     align-items: flex-start;
   }
 
@@ -2165,7 +1510,6 @@ img {
 
   .dashboard-content {
     width: 92%;
-
     padding-top: 35px;
   }
 
@@ -2179,7 +1523,6 @@ img {
 
   .create-album-btn {
     width: 100%;
-
     margin-top: 20px;
   }
 
@@ -2205,11 +1548,11 @@ img {
   }
 
   .albums-hero {
-    padding: 60px 20px;
+    padding: 55px 20px;
   }
 
   .album-hero {
-    padding: 55px 5%;
+    padding: 50px 5%;
   }
 
   .album-meta {
@@ -2218,7 +1561,6 @@ img {
 
   .album-page .photo-grid {
     columns: 2 140px;
-
     column-gap: 10px;
   }
 
@@ -2237,11 +1579,10 @@ img {
   .logout-btn,
   .home-button {
     padding: 9px 12px;
-
     font-size: 12px;
   }
 
   .public-album-cover {
-    height: 220px;
+    height: 210px;
   }
 }
