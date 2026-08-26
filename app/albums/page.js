@@ -142,7 +142,25 @@ export default function AlbumsPage() {
                 >
 
                   {/* COVER */}
-                  <div className="public-album-cover">
+ <div className="public-album-cover">
+
+  {album.cover_url ? (
+    <img
+      src={album.cover_url}
+      alt={album.name}
+      loading="lazy"
+    />
+  ) : (
+    <div className="album-camera">
+      📸
+    </div>
+  )}
+
+  <div className="album-overlay">
+    <span>View Album →</span>
+  </div>
+
+</div>
 
                     {album.cover_url ? (
 
