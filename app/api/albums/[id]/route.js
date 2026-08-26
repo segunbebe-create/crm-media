@@ -7,10 +7,12 @@ export async function GET(request, { params }) {
   try {
     const { id } = await params;
 
-    // Make sure the ID is valid
-    const albumId = Number.parseInt(id, 10);
+    const albumId = Number(id);
 
-    if (!Number.isInteger(albumId) || albumId <= 0) {
+    if (
+      !Number.isInteger(albumId) ||
+      albumId <= 0
+    ) {
       return NextResponse.json(
         {
           error: "Invalid album ID.",
@@ -21,8 +23,11 @@ export async function GET(request, { params }) {
       );
     }
 
-    // Get the album
-    const albumResult = await sql`
+    /*
+    Get album
+    */
+
+    const albums = await sql`
       SELECT
         id,
         name,
@@ -30,10 +35,9 @@ export async function GET(request, { params }) {
         created_at
       FROM albums
       WHERE id = ${albumId}
-      LIMIT 1
     `;
 
-    if (albumResult.length === 0) {
+    if (albums.length === 0) {
       return NextResponse.json(
         {
           error: "Album not found.",
@@ -44,8 +48,11 @@ export async function GET(request, { params }) {
       );
     }
 
-    // Get all photos belonging to this album
-    const photoResult = await sql`
+    /*
+    Get photos
+    */
+
+    const photos = await sql`
       SELECT
         id,
         album_id,
@@ -57,14 +64,26 @@ export async function GET(request, { params }) {
       ORDER BY created_at DESC
     `;
 
+    /*
+    Convert private Blob URLs into
+    URLs handled by our image API.
+    */
+
+    const formattedPhotos = photos.map((photo) => ({
+      ...photo,
+
+      url: `/api/upload?url=${encodeURIComponent(
+        photo.url
+      )}`,
+    }));
+
     return NextResponse.json({
-      success: true,
-      album: albumResult[0],
-      photos: photoResult,
+      album: albums[0],
+      photos: formattedPhotos,
     });
   } catch (error) {
     console.error(
-      "GET /api/albums/[id] ERROR:",
+      "GET ALBUM ERROR:",
       error
     );
 
