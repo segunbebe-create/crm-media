@@ -27,7 +27,7 @@ export default function AlbumsPage() {
 
       const data = await response.json();
 
-      setAlbums(data);
+      setAlbums(Array.isArray(data) ? data : []);
     } catch (err) {
       setError(
         err instanceof Error
@@ -39,9 +39,15 @@ export default function AlbumsPage() {
     }
   }
 
+  function openAlbum(id) {
+    router.push(`/albums/${id}`);
+  }
+
   return (
     <main className="albums-page">
+
       <header className="public-header">
+
         <div className="public-brand">
           <img
             src="/logo.png"
@@ -60,9 +66,11 @@ export default function AlbumsPage() {
         >
           Home
         </button>
+
       </header>
 
       <section className="albums-hero">
+
         <p className="hero-label">
           CRM MEDIA GALLERY
         </p>
@@ -72,9 +80,11 @@ export default function AlbumsPage() {
         <p>
           Browse memorable moments from Chapel of Rest Ministry.
         </p>
+
       </section>
 
       <section className="albums-content">
+
         {loading && (
           <div className="albums-status">
             <div className="loading-spinner" />
@@ -83,7 +93,7 @@ export default function AlbumsPage() {
         )}
 
         {error && (
-          <div className="albums-status error">
+          <div className="albums-status">
             <h2>Something went wrong</h2>
 
             <p>{error}</p>
@@ -94,100 +104,109 @@ export default function AlbumsPage() {
           </div>
         )}
 
-        {!loading &&
-          !error &&
-          albums.length === 0 && (
-            <div className="albums-status">
-              <div className="empty-album-icon">
-                📷
-              </div>
+        {!loading && !error && albums.length === 0 && (
+          <div className="albums-status">
 
-              <h2>No albums yet</h2>
-
-              <p>
-                New church memories will appear here soon.
-              </p>
+            <div className="empty-album-icon">
+              📷
             </div>
-          )}
 
-        {!loading &&
-          !error &&
-          albums.length > 0 && (
-            <div className="public-album-grid">
-              {albums.map((album) => (
-                <article
-                  className="public-album-card"
-                  key={album.id}
-                  onClick={() =>
-                    router.push(`/albums/${album.id}`)
-                  }
-                >
-                  <div className="public-album-cover">
-                    {album.cover_url ? (
-                      <img
-                        src={album.cover_url}
-                        alt={album.name}
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="album-camera">
-                        📸
-                      </div>
-                    )}
+            <h2>No albums yet</h2>
 
-                    <div className="album-overlay">
-                      <span>View Album →</span>
+            <p>
+              New church memories will appear here soon.
+            </p>
+
+          </div>
+        )}
+
+        {!loading && !error && albums.length > 0 && (
+          <div className="public-album-grid">
+
+            {albums.map((album) => (
+              <article
+                className="public-album-card"
+                key={album.id}
+                onClick={() => openAlbum(album.id)}
+              >
+
+                <div className="public-album-cover">
+
+                  {album.cover_url ? (
+                    <img
+                      src={album.cover_url}
+                      alt={album.name}
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="album-camera">
+                      📸
                     </div>
+                  )}
+
+                  <div className="album-overlay">
+                    <span>
+                      View Album →
+                    </span>
                   </div>
 
-                  <div className="public-album-info">
-                    <p className="album-date">
-                      {album.created_at
-                        ? new Date(
-                            album.created_at
-                          ).toLocaleDateString(
-                            "en-NG",
-                            {
-                              day: "numeric",
-                              month: "short",
-                              year: "numeric",
-                            }
-                          )
-                        : "CRM Media"}
-                    </p>
+                </div>
 
-                    <h2>{album.name}</h2>
+                <div className="public-album-info">
 
-                    <p>
-                      {album.description ||
-                        "View photos from this album."}
-                    </p>
+                  <p className="album-date">
+                    {album.created_at
+                      ? new Date(
+                          album.created_at
+                        ).toLocaleDateString(
+                          "en-NG",
+                          {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                          }
+                        )
+                      : "CRM Media"}
+                  </p>
 
-                    <button
-                      onClick={(event) => {
-                        event.stopPropagation();
+                  <h2>
+                    {album.name}
+                  </h2>
 
-                        router.push(
-                          `/albums/${album.id}`
-                        );
-                      }}
-                    >
-                      View Photos →
-                    </button>
-                  </div>
-                </article>
-              ))}
-            </div>
-          )}
+                  <p>
+                    {album.description ||
+                      "View photos from this album."}
+                  </p>
+
+                  <button
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      openAlbum(album.id);
+                    }}
+                  >
+                    View Photos →
+                  </button>
+
+                </div>
+
+              </article>
+            ))}
+
+          </div>
+        )}
+
       </section>
 
       <footer className="public-footer">
+
         <strong>CRM MEDIA</strong>
 
         <p>
           © 2026 Chapel of Rest Ministry
         </p>
+
       </footer>
+
     </main>
   );
 }
