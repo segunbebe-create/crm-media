@@ -22,9 +22,28 @@ export async function GET() {
       ORDER BY a.created_at DESC
     `;
 
-    return NextResponse.json(albums);
+    const formattedAlbums = albums.map((album) => {
+      let coverUrl = null;
+
+      if (album.cover_url) {
+        coverUrl =
+          `/api/upload?url=${encodeURIComponent(
+            album.cover_url
+          )}`;
+      }
+
+      return {
+        ...album,
+        cover_url: coverUrl,
+      };
+    });
+
+    return NextResponse.json(formattedAlbums);
   } catch (error) {
-    console.error("GET ALBUMS ERROR:", error);
+    console.error(
+      "GET ALBUMS ERROR:",
+      error
+    );
 
     return NextResponse.json(
       {
@@ -42,6 +61,7 @@ export async function POST(request) {
     const body = await request.json();
 
     const name = body.name?.trim();
+
     const description =
       body.description?.trim() || "";
 
@@ -101,7 +121,10 @@ export async function DELETE(request) {
 
     const id = Number(body.id);
 
-    if (!Number.isInteger(id) || id <= 0) {
+    if (
+      !Number.isInteger(id) ||
+      id <= 0
+    ) {
       return NextResponse.json(
         {
           error: "Album ID is required.",
