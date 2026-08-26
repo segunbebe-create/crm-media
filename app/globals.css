@@ -2004,3 +2004,67 @@ img {
     font-size: 12px;
   }
 }
+/* =========================================================
+   ALBUM COVER IMAGES
+   ========================================================= */
+
+.public-album-cover {
+  height: 230px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    135deg,
+    #111,
+    #333
+  );
+}
+
+.album-cover-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.public-album-card:hover .album-cover-image {
+  transform: scale(1.06);
+}
+
+.album-camera {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 65px;
+}
+
+.album-overlay {
+  z-index: 2;
+}
+
+.public-album-info {
+  position: relative;
+  background: #fff;
+}
+
+.public-album-info .album-date {
+  margin: 0 0 7px;
+  color: #999;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.public-album-info h2 {
+  margin: 0 0 10px;
+  color: #151515;
+}
+
+.public-album-info p:not(.album-date) {
+  margin: 0 0 18px;
+  color: #777;
+  line-height: 1.6;
+}
