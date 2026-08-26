@@ -41,13 +41,8 @@ export default function AlbumsPage() {
 
   return (
     <main className="albums-page">
-
-      {/* HEADER */}
-
       <header className="public-header">
-
         <div className="public-brand">
-
           <img
             src="/logo.png"
             alt="CRM Media"
@@ -55,12 +50,8 @@ export default function AlbumsPage() {
 
           <div>
             <strong>CRM MEDIA</strong>
-
-            <span>
-              Chapel of Rest Ministry
-            </span>
+            <span>Chapel of Rest Ministry</span>
           </div>
-
         </div>
 
         <button
@@ -69,58 +60,37 @@ export default function AlbumsPage() {
         >
           Home
         </button>
-
       </header>
 
-      {/* HERO */}
-
       <section className="albums-hero">
-
         <p className="hero-label">
           CRM MEDIA GALLERY
         </p>
 
-        <h1>
-          Our Albums
-        </h1>
+        <h1>Our Albums</h1>
 
         <p>
           Browse memorable moments from Chapel of Rest Ministry.
         </p>
-
       </section>
 
-      {/* ALBUMS */}
-
       <section className="albums-content">
-
         {loading && (
           <div className="albums-status">
-
             <div className="loading-spinner" />
-
-            <p>
-              Loading albums...
-            </p>
-
+            <p>Loading albums...</p>
           </div>
         )}
 
         {error && (
           <div className="albums-status error">
+            <h2>Something went wrong</h2>
 
-            <h2>
-              Something went wrong
-            </h2>
-
-            <p>
-              {error}
-            </p>
+            <p>{error}</p>
 
             <button onClick={loadAlbums}>
               Try Again
             </button>
-
           </div>
         )}
 
@@ -128,44 +98,31 @@ export default function AlbumsPage() {
           !error &&
           albums.length === 0 && (
             <div className="albums-status">
-
               <div className="empty-album-icon">
                 📷
               </div>
 
-              <h2>
-                No albums yet
-              </h2>
+              <h2>No albums yet</h2>
 
               <p>
                 New church memories will appear here soon.
               </p>
-
             </div>
           )}
 
         {!loading &&
           !error &&
           albums.length > 0 && (
-
             <div className="public-album-grid">
-
               {albums.map((album) => (
-
                 <article
                   className="public-album-card"
                   key={album.id}
                   onClick={() =>
-                    router.push(
-                      `/albums/${album.id}`
-                    )
+                    router.push(`/albums/${album.id}`)
                   }
                 >
-
-                  {/* COVER */}
-
                   <div className="public-album-cover">
-
                     {album.cover_url ? (
                       <img
                         src={album.cover_url}
@@ -179,17 +136,11 @@ export default function AlbumsPage() {
                     )}
 
                     <div className="album-overlay">
-                      <span>
-                        View Album →
-                      </span>
+                      <span>View Album →</span>
                     </div>
-
                   </div>
 
-                  {/* INFORMATION */}
-
                   <div className="public-album-info">
-
                     <p className="album-date">
                       {album.created_at
                         ? new Date(
@@ -205,9 +156,7 @@ export default function AlbumsPage() {
                         : "CRM Media"}
                     </p>
 
-                    <h2>
-                      {album.name}
-                    </h2>
+                    <h2>{album.name}</h2>
 
                     <p>
                       {album.description ||
@@ -223,39 +172,22 @@ export default function AlbumsPage() {
                         );
                       }}
                     >
-                      View Photos
-                      <span>
-                        {" "}
-                        →
-                      </span>
+                      View Photos →
                     </button>
-
                   </div>
-
                 </article>
-
               ))}
-
             </div>
-
           )}
-
       </section>
 
-      {/* FOOTER */}
-
       <footer className="public-footer">
-
-        <strong>
-          CRM MEDIA
-        </strong>
+        <strong>CRM MEDIA</strong>
 
         <p>
           © 2026 Chapel of Rest Ministry
         </p>
-
       </footer>
-
     </main>
   );
 }
