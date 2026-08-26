@@ -1,8 +1,66 @@
-import { put } from "@vercel/blob";
+import { get, put } from "@vercel/blob";
 import { neon } from "@neondatabase/serverless";
 import { NextResponse } from "next/server";
 
 const sql = neon(process.env.DATABASE_URL);
+
+/*
+=========================================================
+GET
+Serve private Blob images through our API
+=========================================================
+*/
+
+export async function GET(request) {
+  try {
+    const { searchParams } = new URL(request.url);
+
+    const blobUrl = searchParams.get("url");
+
+    if (!blobUrl) {
+      return NextResponse.json(
+        { error: "Image URL is required." },
+        { status: 400 }
+      );
+    }
+
+    const result = await get(blobUrl, {
+      access: "private",
+    });
+
+    if (!result) {
+      return new NextResponse("Image not found.", {
+        status: 404,
+      });
+    }
+
+    return new NextResponse(result.stream, {
+      status: 200,
+      headers: {
+        "Content-Type":
+          result.blob.contentType || "image/jpeg",
+
+        "Cache-Control":
+          "public, max-age=31536000, immutable",
+
+        "X-Content-Type-Options": "nosniff",
+      },
+    });
+  } catch (error) {
+    console.error("GET IMAGE ERROR:", error);
+
+    return new NextResponse("Could not load image.", {
+      status: 500,
+    });
+  }
+}
+
+/*
+=========================================================
+POST
+Upload image to private Vercel Blob
+=========================================================
+*/
 
 export async function POST(request) {
   try {
@@ -32,10 +90,22 @@ export async function POST(request) {
       );
     }
 
+    const numericAlbumId = Number(albumId);
+
+    if (
+      !Number.isInteger(numericAlbumId) ||
+      numericAlbumId <= 0
+    ) {
+      return NextResponse.json(
+        { error: "Invalid album ID." },
+        { status: 400 }
+      );
+    }
+
     const album = await sql`
       SELECT id
       FROM albums
-      WHERE id = ${Number(albumId)}
+      WHERE id = ${numericAlbumId}
     `;
 
     if (album.length === 0) {
@@ -45,14 +115,22 @@ export async function POST(request) {
       );
     }
 
+    /*
+    Upload to PRIVATE Blob storage.
+    */
+
     const blob = await put(
       `crm-media/${Date.now()}-${file.name}`,
       file,
       {
-        access: "public",
+        access: "private",
         addRandomSuffix: true,
       }
     );
+
+    /*
+    Save the original private Blob URL.
+    */
 
     const photo = await sql`
       INSERT INTO photos (
@@ -61,16 +139,34 @@ export async function POST(request) {
         url
       )
       VALUES (
-        ${Number(albumId)},
+        ${numericAlbumId},
         ${file.name},
         ${blob.url}
       )
-      RETURNING id, album_id, name, url, created_at
+      RETURNING
+        id,
+        album_id,
+        name,
+        url,
+        created_at
     `;
+
+    /*
+    Return an API URL that the website can actually display.
+    */
+
+    const imageUrl =
+      `/api/upload?url=${encodeURIComponent(
+        blob.url
+      )}`;
 
     return NextResponse.json({
       success: true,
-      photo: photo[0],
+
+      photo: {
+        ...photo[0],
+        url: imageUrl,
+      },
     });
   } catch (error) {
     console.error("UPLOAD ERROR:", error);
