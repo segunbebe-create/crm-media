@@ -1467,7 +1467,137 @@ img {
   padding: 60px 0 90px;
 }
 
+/* =========================================================
+   PUBLIC ALBUMS — CLEAN MODERN DESIGN
+   ========================================================= */
+
 .public-album-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(260px, 1fr)
+  );
+  gap: 22px;
+}
+
+.public-album-card {
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #e8e8e8;
+  border-radius: 16px;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.public-album-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.11);
+}
+
+/* ALBUM COVER */
+
+.public-album-cover {
+  height: 180px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e9e9e9;
+}
+
+.public-album-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.public-album-card:hover
+.public-album-cover img {
+  transform: scale(1.04);
+}
+
+/* CAMERA WHEN THERE IS NO IMAGE */
+
+.album-camera {
+  font-size: 48px;
+  opacity: 0.65;
+}
+
+/* DARK HOVER OVERLAY */
+
+.album-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.48);
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.public-album-card:hover .album-overlay {
+  opacity: 1;
+}
+
+.album-overlay span {
+  padding: 10px 17px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ALBUM INFORMATION */
+
+.public-album-info {
+  padding: 19px 20px 21px;
+}
+
+.public-album-info .album-date {
+  margin: 0 0 7px;
+  color: #999;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.public-album-info h2 {
+  margin: 0 0 7px;
+  color: #151515;
+  font-size: 20px;
+  line-height: 1.25;
+}
+
+.public-album-info p {
+  margin: 0 0 17px;
+  color: #777;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.public-album-info button {
+  padding: 10px 15px;
+  border: 0;
+  border-radius: 8px;
+  background: #111;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  transition: background 0.2s ease;
+}
+
+.public-album-info button:hover {
+  background: #333;
+}
   display: grid;
 
   grid-template-columns:
