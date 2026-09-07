@@ -1,6 +1,7 @@
 import { get, put } from "@vercel/blob";
 import { neon } from "@neondatabase/serverless";
 import { NextResponse } from "next/server";
+import sharp from "sharp";
 
 const sql = neon(process.env.DATABASE_URL);
 
@@ -10,11 +11,9 @@ GET
 Serve private Blob images through our API
 =========================================================
 */
-
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
-
     const blobUrl = searchParams.get("url");
 
     if (!blobUrl) {
@@ -38,7 +37,7 @@ export async function GET(request) {
       status: 200,
       headers: {
         "Content-Type":
-          result.blob.contentType || "image/jpeg",
+          result.blob.contentType || "image/webp",
 
         "Cache-Control":
           "public, max-age=31536000, immutable",
@@ -58,10 +57,9 @@ export async function GET(request) {
 /*
 =========================================================
 POST
-Upload image to private Vercel Blob
+Compress image and upload to PRIVATE Vercel Blob
 =========================================================
 */
-
 export async function POST(request) {
   try {
     const formData = await request.formData();
@@ -69,6 +67,11 @@ export async function POST(request) {
     const file = formData.get("file");
     const albumId = formData.get("albumId");
 
+    /*
+    -----------------------------------------------------
+    Validate file
+    -----------------------------------------------------
+    */
     if (!file) {
       return NextResponse.json(
         { error: "No file provided." },
@@ -102,6 +105,11 @@ export async function POST(request) {
       );
     }
 
+    /*
+    -----------------------------------------------------
+    Check album exists
+    -----------------------------------------------------
+    */
     const album = await sql`
       SELECT id
       FROM albums
@@ -116,22 +124,79 @@ export async function POST(request) {
     }
 
     /*
-    Upload to PRIVATE Blob storage.
+    -----------------------------------------------------
+    Read uploaded image
+    -----------------------------------------------------
     */
+    const originalBuffer = Buffer.from(
+      await file.arrayBuffer()
+    );
 
+    /*
+    -----------------------------------------------------
+    COMPRESS IMAGE
+    -----------------------------------------------------
+
+    Maximum dimensions:
+    2400 x 2400
+
+    Output:
+    WebP
+
+    Quality:
+    82
+
+    This significantly reduces storage size while
+    keeping the image looking good.
+    -----------------------------------------------------
+    */
+    const compressedBuffer = await sharp(originalBuffer)
+      .rotate()
+      .resize({
+        width: 2400,
+        height: 2400,
+        fit: "inside",
+        withoutEnlargement: true,
+      })
+      .webp({
+        quality: 82,
+        effort: 4,
+      })
+      .toBuffer();
+
+    /*
+    -----------------------------------------------------
+    Create safe filename
+    -----------------------------------------------------
+    */
+    const originalName = file.name || "image";
+    const baseName = originalName
+      .replace(/\.[^/.]+$/, "")
+      .replace(/[^a-zA-Z0-9-_]/g, "-");
+
+    const fileName =
+      `${baseName}-${Date.now()}.webp`;
+
+    /*
+    -----------------------------------------------------
+    Upload COMPRESSED image to PRIVATE Blob
+    -----------------------------------------------------
+    */
     const blob = await put(
-      `crm-media/${Date.now()}-${file.name}`,
-      file,
+      `crm-media/${fileName}`,
+      compressedBuffer,
       {
         access: "private",
         addRandomSuffix: true,
+        contentType: "image/webp",
       }
     );
 
     /*
-    Save the original private Blob URL.
+    -----------------------------------------------------
+    Save private Blob URL in database
+    -----------------------------------------------------
     */
-
     const photo = await sql`
       INSERT INTO photos (
         album_id,
@@ -140,7 +205,7 @@ export async function POST(request) {
       )
       VALUES (
         ${numericAlbumId},
-        ${file.name},
+        ${originalName},
         ${blob.url}
       )
       RETURNING
@@ -152,9 +217,10 @@ export async function POST(request) {
     `;
 
     /*
-    Return an API URL that the website can actually display.
+    -----------------------------------------------------
+    Website-accessible API URL
+    -----------------------------------------------------
     */
-
     const imageUrl =
       `/api/upload?url=${encodeURIComponent(
         blob.url
@@ -166,6 +232,26 @@ export async function POST(request) {
       photo: {
         ...photo[0],
         url: imageUrl,
+      },
+
+      compression: {
+        originalSize: originalBuffer.length,
+        compressedSize: compressedBuffer.length,
+
+        savedBytes:
+          originalBuffer.length -
+          compressedBuffer.length,
+
+        savedPercentage:
+          originalBuffer.length > 0
+            ? Math.round(
+                (
+                  1 -
+                  compressedBuffer.length /
+                    originalBuffer.length
+                ) * 100
+              )
+            : 0,
       },
     });
   } catch (error) {
