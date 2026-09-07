@@ -22,6 +22,24 @@ export default function AlbumPage() {
     loadFavorites();
   }, [albumId]);
 
+  async function trackEvent(eventType, extra = {}) {
+    try {
+      await fetch("/api/analytics", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          eventType,
+          pagePath: `/albums/${albumId}`,
+          ...extra,
+        }),
+      });
+    } catch (error) {
+      console.error("ANALYTICS ERROR:", error);
+    }
+  }
+
   async function loadAlbum() {
     try {
       setLoading(true);
@@ -44,6 +62,22 @@ export default function AlbumPage() {
 
       setAlbum(data.album);
       setPhotos(data.photos || []);
+
+      // Record one album view
+      trackEvent("album_view", {
+        albumId: Number(albumId),
+      });
+
+      // Record photo views
+      // Each photo is counted once when the album loads.
+      if (data.photos?.length) {
+        data.photos.forEach((photo) => {
+          trackEvent("photo_view", {
+            albumId: Number(albumId),
+            photoId: Number(photo.id),
+          });
+        });
+      }
     } catch (err) {
       setError(
         err.message || "Could not load album."
@@ -101,14 +135,23 @@ export default function AlbumPage() {
 
     if (!mediaUrl) return;
 
+    // Record the download
+    trackEvent("download", {
+      albumId: Number(albumId),
+      photoId: Number(photo.id),
+    });
+
     const link = document.createElement("a");
 
     link.href = mediaUrl;
+
     link.download =
       photo.name || "CRM-Media-photo";
 
     document.body.appendChild(link);
+
     link.click();
+
     document.body.removeChild(link);
   }
 
