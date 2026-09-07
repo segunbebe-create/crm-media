@@ -17,6 +17,9 @@ export async function GET(request) {
 
     const sql = neon(process.env.DATABASE_URL);
 
+    // ==========================================
+    // ALBUMS TABLE
+    // ==========================================
     await sql`
       CREATE TABLE IF NOT EXISTS albums (
         id SERIAL PRIMARY KEY,
@@ -26,6 +29,9 @@ export async function GET(request) {
       )
     `;
 
+    // ==========================================
+    // PHOTOS TABLE
+    // ==========================================
     await sql`
       CREATE TABLE IF NOT EXISTS photos (
         id SERIAL PRIMARY KEY,
@@ -38,9 +44,47 @@ export async function GET(request) {
       )
     `;
 
+    // ==========================================
+    // ANALYTICS TABLE
+    // ==========================================
+    await sql`
+      CREATE TABLE IF NOT EXISTS analytics_events (
+        id SERIAL PRIMARY KEY,
+        event_type VARCHAR(50) NOT NULL,
+        album_id INTEGER,
+        photo_id INTEGER,
+        page_path TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `;
+
+    // ==========================================
+    // ANALYTICS INDEXES
+    // ==========================================
+    await sql`
+      CREATE INDEX IF NOT EXISTS analytics_events_type_idx
+      ON analytics_events(event_type)
+    `;
+
+    await sql`
+      CREATE INDEX IF NOT EXISTS analytics_events_created_idx
+      ON analytics_events(created_at)
+    `;
+
+    await sql`
+      CREATE INDEX IF NOT EXISTS analytics_events_photo_idx
+      ON analytics_events(photo_id)
+    `;
+
+    await sql`
+      CREATE INDEX IF NOT EXISTS analytics_events_album_idx
+      ON analytics_events(album_id)
+    `;
+
     return NextResponse.json({
       success: true,
-      message: "CRM Media database tables created successfully.",
+      message:
+        "CRM Media database tables and analytics system created successfully.",
     });
   } catch (error) {
     console.error("DATABASE SETUP ERROR:", error);
@@ -48,7 +92,9 @@ export async function GET(request) {
     return NextResponse.json(
       {
         success: false,
-        error: error.message || "Database setup failed.",
+        error:
+          error.message ||
+          "Database setup failed.",
       },
       { status: 500 }
     );
