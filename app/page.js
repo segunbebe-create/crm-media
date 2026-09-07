@@ -11,6 +11,20 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Record a website visit
+    fetch("/api/analytics", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        eventType: "website_view",
+        pagePath: "/",
+      }),
+    }).catch((error) => {
+      console.error("ANALYTICS ERROR:", error);
+    });
+
     loadAlbums();
   }, []);
 
@@ -68,6 +82,7 @@ export default function Home() {
 
           <div>
             <strong>CRM MEDIA</strong>
+
             <span>
               Chapel of Rest Ministry
             </span>
@@ -173,6 +188,7 @@ export default function Home() {
         <div className="section-heading">
 
           <div>
+
             <span className="small-label">
               CRM MEDIA
             </span>
@@ -180,6 +196,7 @@ export default function Home() {
             <h2>
               Latest captures
             </h2>
+
           </div>
 
           <p>
@@ -192,11 +209,13 @@ export default function Home() {
         {loading ? (
 
           <div className="empty-state">
+
             <div className="loading-spinner" />
 
             <h3>
               Loading latest photos...
             </h3>
+
           </div>
 
         ) : albums.length === 0 ? (
