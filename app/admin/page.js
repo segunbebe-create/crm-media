@@ -9,43 +9,18 @@ export default function AdminLogin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
 
-  async function handleLogin(e) {
+  function handleLogin(e) {
     e.preventDefault();
 
-    setError("");
-    setLoading(true);
-
-    try {
-      const response = await fetch("/api/admin/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: username.trim(),
-          password,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          data.error || "Incorrect username or password."
-        );
-      }
-
+    if (
+      username.trim() === "admin" &&
+      password === "CRMadmin2026"
+    ) {
       localStorage.setItem("crmAdmin", "true");
-
       router.push("/admin/dashboard");
-    } catch (err) {
-      setError(
-        err.message || "Login failed. Please try again."
-      );
-    } finally {
-      setLoading(false);
+    } else {
+      setError("Incorrect username or password.");
     }
   }
 
@@ -70,9 +45,7 @@ export default function AdminLogin() {
 
         <form onSubmit={handleLogin}>
 
-          <label>
-            Username
-          </label>
+          <label>Username</label>
 
           <input
             type="text"
@@ -84,9 +57,7 @@ export default function AdminLogin() {
             required
           />
 
-          <label>
-            Password
-          </label>
+          <label>Password</label>
 
           <input
             type="password"
@@ -104,11 +75,8 @@ export default function AdminLogin() {
             </p>
           )}
 
-          <button
-            type="submit"
-            disabled={loading}
-          >
-            {loading ? "Signing in..." : "Sign in"}
+          <button type="submit">
+            Sign in
           </button>
 
         </form>
