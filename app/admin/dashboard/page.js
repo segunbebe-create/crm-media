@@ -127,6 +127,7 @@ export default function AdminDashboard() {
       setShowCreate(false);
 
       await loadAlbums();
+      await loadStats();
     } catch (err) {
       setError(
         err.message || "Could not create album."
@@ -188,12 +189,37 @@ export default function AdminDashboard() {
     return Number(number || 0).toLocaleString();
   }
 
+  function getChartMax() {
+    if (!stats?.weekly?.length) return 1;
+
+    let highest = 1;
+
+    stats.weekly.forEach((day) => {
+      highest = Math.max(
+        highest,
+        Number(day.websiteViews || 0),
+        Number(day.photoViews || 0),
+        Number(day.downloads || 0)
+      );
+    });
+
+    return highest;
+  }
+
+  function getBarHeight(value) {
+    const max = getChartMax();
+
+    if (!value) return 3;
+
+    const percentage = (Number(value) / max) * 100;
+
+    return Math.max(percentage, 3);
+  }
+
   return (
     <main className="admin-dashboard">
 
-      {/* ================================
-          HEADER
-      ================================= */}
+      {/* HEADER */}
 
       <header className="dashboard-header">
 
@@ -206,7 +232,7 @@ export default function AdminDashboard() {
 
           <div>
             <p>CRM MEDIA</p>
-            <span>Admin Dashboard</span>
+            <span>ADMIN DASHBOARD</span>
           </div>
 
         </div>
@@ -221,15 +247,11 @@ export default function AdminDashboard() {
       </header>
 
 
-      {/* ================================
-          CONTENT
-      ================================= */}
+      {/* MAIN */}
 
       <section className="dashboard-content">
 
-        {/* ================================
-            STATUS
-        ================================= */}
+        {/* OVERVIEW HEADER */}
 
         <div className="dashboard-title">
 
@@ -238,7 +260,9 @@ export default function AdminDashboard() {
               WEBSITE STATUS
             </p>
 
-            <h1>Overview</h1>
+            <h1>
+              Overview
+            </h1>
 
             <p>
               Monitor activity across your CRM Media
@@ -259,9 +283,7 @@ export default function AdminDashboard() {
         </div>
 
 
-        {/* ================================
-            STATS ERROR
-        ================================= */}
+        {/* STATUS ERROR */}
 
         {statsError && (
           <div className="dashboard-error">
@@ -270,20 +292,19 @@ export default function AdminDashboard() {
         )}
 
 
-        {/* ================================
-            MAIN STAT CARDS
-        ================================= */}
+        {/* STAT CARDS */}
 
         <div className="stats-grid">
 
           <div className="stat-card">
-
             <div className="stat-icon">
               👁️
             </div>
 
             <div>
-              <p>Total Website Views</p>
+              <p>
+                Total Website Views
+              </p>
 
               <h2>
                 {statsLoading
@@ -293,18 +314,18 @@ export default function AdminDashboard() {
                     )}
               </h2>
             </div>
-
           </div>
 
 
           <div className="stat-card">
-
             <div className="stat-icon">
               📸
             </div>
 
             <div>
-              <p>Total Photo Views</p>
+              <p>
+                Total Photo Views
+              </p>
 
               <h2>
                 {statsLoading
@@ -314,18 +335,18 @@ export default function AdminDashboard() {
                     )}
               </h2>
             </div>
-
           </div>
 
 
           <div className="stat-card">
-
             <div className="stat-icon">
               📥
             </div>
 
             <div>
-              <p>Total Downloads</p>
+              <p>
+                Total Downloads
+              </p>
 
               <h2>
                 {statsLoading
@@ -335,18 +356,18 @@ export default function AdminDashboard() {
                     )}
               </h2>
             </div>
-
           </div>
 
 
           <div className="stat-card">
-
             <div className="stat-icon">
               🖼️
             </div>
 
             <div>
-              <p>Total Photos</p>
+              <p>
+                Total Photos
+              </p>
 
               <h2>
                 {statsLoading
@@ -356,18 +377,18 @@ export default function AdminDashboard() {
                     )}
               </h2>
             </div>
-
           </div>
 
 
           <div className="stat-card">
-
             <div className="stat-icon">
               📁
             </div>
 
             <div>
-              <p>Total Albums</p>
+              <p>
+                Total Albums
+              </p>
 
               <h2>
                 {statsLoading
@@ -377,18 +398,18 @@ export default function AdminDashboard() {
                     )}
               </h2>
             </div>
-
           </div>
 
 
           <div className="stat-card">
-
             <div className="stat-icon">
               📂
             </div>
 
             <div>
-              <p>Album Views</p>
+              <p>
+                Album Views
+              </p>
 
               <h2>
                 {statsLoading
@@ -398,27 +419,24 @@ export default function AdminDashboard() {
                     )}
               </h2>
             </div>
-
           </div>
 
         </div>
 
 
-        {/* ================================
-            TODAY
-        ================================= */}
+        {/* TODAY */}
 
         <section className="stats-section">
 
           <div className="section-heading">
 
-            <div>
-              <p className="dashboard-label">
-                TODAY
-              </p>
+            <p className="dashboard-label">
+              TODAY
+            </p>
 
-              <h2>Today's Activity</h2>
-            </div>
+            <h2>
+              Today's Activity
+            </h2>
 
           </div>
 
@@ -426,7 +444,9 @@ export default function AdminDashboard() {
           <div className="today-grid">
 
             <div className="today-card">
-              <span>Website Views</span>
+              <span>
+                Website Views
+              </span>
 
               <strong>
                 {statsLoading
@@ -439,7 +459,9 @@ export default function AdminDashboard() {
 
 
             <div className="today-card">
-              <span>Album Views</span>
+              <span>
+                Album Views
+              </span>
 
               <strong>
                 {statsLoading
@@ -452,7 +474,9 @@ export default function AdminDashboard() {
 
 
             <div className="today-card">
-              <span>Photo Views</span>
+              <span>
+                Photo Views
+              </span>
 
               <strong>
                 {statsLoading
@@ -465,7 +489,9 @@ export default function AdminDashboard() {
 
 
             <div className="today-card">
-              <span>Downloads</span>
+              <span>
+                Downloads
+              </span>
 
               <strong>
                 {statsLoading
@@ -481,119 +507,143 @@ export default function AdminDashboard() {
         </section>
 
 
-        {/* ================================
-            LAST 7 DAYS
-        ================================= */}
+        {/* 7 DAY CHART */}
 
         <section className="stats-section">
 
           <div className="section-heading">
 
-            <div>
-              <p className="dashboard-label">
-                ANALYTICS
-              </p>
+            <p className="dashboard-label">
+              PERFORMANCE
+            </p>
 
-              <h2>Last 7 Days</h2>
-            </div>
+            <h2>
+              Activity — Last 7 Days
+            </h2>
 
-          </div>
-
-
-          <div className="weekly-table">
-
-            <div className="weekly-header">
-              <span>Date</span>
-              <span>Website</span>
-              <span>Albums</span>
-              <span>Photos</span>
-              <span>Downloads</span>
-            </div>
-
-
-            {statsLoading ? (
-
-              <div className="weekly-empty">
-                Loading statistics...
-              </div>
-
-            ) : stats?.weekly?.length ? (
-
-              stats.weekly.map((day) => (
-
-                <div
-                  className="weekly-row"
-                  key={String(day.date)}
-                >
-
-                  <span>
-                    {new Date(
-                      day.date
-                    ).toLocaleDateString(
-                      undefined,
-                      {
-                        day: "numeric",
-                        month: "short",
-                      }
-                    )}
-                  </span>
-
-                  <span>
-                    {formatNumber(
-                      day.websiteViews
-                    )}
-                  </span>
-
-                  <span>
-                    {formatNumber(
-                      day.albumViews
-                    )}
-                  </span>
-
-                  <span>
-                    {formatNumber(
-                      day.photoViews
-                    )}
-                  </span>
-
-                  <span>
-                    {formatNumber(
-                      day.downloads
-                    )}
-                  </span>
-
-                </div>
-
-              ))
-
-            ) : (
-
-              <div className="weekly-empty">
-                No activity recorded yet.
-              </div>
-
-            )}
+            <p>
+              See how visitors are interacting
+              with your media.
+            </p>
 
           </div>
+
+
+          {statsLoading ? (
+
+            <div className="dashboard-loading">
+              Loading activity...
+            </div>
+
+          ) : stats?.weekly?.length ? (
+
+            <>
+              <div className="analytics-chart">
+
+                {stats.weekly.map((day) => (
+
+                  <div
+                    className="chart-column"
+                    key={String(day.date)}
+                  >
+
+                    <div className="chart-bars">
+
+                      <div
+                        className="chart-bar"
+                        title={`Website views: ${day.websiteViews}`}
+                        style={{
+                          height: `${getBarHeight(
+                            day.websiteViews
+                          )}%`,
+                        }}
+                      />
+
+                      <div
+                        className="chart-bar photo"
+                        title={`Photo views: ${day.photoViews}`}
+                        style={{
+                          height: `${getBarHeight(
+                            day.photoViews
+                          )}%`,
+                        }}
+                      />
+
+                      <div
+                        className="chart-bar download"
+                        title={`Downloads: ${day.downloads}`}
+                        style={{
+                          height: `${getBarHeight(
+                            day.downloads
+                          )}%`,
+                        }}
+                      />
+
+                    </div>
+
+                    <div className="chart-date">
+                      {new Date(
+                        day.date
+                      ).toLocaleDateString(
+                        undefined,
+                        {
+                          weekday: "short",
+                          day: "numeric",
+                        }
+                      )}
+                    </div>
+
+                  </div>
+
+                ))}
+
+              </div>
+
+
+              <div className="chart-legend">
+
+                <span>
+                  <i className="legend-dot" />
+                  Website Views
+                </span>
+
+                <span>
+                  <i className="legend-dot photo" />
+                  Photo Views
+                </span>
+
+                <span>
+                  <i className="legend-dot download" />
+                  Downloads
+                </span>
+
+              </div>
+            </>
+
+          ) : (
+
+            <div className="ranking-empty">
+              No activity recorded yet.
+            </div>
+
+          )}
 
         </section>
 
 
-        {/* ================================
-            TOP PHOTOS
-        ================================= */}
+        {/* MOST VIEWED */}
 
         <section className="stats-section">
 
           <div className="section-heading">
 
-            <div>
-              <p className="dashboard-label">
-                POPULAR CONTENT
-              </p>
+            <p className="dashboard-label">
+              POPULAR CONTENT
+            </p>
 
-              <h2>Most Viewed Photos</h2>
-            </div>
+            <h2>
+              Most Viewed Photos
+            </h2>
 
           </div>
 
@@ -635,8 +685,14 @@ export default function AdminDashboard() {
                     </div>
 
                     <div className="ranking-value">
-                      {formatNumber(photo.views)}
-                      <small> views</small>
+                      {formatNumber(
+                        photo.views
+                      )}
+
+                      <small>
+                        {" "}
+                        views
+                      </small>
                     </div>
 
                   </div>
@@ -657,21 +713,19 @@ export default function AdminDashboard() {
         </section>
 
 
-        {/* ================================
-            TOP DOWNLOADS
-        ================================= */}
+        {/* MOST DOWNLOADED */}
 
         <section className="stats-section">
 
           <div className="section-heading">
 
-            <div>
-              <p className="dashboard-label">
-                DOWNLOADS
-              </p>
+            <p className="dashboard-label">
+              DOWNLOADS
+            </p>
 
-              <h2>Most Downloaded Photos</h2>
-            </div>
+            <h2>
+              Most Downloaded Photos
+            </h2>
 
           </div>
 
@@ -716,6 +770,7 @@ export default function AdminDashboard() {
                       {formatNumber(
                         photo.downloads
                       )}
+
                       <small>
                         {" "}
                         downloads
@@ -740,23 +795,25 @@ export default function AdminDashboard() {
         </section>
 
 
-        {/* ================================
-            ALBUM MANAGEMENT
-        ================================= */}
+        {/* ALBUM MANAGEMENT */}
 
         <div className="dashboard-title albums-heading">
 
           <div>
+
             <p className="dashboard-label">
               CONTENT MANAGEMENT
             </p>
 
-            <h2>Albums</h2>
+            <h2>
+              Albums
+            </h2>
 
             <p>
               Organize your church photos into
               albums and events.
             </p>
+
           </div>
 
           <button
@@ -773,9 +830,7 @@ export default function AdminDashboard() {
         </div>
 
 
-        {/* ================================
-            ERROR
-        ================================= */}
+        {/* ALBUM ERROR */}
 
         {error && (
           <div className="dashboard-error">
@@ -784,9 +839,7 @@ export default function AdminDashboard() {
         )}
 
 
-        {/* ================================
-            CREATE ALBUM
-        ================================= */}
+        {/* CREATE ALBUM */}
 
         {showCreate && (
 
@@ -840,9 +893,7 @@ export default function AdminDashboard() {
         )}
 
 
-        {/* ================================
-            ALBUMS
-        ================================= */}
+        {/* ALBUM LIST */}
 
         {loading ? (
 
