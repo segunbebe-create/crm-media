@@ -2375,3 +2375,366 @@ img {
     font-size: 14px;
   }
 }
+/* =========================================================
+   CRM MEDIA — FULLSCREEN PHOTO VIEWER
+   ========================================================= */
+
+.photo-image-wrapper {
+  cursor: pointer;
+  position: relative;
+}
+
+.photo-image {
+  transition: transform 0.35s ease;
+}
+
+.photo-image-wrapper:hover .photo-image {
+  transform: scale(1.03);
+}
+
+/* VIEW ICON */
+
+.view-photo-icon {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 3;
+
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transform: translate(-50%, -50%) scale(0.8);
+
+  border-radius: 50%;
+
+  background: rgba(17, 24, 39, 0.78);
+  color: #fff;
+
+  font-size: 23px;
+
+  opacity: 0;
+
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+
+  pointer-events: none;
+}
+
+.photo-image-wrapper:hover .view-photo-icon {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* =========================================================
+   VIEWER
+   ========================================================= */
+
+.photo-viewer {
+  position: fixed;
+  inset: 0;
+
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 30px;
+
+  background: rgba(0, 0, 0, 0.94);
+
+  animation: crmViewerFade 0.2s ease;
+}
+
+/* IMAGE AREA */
+
+.viewer-content {
+  width: min(1100px, 90vw);
+  max-height: 92vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.viewer-image {
+  display: block;
+
+  max-width: 100%;
+  max-height: 78vh;
+
+  object-fit: contain;
+
+  border-radius: 8px;
+
+  box-shadow:
+    0 25px 80px rgba(0, 0, 0, 0.5);
+
+  animation: crmViewerImage 0.25s ease;
+}
+
+/* CLOSE */
+
+.viewer-close {
+  position: fixed;
+  top: 22px;
+  right: 28px;
+
+  z-index: 10001;
+
+  width: 46px;
+  height: 46px;
+
+  border: 0;
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.12);
+
+  color: #fff;
+
+  font-size: 32px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.viewer-close:hover {
+  background: rgba(255, 255, 255, 0.22);
+  transform: rotate(90deg);
+}
+
+/* NEXT / PREVIOUS */
+
+.viewer-nav {
+  position: fixed;
+
+  top: 50%;
+
+  z-index: 10001;
+
+  width: 58px;
+  height: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transform: translateY(-50%);
+
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.1);
+
+  color: #fff;
+
+  font-size: 48px;
+  font-weight: 300;
+
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.viewer-nav:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.viewer-prev {
+  left: 28px;
+}
+
+.viewer-next {
+  right: 28px;
+}
+
+.viewer-prev:hover {
+  transform: translateY(-50%) translateX(-3px);
+}
+
+.viewer-next:hover {
+  transform: translateY(-50%) translateX(3px);
+}
+
+/* =========================================================
+   VIEWER BOTTOM
+   ========================================================= */
+
+.viewer-bottom {
+  width: 100%;
+
+  margin-top: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+.viewer-info {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.viewer-info strong {
+  overflow: hidden;
+
+  color: #fff;
+
+  font-size: 14px;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.viewer-info span {
+  color: #9ca3af;
+
+  font-size: 12px;
+}
+
+/* ACTIONS */
+
+.viewer-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+}
+
+.viewer-actions button {
+  padding: 10px 15px;
+
+  border: 1px solid rgba(255, 255, 255, 0.16);
+
+  border-radius: 9px;
+
+  background: rgba(255, 255, 255, 0.1);
+
+  color: #fff;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.viewer-actions button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+
+@keyframes crmViewerFade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes crmViewerImage {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .photo-viewer {
+    padding: 15px;
+  }
+
+  .viewer-content {
+    width: 100%;
+    max-height: 90vh;
+  }
+
+  .viewer-image {
+    max-width: 100%;
+    max-height: 70vh;
+    border-radius: 5px;
+  }
+
+  .viewer-close {
+    top: 12px;
+    right: 12px;
+
+    width: 42px;
+    height: 42px;
+
+    font-size: 29px;
+  }
+
+  .viewer-nav {
+    width: 42px;
+    height: 42px;
+
+    font-size: 34px;
+  }
+
+  .viewer-prev {
+    left: 8px;
+  }
+
+  .viewer-next {
+    right: 8px;
+  }
+
+  .viewer-bottom {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .viewer-actions {
+    width: 100%;
+  }
+
+  .viewer-actions button {
+    flex: 1;
+  }
+
+  .view-photo-icon {
+    width: 42px;
+    height: 42px;
+    font-size: 19px;
+  }
+}
