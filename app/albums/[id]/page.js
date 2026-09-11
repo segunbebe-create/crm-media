@@ -15,12 +15,20 @@ export default function AlbumPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  // NEW: fullscreen viewer
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
   useEffect(() => {
     if (!albumId) return;
 
     loadAlbum();
     loadFavorites();
   }, [albumId]);
+
+  // ==============================
+  // ANALYTICS
+  // ==============================
 
   async function trackEvent(eventType, extra = {}) {
     try {
@@ -39,6 +47,10 @@ export default function AlbumPage() {
       console.error("ANALYTICS ERROR:", error);
     }
   }
+
+  // ==============================
+  // LOAD ALBUM
+  // ==============================
 
   async function loadAlbum() {
     try {
@@ -63,13 +75,12 @@ export default function AlbumPage() {
       setAlbum(data.album);
       setPhotos(data.photos || []);
 
-      // Record one album view
+      // Record album view
       trackEvent("album_view", {
         albumId: Number(albumId),
       });
 
-      // Record photo views
-      // Each photo is counted once when the album loads.
+      // Keep your existing analytics
       if (data.photos?.length) {
         data.photos.forEach((photo) => {
           trackEvent("photo_view", {
@@ -87,6 +98,10 @@ export default function AlbumPage() {
     }
   }
 
+  // ==============================
+  // FAVORITES
+  // ==============================
+
   function loadFavorites() {
     try {
       const saved =
@@ -97,21 +112,6 @@ export default function AlbumPage() {
       setFavorites(saved);
     } catch {
       setFavorites([]);
-    }
-  }
-
-  function getMediaUrl(photo) {
-    if (!photo?.url) return "";
-
-    try {
-      const url = new URL(photo.url);
-
-      return `/api/media/${url.pathname.replace(
-        /^\/+/,
-        ""
-      )}`;
-    } catch {
-      return photo.url;
     }
   }
 
@@ -130,12 +130,34 @@ export default function AlbumPage() {
     );
   }
 
+  // ==============================
+  // PRIVATE MEDIA URL
+  // ==============================
+
+  function getMediaUrl(photo) {
+    if (!photo?.url) return "";
+
+    try {
+      const url = new URL(photo.url);
+
+      return `/api/media/${url.pathname.replace(
+        /^\/+/,
+        ""
+      )}`;
+    } catch {
+      return photo.url;
+    }
+  }
+
+  // ==============================
+  // DOWNLOAD
+  // ==============================
+
   function downloadPhoto(photo) {
     const mediaUrl = getMediaUrl(photo);
 
     if (!mediaUrl) return;
 
-    // Record the download
     trackEvent("download", {
       albumId: Number(albumId),
       photoId: Number(photo.id),
@@ -155,6 +177,119 @@ export default function AlbumPage() {
     document.body.removeChild(link);
   }
 
+  // ==============================
+  // OPEN FULLSCREEN VIEWER
+  // ==============================
+
+  function openViewer(photo, index) {
+    setSelectedPhoto(photo);
+    setSelectedIndex(index);
+
+    // Track when the user actually opens a photo
+    trackEvent("photo_view", {
+      albumId: Number(albumId),
+      photoId: Number(photo.id),
+    });
+
+    document.body.style.overflow = "hidden";
+  }
+
+  // ==============================
+  // CLOSE VIEWER
+  // ==============================
+
+  function closeViewer() {
+    setSelectedPhoto(null);
+    document.body.style.overflow = "";
+  }
+
+  // ==============================
+  // NEXT PHOTO
+  // ==============================
+
+  function nextPhoto() {
+    if (!photos.length) return;
+
+    const nextIndex =
+      (selectedIndex + 1) % photos.length;
+
+    setSelectedIndex(nextIndex);
+    setSelectedPhoto(photos[nextIndex]);
+
+    trackEvent("photo_view", {
+      albumId: Number(albumId),
+      photoId: Number(
+        photos[nextIndex].id
+      ),
+    });
+  }
+
+  // ==============================
+  // PREVIOUS PHOTO
+  // ==============================
+
+  function previousPhoto() {
+    if (!photos.length) return;
+
+    const previousIndex =
+      (selectedIndex - 1 + photos.length) %
+      photos.length;
+
+    setSelectedIndex(previousIndex);
+    setSelectedPhoto(
+      photos[previousIndex]
+    );
+
+    trackEvent("photo_view", {
+      albumId: Number(albumId),
+      photoId: Number(
+        photos[previousIndex].id
+      ),
+    });
+  }
+
+  // ==============================
+  // KEYBOARD CONTROLS
+  // ==============================
+
+  useEffect(() => {
+    function handleKeyDown(e) {
+      if (!selectedPhoto) return;
+
+      if (e.key === "Escape") {
+        closeViewer();
+      }
+
+      if (e.key === "ArrowRight") {
+        nextPhoto();
+      }
+
+      if (e.key === "ArrowLeft") {
+        previousPhoto();
+      }
+    }
+
+    window.addEventListener(
+      "keydown",
+      handleKeyDown
+    );
+
+    return () => {
+      window.removeEventListener(
+        "keydown",
+        handleKeyDown
+      );
+    };
+  }, [
+    selectedPhoto,
+    selectedIndex,
+    photos,
+  ]);
+
+  // ==============================
+  // LOADING
+  // ==============================
+
   if (loading) {
     return (
       <main className="album-page">
@@ -168,6 +303,10 @@ export default function AlbumPage() {
       </main>
     );
   }
+
+  // ==============================
+  // ERROR
+  // ==============================
 
   if (error || !album) {
     return (
@@ -202,6 +341,10 @@ export default function AlbumPage() {
       </main>
     );
   }
+
+  // ==============================
+  // PAGE
+  // ==============================
 
   return (
     <main className="album-page">
@@ -320,7 +463,7 @@ export default function AlbumPage() {
 
           <div className="photo-grid">
 
-            {photos.map((photo) => {
+            {photos.map((photo, index) => {
 
               const isFavorite =
                 favorites.includes(
@@ -338,7 +481,15 @@ export default function AlbumPage() {
 
                   {/* IMAGE */}
 
-                  <div className="photo-image-wrapper">
+                  <div
+                    className="photo-image-wrapper"
+                    onClick={() =>
+                      openViewer(
+                        photo,
+                        index
+                      )
+                    }
+                  >
 
                     <img
                       src={mediaUrl}
@@ -349,6 +500,12 @@ export default function AlbumPage() {
                       className="photo-image"
                       loading="lazy"
                     />
+
+                    {/* VIEW ICON */}
+
+                    <div className="view-photo-icon">
+                      ⛶
+                    </div>
 
                     <div className="photo-overlay">
 
@@ -361,11 +518,13 @@ export default function AlbumPage() {
                             ? "favorited"
                             : ""
                         }`}
-                        onClick={() =>
+                        onClick={(e) => {
+                          e.stopPropagation();
+
                           toggleFavorite(
                             photo.id
-                          )
-                        }
+                          );
+                        }}
                         aria-label={
                           isFavorite
                             ? "Remove from favorites"
@@ -382,11 +541,13 @@ export default function AlbumPage() {
                       <button
                         type="button"
                         className="download-button"
-                        onClick={() =>
+                        onClick={(e) => {
+                          e.stopPropagation();
+
                           downloadPhoto(
                             photo
-                          )
-                        }
+                          );
+                        }}
                         aria-label="Download photo"
                       >
                         ↓
@@ -458,6 +619,134 @@ export default function AlbumPage() {
         </p>
 
       </footer>
+
+      {/* =================================
+          FULLSCREEN PHOTO VIEWER
+          ================================= */}
+
+      {selectedPhoto && (
+
+        <div
+          className="photo-viewer"
+          onClick={closeViewer}
+        >
+
+          {/* CLOSE */}
+
+          <button
+            type="button"
+            className="viewer-close"
+            onClick={closeViewer}
+            aria-label="Close photo viewer"
+          >
+            ×
+          </button>
+
+          {/* PREVIOUS */}
+
+          {photos.length > 1 && (
+            <button
+              type="button"
+              className="viewer-nav viewer-prev"
+              onClick={(e) => {
+                e.stopPropagation();
+                previousPhoto();
+              }}
+              aria-label="Previous photo"
+            >
+              ‹
+            </button>
+          )}
+
+          {/* IMAGE */}
+
+          <div
+            className="viewer-content"
+            onClick={(e) =>
+              e.stopPropagation()
+            }
+          >
+
+            <img
+              src={getMediaUrl(
+                selectedPhoto
+              )}
+              alt={
+                selectedPhoto.name ||
+                "CRM Media photo"
+              }
+              className="viewer-image"
+            />
+
+            <div className="viewer-bottom">
+
+              <div className="viewer-info">
+
+                <strong>
+                  {selectedPhoto.name ||
+                    "CRM Media Photo"}
+                </strong>
+
+                <span>
+                  {selectedIndex + 1} /{" "}
+                  {photos.length}
+                </span>
+
+              </div>
+
+              <div className="viewer-actions">
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    toggleFavorite(
+                      selectedPhoto.id
+                    )
+                  }
+                >
+                  {favorites.includes(
+                    selectedPhoto.id
+                  )
+                    ? "♥ Saved"
+                    : "♡ Favorite"}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    downloadPhoto(
+                      selectedPhoto
+                    )
+                  }
+                >
+                  ↓ Download
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          {/* NEXT */}
+
+          {photos.length > 1 && (
+            <button
+              type="button"
+              className="viewer-nav viewer-next"
+              onClick={(e) => {
+                e.stopPropagation();
+                nextPhoto();
+              }}
+              aria-label="Next photo"
+            >
+              ›
+            </button>
+          )}
+
+        </div>
+
+      )}
 
     </main>
   );
