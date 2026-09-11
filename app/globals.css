@@ -2738,3 +2738,886 @@ img {
     font-size: 19px;
   }
 }
+/* =========================================================
+   CRM MEDIA — SIMPLE & EASY MOBILE EXPERIENCE
+   Add this at the VERY BOTTOM of globals.css
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   GENERAL MOBILE IMPROVEMENTS
+   --------------------------------------------------------- */
+
+@media (max-width: 600px) {
+
+  body {
+    overflow-x: hidden;
+  }
+
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Make tap targets comfortable */
+  button {
+    min-height: 42px;
+  }
+
+  /* -------------------------------------------------------
+     HOME NAVBAR
+     ------------------------------------------------------- */
+
+  .navbar {
+    min-height: 64px;
+    padding: 9px 16px;
+  }
+
+  .brand {
+    gap: 9px;
+  }
+
+  .brand img {
+    width: 38px;
+    height: 38px;
+  }
+
+  .brand strong {
+    font-size: 14px;
+  }
+
+  .brand span {
+    font-size: 9px;
+  }
+
+  .admin-btn {
+    padding: 9px 12px;
+    border-radius: 8px;
+    font-size: 10px;
+  }
+
+  /* -------------------------------------------------------
+     HOME HERO
+     Compact — don't waste the phone screen
+     ------------------------------------------------------- */
+
+  .hero {
+    min-height: 430px;
+    padding: 55px 20px 50px;
+    align-items: center;
+  }
+
+  .hero-content {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .hero-label {
+    margin-bottom: 14px;
+    font-size: 9px;
+    letter-spacing: 2px;
+  }
+
+  .hero h1 {
+    max-width: 360px;
+    font-size: clamp(40px, 13vw, 58px);
+    line-height: 1;
+    letter-spacing: -2.5px;
+  }
+
+  .hero p {
+    max-width: 350px;
+    margin: 20px 0;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .hero-actions {
+    width: 100%;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  .primary-btn,
+  .secondary-btn {
+    width: 100%;
+    min-height: 46px;
+    padding: 12px 18px;
+    font-size: 12px;
+  }
+
+  /* Don't let decorative circle dominate mobile */
+  .hero-gradient {
+    width: 300px;
+    height: 300px;
+    right: -180px;
+    bottom: -180px;
+  }
+
+  /* -------------------------------------------------------
+     SECTION HEADINGS
+     ------------------------------------------------------- */
+
+  .gallery-section {
+    width: 92%;
+    padding: 45px 0 55px;
+  }
+
+  .section-heading {
+    margin-bottom: 24px;
+  }
+
+  .small-label {
+    margin-bottom: 6px;
+    font-size: 9px;
+    letter-spacing: 1.7px;
+  }
+
+  .section-heading h2,
+  .favorites-section h2 {
+    font-size: 30px;
+    line-height: 1.1;
+    letter-spacing: -1px;
+  }
+
+  .section-heading > p {
+    margin-top: 10px;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  /* -------------------------------------------------------
+     SEARCH
+     ------------------------------------------------------- */
+
+  .gallery-controls {
+    margin-bottom: 22px;
+  }
+
+  .search-box {
+    height: 48px;
+    margin-bottom: 10px;
+    border-radius: 11px;
+  }
+
+  .search-box input {
+    font-size: 13px;
+  }
+
+  .filters {
+    gap: 6px;
+    scrollbar-width: none;
+  }
+
+  .filters::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filter {
+    min-height: 38px;
+    padding: 8px 13px;
+    font-size: 11px;
+  }
+
+  /* -------------------------------------------------------
+     HOME PHOTO GRID
+     ------------------------------------------------------- */
+
+  .site .photo-grid {
+    columns: 2 0;
+    column-gap: 8px;
+  }
+
+  .site .photo-card {
+    margin-bottom: 8px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+  }
+
+  .site .photo-card:hover {
+    transform: none;
+  }
+
+  .site .photo-card:hover .photo-image img {
+    transform: none;
+  }
+
+  .image-overlay {
+    opacity: 1;
+    padding: 8px;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.32),
+      transparent 45%
+    );
+  }
+
+  .heart {
+    width: 34px;
+    height: 34px;
+    font-size: 17px;
+  }
+
+  .photo-details {
+    padding: 10px;
+    gap: 7px;
+  }
+
+  .photo-details span {
+    font-size: 8px;
+  }
+
+  .photo-details h3 {
+    margin-top: 4px;
+    font-size: 13px;
+  }
+
+  .download-btn {
+    width: 34px;
+    height: 34px;
+    font-size: 16px;
+  }
+
+  /* -------------------------------------------------------
+     HOME ALBUM CARDS
+     ------------------------------------------------------- */
+
+  .home-album-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-top: 25px;
+  }
+
+  .home-album-card {
+    border-radius: 13px;
+  }
+
+  .home-album-card:hover {
+    transform: none;
+  }
+
+  .home-album-image {
+    height: 190px;
+  }
+
+  .home-album-card:hover .home-album-image img {
+    transform: none;
+  }
+
+  .home-album-info {
+    padding: 15px;
+  }
+
+  .home-album-info h3 {
+    font-size: 18px;
+  }
+
+  .home-album-info p {
+    font-size: 12px;
+  }
+
+  .view-all-wrapper {
+    margin-top: 25px;
+  }
+
+  .view-all-btn {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  /* -------------------------------------------------------
+     FAVORITES
+     ------------------------------------------------------- */
+
+  .favorites-section {
+    width: 92%;
+    margin-bottom: 55px;
+    padding: 25px 20px;
+    border-radius: 15px;
+  }
+
+  .favorites-section h2 {
+    font-size: 27px;
+  }
+
+  .favorites-section p {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .favorite-number strong {
+    font-size: 42px;
+  }
+
+  /* -------------------------------------------------------
+     PUBLIC ALBUMS HEADER
+     ------------------------------------------------------- */
+
+  .public-header {
+    min-height: 64px;
+    padding: 9px 16px;
+  }
+
+  .public-brand {
+    gap: 9px;
+    min-width: 0;
+  }
+
+  .public-brand img {
+    width: 38px;
+    height: 38px;
+  }
+
+  .public-brand strong {
+    font-size: 13px;
+  }
+
+  .public-brand span {
+    font-size: 9px;
+  }
+
+  .home-button {
+    padding: 8px 11px;
+    min-height: 40px;
+    font-size: 10px;
+  }
+
+  /* -------------------------------------------------------
+     ALBUMS PAGE
+     ------------------------------------------------------- */
+
+  .albums-hero {
+    padding: 42px 20px;
+  }
+
+  .albums-hero h1 {
+    font-size: 39px;
+    letter-spacing: -1.5px;
+  }
+
+  .albums-hero p:last-child {
+    margin-top: 10px;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  .albums-content {
+    width: 92%;
+    padding: 35px 0 55px;
+  }
+
+  .public-album-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .public-album-card {
+    border-radius: 13px;
+  }
+
+  .public-album-card:hover {
+    transform: none;
+  }
+
+  .public-album-cover {
+    height: 190px;
+  }
+
+  .public-album-card:hover .public-album-cover img {
+    transform: none;
+  }
+
+  /* Always show simple "View Album" indicator on phones */
+  .album-overlay {
+    opacity: 1;
+    align-items: flex-end;
+    justify-content: flex-start;
+    padding: 12px;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.5),
+      transparent 55%
+    );
+  }
+
+  .album-overlay span {
+    padding: 8px 13px;
+    font-size: 10px;
+  }
+
+  .public-album-info {
+    padding: 15px;
+  }
+
+  .public-album-info .album-date {
+    font-size: 8px;
+  }
+
+  .public-album-info h2 {
+    font-size: 19px;
+  }
+
+  .public-album-info p:not(.album-date) {
+    min-height: auto;
+    margin-bottom: 14px;
+    font-size: 12px;
+  }
+
+  .public-album-info button {
+    width: 100%;
+    min-height: 43px;
+    font-size: 11px;
+  }
+
+  /* -------------------------------------------------------
+     INDIVIDUAL ALBUM
+     ------------------------------------------------------- */
+
+  .album-hero {
+    padding: 38px 20px;
+  }
+
+  .album-hero-content {
+    width: 100%;
+  }
+
+  .album-hero h1 {
+    margin: 5px 0 10px;
+    font-size: clamp(32px, 10vw, 45px);
+    line-height: 1.05;
+    letter-spacing: -1.5px;
+  }
+
+  .album-description {
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  .album-meta {
+    gap: 8px;
+    margin-top: 17px;
+    flex-direction: column;
+    font-size: 11px;
+  }
+
+  /* -------------------------------------------------------
+     ALBUM PHOTO GRID
+     ------------------------------------------------------- */
+
+  .album-photos {
+    width: 94%;
+    padding: 25px 0 55px;
+  }
+
+  .album-page .photo-grid {
+    columns: 2 0;
+    column-gap: 7px;
+  }
+
+  .album-page .photo-card {
+    margin-bottom: 7px;
+    border-radius: 9px;
+    box-shadow: 0 3px 13px rgba(0, 0, 0, 0.06);
+  }
+
+  .album-page .photo-card:hover .photo-image {
+    transform: none;
+  }
+
+  /* Controls visible on phone */
+  .album-page .photo-overlay {
+    opacity: 1;
+    padding: 8px;
+  }
+
+  .favorite-button,
+  .download-button {
+    width: 34px;
+    height: 34px;
+    font-size: 17px;
+  }
+
+  .photo-info {
+    padding: 10px;
+  }
+
+  .photo-info > p {
+    margin-bottom: 8px;
+    font-size: 11px;
+  }
+
+  .photo-actions {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .photo-actions button {
+    min-height: 37px;
+    padding: 7px;
+    font-size: 10px;
+  }
+
+  /* -------------------------------------------------------
+     FULLSCREEN VIEWER
+     ------------------------------------------------------- */
+
+  .photo-viewer {
+    padding: 12px;
+  }
+
+  .viewer-content {
+    width: 100%;
+  }
+
+  .viewer-image {
+    max-width: 94vw;
+    max-height: 68vh;
+  }
+
+  .viewer-close {
+    top: 10px;
+    right: 10px;
+  }
+
+  .viewer-nav {
+    width: 40px;
+    height: 40px;
+  }
+
+  .viewer-prev {
+    left: 7px;
+  }
+
+  .viewer-next {
+    right: 7px;
+  }
+
+  .viewer-bottom {
+    padding: 0 5px;
+  }
+
+  /* -------------------------------------------------------
+     FOOTER
+     ------------------------------------------------------- */
+
+  .public-footer {
+    padding: 30px 18px;
+  }
+
+  .public-footer p {
+    font-size: 11px;
+  }
+
+  /* -------------------------------------------------------
+     ADMIN LOGIN
+     ------------------------------------------------------- */
+
+  .admin-page {
+    min-height: 100dvh;
+    padding: 20px 15px;
+  }
+
+  .admin-card {
+    padding: 28px 20px;
+    border-radius: 18px;
+  }
+
+  .admin-card img {
+    width: 65px;
+    height: 65px;
+  }
+
+  .admin-card h1 {
+    font-size: 28px;
+  }
+
+  .admin-description {
+    margin-bottom: 25px;
+    font-size: 13px;
+  }
+
+  .admin-card input {
+    height: 48px;
+  }
+
+  .admin-card form button {
+    height: 48px;
+  }
+
+  /* -------------------------------------------------------
+     ADMIN DASHBOARD
+     ------------------------------------------------------- */
+
+  .admin-dashboard .dashboard-header {
+    min-height: 64px;
+    padding: 9px 15px;
+  }
+
+  .admin-dashboard .dashboard-brand {
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .admin-dashboard .dashboard-brand img {
+    width: 38px;
+    height: 38px;
+    border-radius: 9px;
+  }
+
+  .admin-dashboard .dashboard-brand p {
+    font-size: 13px;
+  }
+
+  .admin-dashboard .dashboard-brand span {
+    font-size: 8px;
+    letter-spacing: 1.4px;
+  }
+
+  .admin-dashboard .logout-btn {
+    padding: 8px 11px;
+    min-height: 39px;
+    font-size: 10px;
+  }
+
+  .admin-dashboard .dashboard-content {
+    width: 94%;
+    padding: 28px 0 55px;
+  }
+
+  .admin-dashboard .dashboard-title {
+    margin-bottom: 22px;
+  }
+
+  .admin-dashboard .dashboard-title h1,
+  .admin-dashboard .dashboard-title h2 {
+    font-size: 29px;
+    line-height: 1.1;
+  }
+
+  .admin-dashboard .dashboard-label {
+    font-size: 8px;
+    letter-spacing: 2px;
+  }
+
+  .admin-dashboard .dashboard-title > div > p:last-child {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .refresh-stats-btn,
+  .create-album-btn {
+    width: 100%;
+    min-height: 45px;
+    margin-top: 14px;
+  }
+
+  /* Stats — two simple columns */
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+    margin-bottom: 20px;
+  }
+
+  .stat-card {
+    min-height: 105px;
+    padding: 14px;
+    gap: 9px;
+    border-radius: 13px;
+  }
+
+  .stat-icon {
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    border-radius: 10px;
+    font-size: 17px;
+  }
+
+  .stat-card p {
+    margin-bottom: 4px;
+    font-size: 9px;
+  }
+
+  .stat-card h2 {
+    font-size: 22px;
+  }
+
+  /* Today */
+  .today-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .today-card {
+    padding: 14px;
+    border-radius: 11px;
+  }
+
+  .today-card span {
+    font-size: 9px;
+  }
+
+  .today-card strong {
+    font-size: 20px;
+  }
+
+  /* Sections */
+  .stats-section {
+    margin-bottom: 18px;
+    padding: 17px 13px;
+    border-radius: 14px;
+  }
+
+  .section-heading {
+    margin-bottom: 17px;
+  }
+
+  .section-heading h2 {
+    font-size: 21px;
+  }
+
+  /* Chart */
+  .analytics-chart {
+    min-height: 220px;
+    gap: 4px;
+    padding: 10px 0 5px;
+  }
+
+  .chart-column {
+    min-width: 42px;
+    height: 190px;
+  }
+
+  .chart-bars {
+    height: 160px;
+    gap: 3px;
+  }
+
+  .chart-bar {
+    width: 7px;
+  }
+
+  .chart-date {
+    margin-top: 8px;
+    font-size: 8px;
+  }
+
+  .chart-legend {
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .chart-legend span {
+    font-size: 9px;
+  }
+
+  /* Rankings */
+  .ranking-item {
+    min-height: 58px;
+    padding: 9px;
+    gap: 9px;
+    border-radius: 9px;
+  }
+
+  .ranking-number {
+    width: 29px;
+    height: 29px;
+    flex: 0 0 29px;
+    border-radius: 8px;
+    font-size: 10px;
+  }
+
+  .ranking-info strong {
+    font-size: 11px;
+  }
+
+  .ranking-info span {
+    font-size: 9px;
+  }
+
+  .ranking-value {
+    font-size: 10px;
+  }
+
+  /* Weekly data */
+  .weekly-header,
+  .weekly-row {
+    min-width: 560px;
+    gap: 10px;
+  }
+
+  /* Album management */
+  .albums-heading {
+    margin-top: 35px;
+  }
+
+  .album-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .album-card {
+    border-radius: 13px;
+  }
+
+  .album-cover {
+    height: 175px;
+  }
+
+  .album-info {
+    padding: 15px;
+  }
+
+  .album-info h3 {
+    font-size: 18px;
+  }
+
+  .album-info > p {
+    min-height: auto;
+    font-size: 12px;
+  }
+
+  .album-actions {
+    gap: 6px;
+  }
+
+  .album-actions button {
+    min-height: 42px;
+    font-size: 11px;
+  }
+
+  /* Upload */
+  .upload-card {
+    width: 100%;
+    padding: 27px 17px;
+    border-radius: 16px;
+  }
+
+  .upload-icon {
+    width: 65px;
+    height: 65px;
+    border-radius: 17px;
+    font-size: 30px;
+  }
+
+  .upload-card h3 {
+    font-size: 23px;
+  }
+
+  .upload-card > p {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .file-picker {
+    width: 100%;
+    min-height: 45px;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+  }
+
+  .upload-submit {
+    min-height: 48px;
+  }
+
+}
